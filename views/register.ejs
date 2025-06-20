@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Akun Baru</title>
+    <!-- FontAwesome untuk icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            min-height: 100vh;
+            min-width: 100vw;
+            background: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .container {
+            display: flex;
+            width: 1450px;    /* Lebar dikurangi dari 1600px ke 1350px */
+            height: 750px;    /* Tinggi tetap proporsional */
+            border-radius: 48px;
+            overflow: hidden;
+            box-shadow: 0 4px 40px rgba(0,0,0,0.10);
+            background: #fff;
+        }
+        .left, .right {
+            flex: 1 1 0;
+            width: 50%;
+            height: 100%;
+        }
+        .left {
+            background: #FFE04B;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .left-content {
+            width: 80%;
+            max-width: 420px;
+            margin: 0 auto;
+        }
+        .left h2 {
+            font-size: 3rem;
+            margin-bottom: 18px;
+            font-weight: bold;
+            color: #222;
+            letter-spacing: -1px;
+            text-align: left;
+        }
+        .left p {
+            font-size: 1.25rem;
+            margin-bottom: 44px;
+            color: #222;
+            line-height: 1.4;
+            text-align: left;
+        }
+        .form-group {
+            position: relative;
+            margin-bottom: 28px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 20px 24px 20px 54px;
+            border: none;
+            border-radius: 32px;
+            font-size: 1.15rem;
+            background: #fff;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+            outline: none;
+        }
+        .form-group .form-icon {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.3rem;
+            color: #bbb;
+        }
+        .btn-register {
+            width: 100%;
+            padding: 20px;
+            border: none;
+            border-radius: 32px;
+            background: #2D2A7B;
+            color: #fff;
+            font-size: 1.3rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 8px;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+            transition: background 0.2s;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+        }
+        .btn-register:hover {
+            background: #222060;
+        }
+        .right {
+            background: #6C5DD3;
+            display: flex;
+            align-items: flex-end; /* gambar nempel bawah */
+            justify-content: center;
+            position: relative;
+        }
+        .register-illustration {
+            width: 95%;
+            max-width: 500px;
+            border-radius: 32px;
+            object-fit: contain;
+            margin-bottom: 0;
+            display: block;
+        }
+        @media (max-width: 1400px) {
+            .container {
+                width: 98vw;
+                height: 80vh;
+            }
+            .register-illustration {
+                max-width: 400px;
+            }
+        }
+        @media (max-width: 900px) {
+            .container {
+                flex-direction: column;
+                width: 100vw;
+                height: auto;
+                min-height: 0;
+                border-radius: 0;
+            }
+            .left, .right {
+                width: 100vw;
+                min-height: 45vh;
+                padding: 32px 10vw;
+            }
+            .right {
+                align-items: center;
+            }
+            .register-illustration {
+                width: 70vw;
+                max-width: 90vw;
+            }
+        }
+        @media (max-width: 600px) {
+            .left, .right {
+                padding: 18px 2vw;
+            }
+            .left-content {
+                max-width: 98vw;
+            }
+            .left h2 {
+                font-size: 2rem;
+            }
+            .left p {
+                font-size: 1rem;
+            }
+            .form-group input {
+                font-size: 1rem;
+                padding: 14px 14px 14px 38px;
+            }
+            .btn-register {
+                font-size: 1.1rem;
+                padding: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="left">
+            <div class="left-content">
+                <h2>Register</h2>
+                <p>Daftarkan akun mu dan<br>mulai petualangan baru!</p>
+                <form id="registerForm" action="/register" method="POST">
+                    <div class="form-group">
+                        <span class="form-icon"><i class="fa-regular fa-user"></i></span>
+                        <input type="text" id="username" name="username" placeholder="Username" required>
+                    </div>
+                    <div class="form-group">
+                        <span class="form-icon"><i class="fa-regular fa-eye-slash"></i></span>
+                        <input type="password" id="password" name="password" placeholder="Password" required>
+                    </div>
+                    <div class="form-group">
+                        <span class="form-icon"><i class="fa-regular fa-eye-slash"></i></span>
+                        <input type="password" id="confirmPassword" name="confirmPassword" placeholder="ConfirmPassword" required>
+                    </div>
+                    <button type="submit" class="btn-register">Register</button>
+                </form>
+            </div>
+        </div>
+        <div class="right">
+            <!-- Ganti src sesuai ilustrasi kamu -->
+            <img class="register-illustration" src="/images/login.png" alt="Register Illustration">
+        </div>
+    </div>
+</body>
+</html>

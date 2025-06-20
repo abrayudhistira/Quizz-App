@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Pengguna</title>
+    <link rel="stylesheet" href="/style.css"> <style>
+        /* Gaya tambahan khusus dashboard */
+        .welcome-message {
+            margin-bottom: 25px;
+            font-size: 1.3em;
+            color: #333;
+        }
+        .dashboard-info {
+            background-color: #e9f5ff;
+            border: 1px solid #cce5ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        .dashboard-info p {
+            margin: 8px 0;
+            color: #004085;
+        }
+        .logout-button {
+            background-color: #dc3545;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+        }
+        .logout-button:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Selamat Datang di Dashboard!</h2>
+
+        <p class="welcome-message">Halo, **<%= user.username %>**!</p>
+        
+        <div class="dashboard-info">
+            <p><strong>ID Pengguna:</strong> <%= user.id %></p>
+            <p><strong>Email:</strong> <%= user.email %></p>
+            <p><strong>Peran (Role):</strong> <%= user.role %></p>
+            <% if (user.photo) { %>
+                <p><strong>Foto Profil:</strong> <img src="<%= user.photo %>" alt="Foto Profil" style="max-width: 100px; border-radius: 50%;"></p>
+            <% } %>
+        </div>
+
+        <p>Ini adalah halaman pribadi Anda setelah berhasil masuk.</p>
+        
+        <button class="logout-button" onclick="logout()">Logout</button>
+    </div>
+
+    <script>
+        function logout() {
+            localStorage.removeItem('jwtToken'); // Hapus token dari localStorage
+            window.location.href = '/'; // Arahkan kembali ke halaman login
+        }
+    </script>
+</body>
+</html>
