@@ -1,0 +1,13 @@
+:root {
+  --ungu: #5E52F2ff;
+  --kuning: #FFDD41ff;
+  --navy: #2D2C56ff;
+  --hitam: #000000ff;
+  --putih: #FFFFFFff;
+  --abu: #929292ff;
+}
+
+* {
+  box-sizing: border-box;
+  font-family: sans-serif;
+}

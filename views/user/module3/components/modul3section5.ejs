@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Penutup Modul 3 - Pembelajaran Selesai</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            color: rgba(255,255,255,0.9);
+            font-size: 1.1rem;
+        }
+
+        .content-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .conclusion-section {
+            margin-bottom: 40px;
+        }
+
+        .conclusion-section h2 {
+            color: #4a5568;
+            font-size: 2rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .conclusion-section h2 i {
+            color: #667eea;
+        }
+
+        .key-points {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .point-card {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            padding: 25px;
+            border-radius: 15px;
+            color: white;
+            transform: translateY(0);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .point-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(240, 147, 251, 0.3);
+        }
+
+        .point-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .point-card p {
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        .closing-message {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .closing-message h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .closing-message p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .action-section {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .action-section h2 {
+            color: white;
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .action-section p {
+            color: white;
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            transform: translateY(0);
+        }
+
+        .btn-quiz {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-challenge {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            box-shadow: 0 8px 25px rgba(240, 147, 251, 0.4);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        }
+
+        .progress-indicator {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 30px 0;
+            gap: 15px;
+        }
+
+        .progress-step {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #667eea;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            position: relative;
+        }
+
+        .progress-step.completed {
+            background: #48bb78;
+        }
+
+        .progress-step.completed::after {
+            content: '✓';
+            position: absolute;
+            color: white;
+            font-size: 18px;
+        }
+
+        .progress-line {
+            width: 80px;
+            height: 4px;
+            background: #48bb78;
+            border-radius: 2px;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 30px;
+            color: rgba(255,255,255,0.8);
+        }
+
+        .footer p {
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            color: white;
+            font-size: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .social-links a:hover {
+            transform: scale(1.2);
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .content-card {
+                padding: 25px;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1><i class="fas fa-flag-checkered"></i> Selamat! Modul 3 Selesai</h1>
+            <p>Perjalanan pembelajaran Anda telah mencapai milestone penting</p>
+        </div>
+
+        <!-- Progress Indicator -->
+        <div class="progress-indicator">
+            <div class="progress-step completed">1</div>
+            <div class="progress-line"></div>
+            <div class="progress-step completed">2</div>
+            <div class="progress-line"></div>
+            <div class="progress-step completed">3</div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="content-card">
+            <!-- Kesimpulan Section -->
+            <div class="conclusion-section">
+                <h2><i class="fas fa-lightbulb"></i> Kesimpulan Modul 3</h2>
+                <p>Dalam Modul 3 ini, Anda telah menyelesaikan perjalanan pembelajaran yang komprehensif dan mendalam. Mari kita rangkum pencapaian-pencapaian penting yang telah Anda raih:</p>
+                
+                <div class="key-points">
+                    <div class="point-card">
+                        <h3><i class="fas fa-brain"></i> Penguasaan Konsep</h3>
+                        <p>Anda telah memahami konsep-konsep fundamental dan mampu menerapkannya dalam berbagai konteks praktis.</p>
+                    </div>
+                    
+                    <div class="point-card">
+                        <h3><i class="fas fa-tools"></i> Keterampilan Praktis</h3>
+                        <p>Kemampuan teknis Anda telah berkembang melalui latihan-latihan yang terstruktur dan progresif.</p>
+                    </div>
+                    
+                    <div class="point-card">
+                        <h3><i class="fas fa-puzzle-piece"></i> Pemecahan Masalah</h3>
+                        <p>Anda telah mengembangkan kemampuan berpikir kritis dan analitis dalam menyelesaikan berbagai tantangan.</p>
+                    </div>
+                    
+                    <div class="point-card">
+                        <h3><i class="fas fa-rocket"></i> Persiapan Lanjutan</h3>
+                        <p>Fondasi yang kuat telah dibangun untuk melanjutkan ke tahap pembelajaran yang lebih advanced.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Closing Message -->
+            <div class="closing-message">
+                <h3><i class="fas fa-trophy"></i> Apresiasi untuk Dedikasi Anda</h3>
+                <p>Pencapaian ini tidak akan mungkin terjadi tanpa dedikasi, konsistensi, dan semangat belajar yang Anda tunjukkan. Setiap langkah yang Anda ambil dalam modul ini telah membawa Anda lebih dekat kepada tujuan pembelajaran yang lebih besar. Teruslah mempertahankan momentum ini dan jangan pernah berhenti untuk terus berkembang.</p>
+            </div>
+
+            <!-- Penutup Section -->
+            <div class="conclusion-section">
+                <h2><i class="fas fa-heart"></i> Penutup</h2>
+                <p>Perjalanan pembelajaran adalah sebuah marathon, bukan sprint. Modul 3 yang telah Anda selesaikan merupakan fondasi penting untuk eksplorasi yang lebih mendalam di masa depan. Ingatlah bahwa setiap ahli pernah menjadi pemula, dan setiap pencapaian besar dimulai dari langkah kecil yang konsisten.</p>
+                
+                <p>Kami bangga dengan progres yang telah Anda capai dan yakin bahwa Anda memiliki potensi untuk mencapai hal-hal yang lebih besar lagi. Teruslah belajar, berlatih, dan jangan pernah takut untuk menghadapi tantangan baru.</p>
+            </div>
+        </div>
+
+        <!-- Action Section -->
+        <div class="action-section">
+            <h2><i class="fas fa-star"></i> Saatnya Menguji Kemampuan Anda!</h2>
+            <p>Untuk memastikan pemahaman yang mendalam dan mengukur pencapaian Anda, kami telah menyiapkan quiz dan tantangan khusus. Mari buktikan bahwa Anda siap untuk melangkah ke level berikutnya!</p>
+            
+            <div class="action-buttons">
+                <a href="/quiz/modul3" class="btn btn-quiz">
+                    <i class="fas fa-question-circle"></i>
+                    Mulai Quiz Modul 3
+                </a>
+                <a href="/challenge/modul3" class="btn btn-challenge">
+                    <i class="fas fa-trophy"></i>
+                    Terima Tantangan
+                </a>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p><i class="fas fa-graduation-cap"></i> Teruslah belajar dan berkembang!</p>
+            <p>Setiap hari adalah kesempatan baru untuk menjadi versi terbaik dari diri Anda</p>
+            
+            <div class="social-links">
+                <a href="#" title="Facebook"><i class="fab fa-facebook"></i></a>
+                <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
+                <a href="#" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Add smooth scroll behavior
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Add click animations to buttons
+        document.querySelectorAll('.btn').forEach(button => {
+            button.addEventListener('click', function(e) {
+                let ripple = document.createElement('span');
+                ripple.classList.add('ripple');
+                this.appendChild(ripple);
+                
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
+            });
+        });
+
+        // Add entrance animation to cards
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.point-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(card);
+        });
+
+        // Add celebration effect when page loads
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                createConfetti();
+            }, 1000);
+        });
+
+        function createConfetti() {
+            const colors = ['#667eea', '#764ba2', '#f093fb', '#f5576c', '#4facfe', '#00f2fe'];
+            const confettiContainer = document.createElement('div');
+            confettiContainer.style.position = 'fixed';
+            confettiContainer.style.top = '0';
+            confettiContainer.style.left = '0';
+            confettiContainer.style.width = '100%';
+            confettiContainer.style.height = '100%';
+            confettiContainer.style.pointerEvents = 'none';
+            confettiContainer.style.zIndex = '9999';
+            document.body.appendChild(confettiContainer);
+
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.style.position = 'absolute';
+                confetti.style.width = '10px';
+                confetti.style.height = '10px';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.top = '-10px';
+                confetti.style.borderRadius = '50%';
+                confetti.style.animation = `fall ${Math.random() * 3 + 2}s linear forwards`;
+                confettiContainer.appendChild(confetti);
+            }
+
+            setTimeout(() => {
+                confettiContainer.remove();
+            }, 5000);
+        }
+
+        // Add CSS for confetti animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fall {
+                0% {
+                    transform: translateY(-10px) rotate(0deg);
+                    opacity: 1;
+                }
+                100% {
+                    transform: translateY(100vh) rotate(360deg);
+                    opacity: 0;
+                }
+            }
+            
+            .ripple {
+                position: absolute;
+                border-radius: 50%;
+                background: rgba(255,255,255,0.6);
+                transform: scale(0);
+                animation: ripple-animation 0.6s linear;
+                pointer-events: none;
+            }
+            
+            @keyframes ripple-animation {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

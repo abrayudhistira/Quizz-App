@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Profil</title>
+  <link rel="stylesheet" href="/style.css">
+  <style>
+    .edit-profile-container {
+      max-width: 500px;
+      margin: 50px auto;
+      padding: 30px;
+      border-radius: 10px;
+      background: #f9f9f9;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .edit-profile-container h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .form-group {
+      margin-bottom: 18px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 600;
+    }
+    input[type="text"],
+    input[type="email"],
+    input[type="file"] {
+      width: 100%;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    .profile-preview {
+      display: block;
+      margin: 10px auto;
+      border-radius: 50%;
+      max-width: 120px;
+    }
+    button {
+      display: block;
+      width: 100%;
+      background: #2d2a7b;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    button:hover {
+      background: #222060;
+    }
+  </style>
+</head>
+<body>
+  <div class="edit-profile-container">
+    <h2>Edit Profil</h2>
+    <form action="/profile/update" method="POST" enctype="multipart/form-data">
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" name="username" value="<%= user.username %>" required>
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" name="email" value="<%= user.email %>" required>
+      </div>
+      <div class="form-group">
+        <label for="photo">Foto Profil</label>
+        <img src="/<%= user.photo %>" alt="Foto Profil" class="profile-preview">
+        <input type="file" name="photo" accept="image/*">
+      </div>
+      <button type="submit">Simpan Perubahan</button>
+    </form>
+  </div>
+</body>
+</html>

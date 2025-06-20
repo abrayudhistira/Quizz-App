@@ -1,7 +1,21 @@
-// controllers/dashboardController.js
+const db = require('../config/db');
 
-// Fungsi untuk menampilkan dashboard
-exports.getDashboard = (req, res) => {
-    // req.user sudah diisi oleh authMiddleware
-    res.render('dashboard', { user: req.user });
+exports.showDashboard = async (req, res) => {
+  if (!req.session.userId) {
+    return res.redirect('/?error=' + encodeURIComponent('Silakan login terlebih dahulu.'));
+  }
+
+  try {
+    const user = await db.user.findByPk(req.session.userId);
+    if (!user) {
+      return res.redirect('/?error=' + encodeURIComponent('Pengguna tidak ditemukan.'));
+    }
+
+    console.log(`→ Dashboard accessed by userId: ${user.id}`);
+    res.render('dashboard', { user });
+
+  } catch (err) {
+    console.error("‼ Error loading dashboard:", err);
+    res.redirect('/?error=' + encodeURIComponent('Terjadi kesalahan saat memuat dashboard.'));
+  }
 };

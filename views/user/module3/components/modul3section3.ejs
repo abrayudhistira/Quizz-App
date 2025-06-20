@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panduan Metode Budgeting Interaktif</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .methods-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .method-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .method-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+
+        .method-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .method-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+        }
+
+        .method-card.selected {
+            border: 3px solid #667eea;
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .method-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .method-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-right: 15px;
+            color: white;
+        }
+
+        .method-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .method-subtitle {
+            color: #666;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+
+        .method-description {
+            margin-bottom: 20px;
+            line-height: 1.6;
+            color: #555;
+        }
+
+        .pros-cons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .pros, .cons {
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .pros {
+            background: rgba(76, 175, 80, 0.1);
+            border-left: 4px solid #4caf50;
+        }
+
+        .cons {
+            background: rgba(244, 67, 54, 0.1);
+            border-left: 4px solid #f44336;
+        }
+
+        .pros h4, .cons h4 {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .pros h4::before {
+            content: '✓';
+            margin-right: 8px;
+            color: #4caf50;
+            font-weight: bold;
+        }
+
+        .cons h4::before {
+            content: '✗';
+            margin-right: 8px;
+            color: #f44336;
+            font-weight: bold;
+        }
+
+        .difficulty-level {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .difficulty-stars {
+            display: flex;
+            margin-left: 10px;
+        }
+
+        .star {
+            width: 20px;
+            height: 20px;
+            margin-right: 3px;
+            background: #ddd;
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+        }
+
+        .star.filled {
+            background: #ffd700;
+        }
+
+        .comparison-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            margin-top: 30px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .comparison-item {
+            text-align: center;
+            padding: 20px;
+            border-radius: 15px;
+            background: linear-gradient(145deg, #f0f0f0, #ffffff);
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .comparison-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .quiz-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            margin-top: 30px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+
+        .quiz-question {
+            margin-bottom: 20px;
+        }
+
+        .quiz-options {
+            display: grid;
+            gap: 10px;
+        }
+
+        .quiz-option {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quiz-option:hover {
+            background: #e9ecef;
+            border-color: #667eea;
+        }
+
+        .quiz-option.selected {
+            background: rgba(102, 126, 234, 0.1);
+            border-color: #667eea;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+        .result-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            margin-top: 30px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            display: none;
+        }
+
+        .recommendation {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .methods-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .pros-cons {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .method-card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 Panduan Metode Budgeting Interaktif</h1>
+            <p>Temukan metode budgeting yang paling cocok untuk gaya hidup Anda</p>
+        </div>
+
+        <div class="methods-grid">
+            <!-- 50/30/20 Rule -->
+            <div class="method-card" data-method="50-30-20">
+                <div class="method-header">
+                    <div class="method-icon" style="background: linear-gradient(45deg, #ff6b6b, #ee5a6f);">
+                        📊
+                    </div>
+                    <div>
+                        <div class="method-title">Aturan 50/30/20</div>
+                        <div class="method-subtitle">Pembagian Sederhana</div>
+                    </div>
+                </div>
+                <div class="method-description">
+                    Metode paling populer yang membagi penghasilan menjadi tiga kategori: 50% untuk kebutuhan, 30% untuk keinginan, dan 20% untuk tabungan dan investasi.
+                </div>
+                <div class="pros-cons">
+                    <div class="pros">
+                        <h4>Kelebihan</h4>
+                        <ul>
+                            <li>Sangat mudah dipahami</li>
+                            <li>Fleksibel untuk pemula</li>
+                            <li>Memaksa menabung 20%</li>
+                        </ul>
+                    </div>
+                    <div class="cons">
+                        <h4>Kekurangan</h4>
+                        <ul>
+                            <li>Tidak cocok untuk gaji kecil</li>
+                            <li>Kurang detail</li>
+                            <li>30% untuk keinginan terlalu besar</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="difficulty-level">
+                    <strong>Tingkat Kesulitan:</strong>
+                    <div class="difficulty-stars">
+                        <div class="star filled"></div>
+                        <div class="star"></div>
+                        <div class="star"></div>
+                        <div class="star"></div>
+                        <div class="star"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Zero-Based Budgeting -->
+            <div class="method-card" data-method="zero-based">
+                <div class="method-header">
+                    <div class="method-icon" style="background: linear-gradient(45deg, #4ecdc4, #44a08d);">
+                        🎯
+                    </div>
+                    <div>
+                        <div class="method-title">Zero-Based Budgeting</div>
+                        <div class="method-subtitle">Setiap Rupiah Memiliki Tujuan</div>
+                    </div>
+                </div>
+                <div class="method-description">
+                    Mengalokasikan setiap rupiah penghasilan untuk kategori tertentu hingga saldo menjadi nol. Sangat detail dan memberikan kontrol penuh atas keuangan.
+                </div>
+                <div class="pros-cons">
+                    <div class="pros">
+                        <h4>Kelebihan</h4>
+                        <ul>
+                            <li>Kontrol keuangan maksimal</li>
+                            <li>Mencegah pemborosan</li>
+                            <li>Sangat detail</li>
+                        </ul>
+                    </div>
+                    <div class="cons">
+                        <h4>Kekurangan</h4>
+                        <ul>
+                            <li>Membutuhkan waktu lama</li>
+                            <li>Bisa membuat stres</li>
+                            <li>Kurang fleksibel</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="difficulty-level">
+                    <strong>Tingkat Kesulitan:</strong>
+                    <div class="difficulty-stars">
+                        <div class="star filled"></div>
+                        <div class="star filled"></div>
+                        <div class="star filled"></div>
+                        <div class="star filled"></div>
+                        <div class="star"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Envelope Method -->
+            <div class="method-card" data-method="envelope">
+                <div class="method-header">
+                    <div class="method-icon" style="background: linear-gradient(45deg, #45b7d1, #96c93d);">
+                        💰
+                    </div>
+                    <div>
+                        <div class="method-title">Metode Amplop</div>
+                        <div class="method-subtitle">Pembatas Pengeluaran Fisik</div>
+                    </div>
+                </div>
+                <div class="method-description">
+                    Menggunakan amplop fisik atau digital untuk setiap kategori pengeluaran. Ketika amplop kosong, tidak bisa menggunakan uang lagi untuk kategori tersebut.
+                </div>
+                <div class="pros-cons">
+                    <div class="pros">
+                        <h4>Kelebihan</h4>
+                        <ul>
+                            <li>Mencegah overspending</li>
+                            <li>Visual dan mudah dipahami</li>
+                            <li>Cocok untuk yang suka cash</li>
+                        </ul>
+                    </div>
+                    <div class="cons">
+                        <h4>Kekurangan</h4>
+                        <ul>
+                            <li>Kurang praktis di era digital</li>
+                            <li>Risiko kehilangan uang tunai</li>
+                            <li>Tidak fleksibel</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="difficulty-level">
+                    <strong>Tingkat Kesulitan:</strong>
+                    <div class="difficulty-stars">
+                        <div class="star filled"></div>
+                        <div class="star filled"></div>
+                        <div class="star"></div>
+                        <div class="star"></div>
+                        <div class="star"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pay Yourself First -->
+            <div class="method-card" data-method="pay-yourself-first">
+                <div class="method-header">
+                    <div class="method-icon" style="background: linear-gradient(45deg, #96ceb4, #ffecd2);">
+                        🏦
+                    </div>
+                    <div>
+                        <div class="method-title">Pay Yourself First</div>
+                        <div class="method-subtitle">Prioritas Tabungan</div>
+                    </div>
+                </div>
+                <div class="method-description">
+                    Memprioritaskan tabungan dan investasi sebelum mengalokasikan untuk pengeluaran lainnya. Biasanya 10-20% dari penghasilan langsung ditabung.
+                </div>
+                <div class="pros-cons">
+                    <div class="pros">
+                        <h4>Kelebihan</h4>
+                        <ul>
+                            <li>Memaksa konsisten menabung</li>
+                            <li>Mudah dilakukan otomatis</li>
+                            <li>Membangun kebiasaan baik</li>
+                        </ul>
+                    </div>
+                    <div class="cons">
+                        <h4>Kekurangan</h4>
+                        <ul>
+                            <li>Bisa kekurangan untuk kebutuhan</li>
+                            <li>Tidak mengatur pengeluaran</li>
+                            <li>Perlu disiplin tinggi</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="difficulty-level">
+                    <strong>Tingkat Kesulitan:</strong>
+                    <div class="difficulty-stars">
+                        <div class="star filled"></div>
+                        <div class="star filled"></div>
+                        <div class="star"></div>
+                        <div class="star"></div>
+                        <div class="star"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="comparison-section">
+            <h2 style="text-align: center; margin-bottom: 20px; color: #333;">📈 Perbandingan Metode</h2>
+            <div class="comparison-grid">
+                <div class="comparison-item">
+                    <div class="comparison-value">⭐⭐⭐⭐⭐</div>
+                    <div>Paling Mudah</div>
+                    <div style="font-size: 0.9rem; color: #666; margin-top: 5px;">Pay Yourself First</div>
+                </div>
+                <div class="comparison-item">
+                    <div class="comparison-value">🎯</div>
+                    <div>Paling Detail</div>
+                    <div style="font-size: 0.9rem; color: #666; margin-top: 5px;">Zero-Based Budgeting</div>
+                </div>
+                <div class="comparison-item">
+                    <div class="comparison-value">⚡</div>
+                    <div>Paling Populer</div>
+                    <div style="font-size: 0.9rem; color: #666; margin-top: 5px;">Aturan 50/30/20</div>
+                </div>
+                <div class="comparison-item">
+                    <div class="comparison-value">💡</div>
+                    <div>Paling Kreatif</div>
+                    <div style="font-size: 0.9rem; color: #666; margin-top: 5px;">Metode Amplop</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="quiz-section">
+            <h2 style="text-align: center; margin-bottom: 30px; color: #333;">🧠 Quiz: Temukan Metode Terbaik untuk Anda</h2>
+            
+            <div class="quiz-question">
+                <h3>1. Berapa banyak waktu yang ingin Anda habiskan untuk budgeting per bulan?</h3>
+                <div class="quiz-options">
+                    <div class="quiz-option" data-question="1" data-value="simple">
+                        <strong>Minimal (5-10 menit)</strong> - Saya ingin yang praktis dan cepat
+                    </div>
+                    <div class="quiz-option" data-question="1" data-value="moderate">
+                        <strong>Sedang (30-60 menit)</strong> - Saya bisa meluangkan waktu untuk perencanaan
+                    </div>
+                    <div class="quiz-option" data-question="1" data-value="detailed">
+                        <strong>Banyak (2-3 jam)</strong> - Saya suka kontrol detail atas keuangan
+                    </div>
+                </div>
+            </div>
+
+            <div class="quiz-question">
+                <h3>2. Bagaimana gaya hidup keuangan Anda?</h3>
+                <div class="quiz-options">
+                    <div class="quiz-option" data-question="2" data-value="flexible">
+                        <strong>Fleksibel</strong> - Pengeluaran saya bervariasi setiap bulan
+                    </div>
+                    <div class="quiz-option" data-question="2" data-value="structured">
+                        <strong>Terstruktur</strong> - Saya suka rutinitas dan aturan yang jelas
+                    </div>
+                    <div class="quiz-option" data-question="2" data-value="visual">
+                        <strong>Visual</strong> - Saya perlu melihat langsung uang/saldo
+                    </div>
+                </div>
+            </div>
+
+            <div class="quiz-question">
+                <h3>3. Apa prioritas utama Anda?</h3>
+                <div class="quiz-options">
+                    <div class="quiz-option" data-question="3" data-value="saving">
+                        <strong>Menabung Konsisten</strong> - Membangun dana darurat dan investasi
+                    </div>
+                    <div class="quiz-option" data-question="3" data-value="control">
+                        <strong>Kontrol Pengeluaran</strong> - Mengetahui ke mana setiap rupiah pergi
+                    </div>
+                    <div class="quiz-option" data-question="3" data-value="balance">
+                        <strong>Keseimbangan</strong> - Antara bersenang-senang dan berhemat
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn" onclick="calculateRecommendation()">🔍 Lihat Rekomendasi Saya</button>
+        </div>
+
+        <div class="result-section" id="result">
+            <div class="recommendation" id="recommendation">
+                <!-- Hasil rekomendasi akan muncul di sini -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let quizAnswers = {};
+
+        // Handle quiz option selection
+        document.querySelectorAll('.quiz-option').forEach(option => {
+            option.addEventListener('click', function() {
+                const question = this.dataset.question;
+                const value = this.dataset.value;
+                
+                // Remove selected class from other options in the same question
+                document.querySelectorAll(`[data-question="${question}"]`).forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                
+                // Add selected class to clicked option
+                this.classList.add('selected');
+                
+                // Store answer
+                quizAnswers[question] = value;
+            });
+        });
+
+        // Handle method card selection
+        document.querySelectorAll('.method-card').forEach(card => {
+            card.addEventListener('click', function() {
+                // Remove selected class from all cards
+                document.querySelectorAll('.method-card').forEach(c => {
+                    c.classList.remove('selected');
+                });
+                
+                // Add selected class to clicked card
+                this.classList.add('selected');
+                
+                // Show detailed comparison
+                showMethodComparison(this.dataset.method);
+            });
+        });
+
+        function showMethodComparison(method) {
+            // Add visual feedback for selected method
+            const selectedCard = document.querySelector(`[data-method="${method}"]`);
+            selectedCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function calculateRecommendation() {
+            // Check if all questions are answered
+            if (Object.keys(quizAnswers).length < 3) {
+                alert('Mohon jawab semua pertanyaan terlebih dahulu! 😊');
+                return;
+            }
+
+            let recommendation = '';
+            let methodName = '';
+            let explanation = '';
+
+            // Logic to determine best method based on answers
+            if (quizAnswers['1'] === 'simple' && quizAnswers['3'] === 'saving') {
+                methodName = 'Pay Yourself First';
+                recommendation = '🏦 Pay Yourself First';
+                explanation = 'Metode ini perfect untuk Anda yang ingin hasil maksimal dengan usaha minimal! Cukup set otomatis transfer 10-20% gaji ke tabungan, sisanya bebas digunakan. Simple tapi powerful!';
+            } else if (quizAnswers['1'] === 'detailed' && quizAnswers['3'] === 'control') {
+                methodName = 'Zero-Based Budgeting';
+                recommendation = '🎯 Zero-Based Budgeting';
+                explanation = 'Anda seorang detail-oriented! Metode ini akan memberikan kontrol penuh atas setiap rupiah. Cocok untuk yang suka planning dan tracking detail.';
+            } else if (quizAnswers['2'] === 'visual' && quizAnswers['3'] === 'control') {
+                methodName = 'Metode Amplop';
+                recommendation = '💰 Metode Amplop (Digital)';
+                explanation = 'Anda tipe visual learner! Gunakan aplikasi budgeting yang mirip amplop digital atau buat beberapa rekening terpisah untuk setiap kategori pengeluaran.';
+            } else {
+                methodName = 'Aturan 50/30/20';
+                recommendation = '📊 Aturan 50/30/20';
+                explanation = 'Metode paling seimbang untuk Anda! 50% kebutuhan, 30% keinginan, 20% tabungan. Mudah diingat, fleksibel, dan proven effective untuk kebanyakan orang.';
+            }
+
+            // Show result
+            const resultSection = document.getElementById('result');
+            const recommendationDiv = document.getElementById('recommendation');
+            
+            recommendationDiv.innerHTML = `
+                <h2 style="margin-bottom: 20px;">🎉 Rekomendasi untuk Anda</h2>
+                <h3 style="font-size: 2rem; margin-bottom: 15px;">${recommendation}</h3>
+                <p style="font-size: 1.1rem; line-height: 1.6; margin-bottom: 25px;">${explanation}</p>
+                <div style="background: rgba(255,255,255,0.2); padding: 20px; border-radius: 10px; margin-top: 20px;">
+                    <h4>💡 Tips Memulai:</h4>
+                    <p style="margin-top: 10px;">Mulai dengan menghitung penghasilan bulanan Anda, lalu terapkan metode ${methodName} secara bertahap. Ingat, konsistensi lebih penting daripada kesempurnaan!</p>
+                </div>
+                <button class="btn" onclick="location.reload()" style="margin-top: 20px;">🔄 Coba Lagi</button>
+            `;
+            
+            resultSection.style.display = 'block';
+            resultSection.scrollIntoView({ behavior: 'smooth' });
+
+            // Highlight recommended method card
+            document.querySelectorAll('.method-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            const recommendedCard = document.querySelector(`[data-method="${getMethodKey(methodName)}"]`);
+            if (recommendedCard) {
+                recommendedCard.classList.add('selected');
+            }
+        }
+
+        function getMethodKey(methodName) {
+            const mapping = {
+                'Pay Yourself First': 'pay-yourself-first',
+                'Zero-Based Budgeting': 'zero-based',
+                'Metode Amplop': 'envelope',
+                'Aturan 50/30/20': '50-30-20'
+            };
+            return mapping[methodName] || '50-30-20';
+        }
+
+        // Add some animation on scroll
+        window.addEventListener('scroll', () => {
+            const cards = document.querySelectorAll('.method-card');
+            cards.forEach(card => {
+                const rect = card.getBoundingClientRect();
+                const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+                
+                if (isVisible) {
+                    card.style.transform = 'translateY(0)';
+                    card.style.opacity = '1';
+                }
+            });
+        });
+
+        // Initialize cards animation
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('.method-card');
+            cards.forEach((card, index) => {
+                card.style.transform = 'translateY(50px)';
+                card.style.opacity = '0';
+                card.style.transition = 'all 0.6s ease';
+                
+                setTimeout(() => {
+                    card.style.transform = 'translateY(0)';
+                    card.style.opacity = '1';
+                }, index * 200);
+            });
+        });
+    </script>
+</body>
+</html>

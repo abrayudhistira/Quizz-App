@@ -5,6 +5,6 @@ const authMiddleware = require('../middleware/auth'); // Middleware tetap diimpo
 const dashboardController = require('../controllers/dashboardController'); // <--- TAMBAHKAN BARIS INI
 
 // Route untuk menampilkan dashboard
-router.get('/', authMiddleware, dashboardController.getDashboard); // Menggunakan controller
+router.get('/', authMiddleware, dashboardController.showDashboard); // Menggunakan controller
 
 module.exports = router;
