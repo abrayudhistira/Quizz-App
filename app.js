@@ -1,30 +1,57 @@
-// app.js
 const express = require('express');
-const bodyParser = require('body-parser');   // ← fixed typo here
+const bodyParser = require('body-parser');
 const path = require('path');
+const session = require('express-session');
 const dotenv = require('dotenv');
+const db = require('./config/db');
 
 dotenv.config();
 
-// --- Impor Koneksi Database ---
-const db = require('./config/db');
-
 const authRoutes = require('./routes/authRoutes');
 const dashboardRoutes = require('./routes/dashboardRoutes');
+const profileRoutes = require('./routes/profileRoutes');
+const moduleRoutes = require('./routes/moduleRoutes');
+const quizRoutes = require('./routes/quizRoute');
+const simulasiRoutes = require('./routes/simulasiRoutes');
+const tantanganRoutes = require('./routes/tantanganRoutes');
 
 const app = express();
+const PORT = process.env.PORT || 3000;
 
-// --- Konfigurasi EJS ---
+// --- View Engine ---
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-// --- Middleware Global ---
+// --- Middleware ---
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-
 app.use(express.static(path.join(__dirname, 'public')));
 
-// --- Route Tampilan (GET) ---
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false,
+  cookie: { maxAge: 1000 * 60 * 60 * 2 } // 2 jam
+}));
+
+// --- Logger Middleware ---
+app.use((req, res, next) => {
+  const start = Date.now();
+  console.log(`→ Request: [${req.method}] ${req.originalUrl}`);
+  res.on('finish', () => {
+    const duration = Date.now() - start;
+    console.log(`← Response: [${res.statusCode}] ${req.method} ${req.originalUrl} (${duration}ms)`);
+  });
+  next();
+});
+
+// --- Routes ---
+app.use('/', authRoutes,moduleRoutes, quizRoutes, simulasiRoutes, tantanganRoutes);
+app.use('/dashboard', dashboardRoutes);
+app.use('/profile', profileRoutes);
+app.use('/uploads', express.static('uploads'));
+
+// --- Root Route ---
 app.get('/', (req, res) => {
   res.render('login', {
     error: req.query.error,
@@ -32,70 +59,19 @@ app.get('/', (req, res) => {
   });
 });
 
-app.get('/register', (req, res) => {
-  res.render('register', { error: req.query.error });
-});
-
-// --- Route Pemrosesan Form (POST) ---
-app.post('/login', async (req, res) => {
-  const { email, password } = req.body;
-  try {
-    const user = await db.user.findOne({ where: { email, password } });
-    if (user) {
-      res.redirect('/dashboard');
-    } else {
-      res.redirect('/?error=' + encodeURIComponent('Email atau password salah (tanpa keamanan).'));
-    }
-  } catch (err) {
-    console.error('Error dummy login:', err.message);
-    res.redirect('/?error=' + encodeURIComponent('Kesalahan server dummy login.'));
-  }
-});
-
-app.post('/register', async (req, res) => {
-  const { username, email, password } = req.body;
-  try {
-    const existingUser = await db.user.findOne({ where: { email } });
-    if (existingUser) {
-      return res.redirect('/register?error=' + encodeURIComponent('Pengguna sudah terdaftar.'));
-    }
-    await db.user.create({ username, email, password });
-    res.redirect('/?message=' + encodeURIComponent('Registrasi berhasil.'));
-  } catch (err) {
-    console.error('Error dummy register:', err.message);
-    res.redirect('/register?error=' + encodeURIComponent('Kesalahan server dummy register.'));
-  }
-});
-
-app.get('/dashboard', async (req, res) => {
-  let user = { id: 'N/A', username: 'Tamu (Tanpa Login)', email: 'unknown@example.com', role: 'guest' };
-  try {
-    const firstUser = await db.user.findOne();
-    if (firstUser) user = firstUser.toJSON();
-  } catch (err) {
-    console.error('Error fetching user for dashboard:', err.message);
-  }
-  res.render('dashboard', { user });
-});
-
-app.post('/logout', (req, res) => {
-  res.redirect('/');
-});
-
-const PORT = process.env.PORT || 3000;
-
+// --- Start App ---
 db.connectAndSync()
   .then(() => {
     app.listen(PORT, async () => {
       const url = `http://localhost:${PORT}`;
       console.log(`Server berjalan di ${url}`);
-      try {
-        const openModule = (await import('open')).default;
-        openModule(url);
-      } catch (openError) {
-        console.error('Gagal membuka browser otomatis:', openError.message);
-        console.log('Silakan buka browser Anda secara manual ke:', url);
-      }
+      // try {
+      //   const openModule = (await import('open')).default;
+      //   openModule(url);
+      // } catch (err) {
+      //   console.error('Gagal membuka browser otomatis:', err.message);
+      //   console.log('Silakan buka browser Anda secara manual ke:', url);
+      // }
     });
   })
   .catch(error => {
@@ -103,6 +79,7 @@ db.connectAndSync()
     process.exit(1);
   });
 
+// --- Graceful Shutdown ---
 process.on('SIGINT', async () => {
   console.log('Menutup server...');
   try {

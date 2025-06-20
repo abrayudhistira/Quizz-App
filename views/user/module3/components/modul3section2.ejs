@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💰 Budgeting Myth-Buster Game</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        .game-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+
+        .stats-bar {
+            display: flex;
+            justify-content: space-around;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            animation: slideInUp 1s ease-out;
+        }
+
+        .stat-item {
+            text-align: center;
+            flex: 1;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #FFD700;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+
+        .game-board {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .myth-card {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .myth-card:hover {
+            transform: translateY(-5px);
+            border-color: #FFD700;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+
+        .myth-card.correct {
+            border-color: #4CAF50;
+            background: rgba(76, 175, 80, 0.2);
+            animation: correctPulse 0.6s ease-out;
+        }
+
+        .myth-card.wrong {
+            border-color: #f44336;
+            background: rgba(244, 67, 54, 0.2);
+            animation: wrongShake 0.6s ease-out;
+        }
+
+        .myth-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #FFD700;
+        }
+
+        .myth-text {
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .choice-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .choice-btn {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .truth-btn {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            color: white;
+        }
+
+        .myth-btn {
+            background: linear-gradient(45deg, #f44336, #da190b);
+            color: white;
+        }
+
+        .choice-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .choice-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .explanation {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            border-left: 4px solid #FFD700;
+            display: none;
+        }
+
+        .explanation.show {
+            display: block;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #FFD700, #FFA500);
+            width: 0%;
+            transition: width 0.5s ease-out;
+            position: relative;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        .final-screen {
+            text-align: center;
+            padding: 40px;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            display: none;
+        }
+
+        .final-screen.show {
+            display: block;
+            animation: zoomIn 0.8s ease-out;
+        }
+
+        .final-title {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #FFD700;
+        }
+
+        .final-score {
+            font-size: 3rem;
+            font-weight: bold;
+            margin: 20px 0;
+            color: #4CAF50;
+        }
+
+        .restart-btn {
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            color: #333;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .restart-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+
+        .floating-emoji {
+            position: absolute;
+            font-size: 2rem;
+            pointer-events: none;
+            animation: floatUp 2s ease-out forwards;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes correctPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes wrongShake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        @keyframes zoomIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes floatUp {
+            from { 
+                opacity: 1; 
+                transform: translateY(0) scale(1); 
+            }
+            to { 
+                opacity: 0; 
+                transform: translateY(-100px) scale(1.5); 
+            }
+        }
+
+        @media (max-width: 768px) {
+            .game-board {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .stats-bar {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .choice-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <div class="header">
+            <h1>💰 Budgeting Myth-Buster</h1>
+            <p class="subtitle">Level up your financial literacy! 🎮</p>
+        </div>
+
+        <div class="stats-bar">
+            <div class="stat-item">
+                <span class="stat-value" id="score">0</span>
+                <div class="stat-label">Score</div>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value" id="streak">0</span>
+                <div class="stat-label">Streak</div>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value" id="level">1</span>
+                <div class="stat-label">Level</div>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value" id="lives">❤️❤️❤️</span>
+                <div class="stat-label">Lives</div>
+            </div>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <div class="game-board" id="gameBoard">
+            <!-- Myth cards will be generated here -->
+        </div>
+
+        <div class="final-screen" id="finalScreen">
+            <div class="final-title">🎉 Game Over!</div>
+            <div class="final-score" id="finalScore">0</div>
+            <p id="finalMessage"></p>
+            <button class="restart-btn" onclick="restartGame()">Play Again 🎮</button>
+        </div>
+    </div>
+
+    <script>
+        const myths = [
+            {
+                title: "💸 Mitos: Budgeting itu Ribet & Boring",
+                text: "Katanya budgeting itu cuma buat orang tua yang suka ngitung-ngitung. Gen-Z mah gas aja, YOLO!",
+                isMyth: true,
+                explanation: "MYTH BUSTED! 🚫 Budgeting itu seperti strategy game - kamu plan resource untuk win di kehidupan! Dengan budgeting, kamu bisa beli gadget impian tanpa guilt trip."
+            },
+            {
+                title: "💰 Fakta: 50/30/20 Rule",
+                text: "Aturan budgeting 50/30/20: 50% untuk kebutuhan, 30% untuk wants, 20% untuk saving & investasi.",
+                isMyth: false,
+                explanation: "TRUTH! ✅ Ini formula magic buat balance lifestyle. Seperti distribute skill points di RPG - balance antara survival, fun, dan future upgrade!"
+            },
+            {
+                title: "🛍️ Mitos: Kalau Gaji Kecil, Gak Bisa Budgeting",
+                text: "Budgeting cuma work kalau gajinya gede. Kalau gaji UMR mah habis buat makan aja.",
+                isMyth: true,
+                explanation: "MYTH BUSTED! 🚫 Budgeting justru lebih penting kalau income terbatas. Kayak main game dengan limited resources - strategy jadi kunci survival!"
+            },
+            {
+                title: "📱 Fakta: Budgeting Apps are Game Changers",
+                text: "Aplikasi budgeting modern bisa tracking expenses secara real-time dan kasih notifikasi kalau spending limit hampir habis.",
+                isMyth: false,
+                explanation: "TRUTH! ✅ Apps budgeting seperti cheat codes buat financial management. Real-time tracking, automated categorization, dan achievement unlocks!"
+            },
+            {
+                title: "🎯 Mitos: Budgeting = No Fun Money",
+                text: "Kalau budgeting, artinya gak boleh beli kopi, nongkrong, atau shopping. Hidup jadi membosankan.",
+                isMyth: true,
+                explanation: "MYTH BUSTED! 🚫 Budgeting justru ensure kamu ada budget untuk fun activities! Seperti allocate mana untuk special attacks - calculated tapi tetap powerful!"
+            },
+            {
+                title: "💳 Fakta: Emergency Fund = Life Saver",
+                text: "Emergency fund minimal 3-6 bulan pengeluaran penting banget buat financial security dan peace of mind.",
+                isMyth: false,
+                explanation: "TRUTH! ✅ Emergency fund itu seperti extra lives di game. Kalau ada unexpected event, kamu gak langsung game over - ada backup plan!"
+            },
+            {
+                title: "🤑 Mitos: Budgeting Bikin Jadi Pelit",
+                text: "Orang yang budgeting pasti pelit dan gak mau spend money untuk orang lain atau charity.",
+                isMyth: true,
+                explanation: "MYTH BUSTED! 🚫 Budgeting justru bikin kamu more generous dengan calculated way. Kayak resource management - kamu tau kapan bisa support teammates!"
+            },
+            {
+                title: "📊 Fakta: Track Spending = Awareness",
+                text: "Tracking pengeluaran selama 1 bulan bisa bikin kaget - ternyata spending untuk hal-hal kecil bisa accumulate jadi jumlah besar.",
+                isMyth: false,
+                explanation: "TRUTH! ✅ Tracking spending seperti check game statistics. Kamu jadi aware kemana aja resources terpakai dan bisa optimize strategy!"
+            }
+        ];
+
+        let currentMythIndex = 0;
+        let score = 0;
+        let streak = 0;
+        let level = 1;
+        let lives = 3;
+        let gameFinished = false;
+
+        function updateStats() {
+            document.getElementById('score').textContent = score;
+            document.getElementById('streak').textContent = streak;
+            document.getElementById('level').textContent = level;
+            
+            const heartsArray = ['❤️', '💔'];
+            const livesDisplay = Array(3).fill(0).map((_, i) => 
+                i < lives ? heartsArray[0] : heartsArray[1]
+            ).join('');
+            document.getElementById('lives').textContent = livesDisplay;
+            
+            const progressPercent = ((currentMythIndex + 1) / myths.length) * 100;
+            document.getElementById('progressFill').style.width = progressPercent + '%';
+        }
+
+        function createFloatingEmoji(emoji, x, y) {
+            const floatingEmoji = document.createElement('div');
+            floatingEmoji.className = 'floating-emoji';
+            floatingEmoji.textContent = emoji;
+            floatingEmoji.style.left = x + 'px';
+            floatingEmoji.style.top = y + 'px';
+            document.body.appendChild(floatingEmoji);
+            
+            setTimeout(() => {
+                document.body.removeChild(floatingEmoji);
+            }, 2000);
+        }
+
+        function displayMyth() {
+            if (currentMythIndex >= myths.length || gameFinished) {
+                endGame();
+                return;
+            }
+
+            const myth = myths[currentMythIndex];
+            const gameBoard = document.getElementById('gameBoard');
+            
+            gameBoard.innerHTML = `
+                <div class="myth-card" id="mythCard">
+                    <div class="myth-title">${myth.title}</div>
+                    <div class="myth-text">${myth.text}</div>
+                    <div class="choice-buttons">
+                        <button class="choice-btn truth-btn" onclick="makeChoice(false)">
+                            ✅ TRUTH
+                        </button>
+                        <button class="choice-btn myth-btn" onclick="makeChoice(true)">
+                            ❌ MYTH
+                        </button>
+                    </div>
+                    <div class="explanation" id="explanation">
+                        <strong>Explanation:</strong><br>
+                        ${myth.explanation}
+                    </div>
+                </div>
+            `;
+        }
+
+        function makeChoice(userSaysMyth) {
+            const myth = myths[currentMythIndex];
+            const isCorrect = userSaysMyth === myth.isMyth;
+            const mythCard = document.getElementById('mythCard');
+            const explanation = document.getElementById('explanation');
+            const buttons = mythCard.querySelectorAll('.choice-btn');
+            
+            // Disable buttons
+            buttons.forEach(btn => btn.disabled = true);
+            
+            // Add visual feedback
+            mythCard.classList.add(isCorrect ? 'correct' : 'wrong');
+            
+            // Show explanation
+            explanation.classList.add('show');
+            
+            // Create floating emoji
+            const rect = mythCard.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            
+            if (isCorrect) {
+                score += 100 + (streak * 10);
+                streak++;
+                createFloatingEmoji('🎉', centerX, centerY);
+                
+                // Level up every 3 correct answers
+                if (streak % 3 === 0) {
+                    level++;
+                    createFloatingEmoji('⭐', centerX - 50, centerY);
+                }
+            } else {
+                streak = 0;
+                lives--;
+                createFloatingEmoji('💔', centerX, centerY);
+                
+                if (lives <= 0) {
+                    gameFinished = true;
+                }
+            }
+            
+            updateStats();
+            
+            // Move to next myth after delay
+            setTimeout(() => {
+                currentMythIndex++;
+                displayMyth();
+            }, 3000);
+        }
+
+        function endGame() {
+            const finalScreen = document.getElementById('finalScreen');
+            const finalScore = document.getElementById('finalScore');
+            const finalMessage = document.getElementById('finalMessage');
+            const gameBoard = document.getElementById('gameBoard');
+            
+            gameBoard.style.display = 'none';
+            finalScreen.classList.add('show');
+            finalScore.textContent = score;
+            
+            let message = '';
+            if (score >= 800) {
+                message = '🏆 LEGENDARY BUDGETER! Kamu udah master financial planning!';
+            } else if (score >= 600) {
+                message = '💎 EXPERT LEVEL! Financial literacy kamu udah solid!';
+            } else if (score >= 400) {
+                message = '🥉 GOOD JOB! Keep learning tentang budgeting!';
+            } else {
+                message = '📚 KEEP TRYING! Practice makes perfect di financial planning!';
+            }
+            
+            finalMessage.textContent = message;
+        }
+
+        function restartGame() {
+            currentMythIndex = 0;
+            score = 0;
+            streak = 0;
+            level = 1;
+            lives = 3;
+            gameFinished = false;
+            
+            document.getElementById('finalScreen').classList.remove('show');
+            document.getElementById('gameBoard').style.display = 'grid';
+            
+            updateStats();
+            displayMyth();
+        }
+
+        // Initialize game
+        updateStats();
+        displayMyth();
+    </script>
+</body>
+</html>

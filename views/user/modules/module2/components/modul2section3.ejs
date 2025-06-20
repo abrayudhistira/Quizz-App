@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Micro-Saving Interactive Simulator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(30px, -30px) rotate(120deg); }
+            66% { transform: translate(-20px, 20px) rotate(240deg); }
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 1;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 30px;
+            padding: 30px;
+        }
+
+        .simulator-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .simulator-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .card-subtitle {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-label {
+            display: block;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            background: #f8f9fa;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            background: white;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 10px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #51cf66 0%, #40c057 100%);
+            color: white;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(81, 207, 102, 0.4);
+        }
+
+        .progress-container {
+            margin: 20px 0;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            color: #333;
+        }
+
+        .progress-bar {
+            height: 12px;
+            background: #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #51cf66, #40c057);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+            position: relative;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .result-display {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            border-left: 4px solid #667eea;
+        }
+
+        .result-amount {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .result-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .savings-list {
+            max-height: 200px;
+            overflow-y: auto;
+            margin: 15px 0;
+        }
+
+        .savings-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            transition: background-color 0.2s ease;
+        }
+
+        .savings-item:hover {
+            background-color: #f8f9fa;
+        }
+
+        .savings-item:last-child {
+            border-bottom: none;
+        }
+
+        .savings-date {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .savings-amount {
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 15px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 10px;
+            border-left: 4px solid #51cf66;
+        }
+
+        .stat-value {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #51cf66;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .alert {
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-size: 0.9rem;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 30px 20px;
+            color: #666;
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            opacity: 0.3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💰 Micro-Saving Simulator</h1>
+            <p>Simulasi tabungan harian dengan visualisasi progress interaktif</p>
+        </div>
+
+        <div class="main-content">
+            <!-- Simulator 1: Target Tabungan -->
+            <div class="simulator-card">
+                <div class="card-header">
+                    <div class="card-icon">🎯</div>
+                    <h3 class="card-title">Target Tabungan</h3>
+                    <p class="card-subtitle">Hitung waktu mencapai target</p>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">Target Tabungan (Rp)</label>
+                    <input type="number" id="targetAmount" class="form-input" placeholder="1000000">
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">Tabungan Harian (Rp)</label>
+                    <input type="number" id="dailySaving" class="form-input" placeholder="10000">
+                </div>
+
+                <button class="btn btn-primary" onclick="calculateTarget()">Hitung Target</button>
+
+                <div id="targetResult" class="result-display" style="display: none;">
+                    <div class="result-amount" id="targetDays">0 hari</div>
+                    <div class="result-label">Waktu mencapai target</div>
+                </div>
+
+                <div class="progress-container" id="targetProgress" style="display: none;">
+                    <div class="progress-label">
+                        <span>Progress</span>
+                        <span id="targetPercentage">0%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="targetProgressFill" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Simulator 2: Tabungan Harian -->
+            <div class="simulator-card">
+                <div class="card-header">
+                    <div class="card-icon">📅</div>
+                    <h3 class="card-title">Tabungan Harian</h3>
+                    <p class="card-subtitle">Catat tabungan setiap hari</p>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">Jumlah Tabungan Hari Ini (Rp)</label>
+                    <input type="number" id="todaySaving" class="form-input" placeholder="5000">
+                </div>
+
+                <button class="btn btn-success" onclick="addDailySaving()">Tambah Tabungan</button>
+                <button class="btn btn-danger" onclick="clearSavings()">Clear Semua Data</button>
+
+                <div class="savings-list" id="savingsList">
+                    <div class="empty-state">
+                        <div class="empty-state-icon">💸</div>
+                        <p>Belum ada catatan tabungan</p>
+                    </div>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-value" id="totalSavings">Rp 0</div>
+                        <div class="stat-label">Total Tabungan</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="avgDaily">Rp 0</div>
+                        <div class="stat-label">Rata-rata Harian</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Simulator 3: Kalkulator Bunga -->
+            <div class="simulator-card">
+                <div class="card-header">
+                    <div class="card-icon">📈</div>
+                    <h3 class="card-title">Kalkulator Bunga</h3>
+                    <p class="card-subtitle">Simulasi pertumbuhan tabungan</p>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">Modal Awal (Rp)</label>
+                    <input type="number" id="initialAmount" class="form-input" placeholder="100000">
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">Bunga Tahunan (%)</label>
+                    <input type="number" id="interestRate" class="form-input" placeholder="5" step="0.1">
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">Periode (Tahun)</label>
+                    <input type="number" id="timePeriod" class="form-input" placeholder="1">
+                </div>
+
+                <button class="btn btn-primary" onclick="calculateInterest()">Hitung Bunga</button>
+
+                <div id="interestResult" class="result-display" style="display: none;">
+                    <div class="result-amount" id="finalAmount">Rp 0</div>
+                    <div class="result-label">Total setelah bunga</div>
+                </div>
+
+                <div class="progress-container" id="interestProgress" style="display: none;">
+                    <div class="progress-label">
+                        <span>Pertumbuhan</span>
+                        <span id="interestGrowth">+0%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="interestProgressFill" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <div id="interestBreakdown" style="display: none;">
+                    <div class="stat-item" style="margin-top: 15px;">
+                        <div class="stat-value" id="earnedInterest">Rp 0</div>
+                        <div class="stat-label">Bunga yang Diperoleh</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data storage
+        let savingsData = [];
+
+        // Utility functions
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+                minimumFractionDigits: 0
+            }).format(amount);
+        }
+
+        function formatDate(date) {
+            return new Intl.DateTimeFormat('id-ID', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric'
+            }).format(date);
+        }
+
+        function showAlert(message, type = 'success') {
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type}`;
+            alert.textContent = message;
+            alert.style.position = 'fixed';
+            alert.style.top = '20px';
+            alert.style.right = '20px';
+            alert.style.zIndex = '1000';
+            alert.style.minWidth = '300px';
+            
+            document.body.appendChild(alert);
+            
+            setTimeout(() => {
+                alert.style.transition = 'opacity 0.3s ease';
+                alert.style.opacity = '0';
+                setTimeout(() => document.body.removeChild(alert), 300);
+            }, 3000);
+        }
+
+        // Simulator 1: Target Tabungan
+        function calculateTarget() {
+            const target = parseFloat(document.getElementById('targetAmount').value) || 0;
+            const daily = parseFloat(document.getElementById('dailySaving').value) || 0;
+
+            if (target <= 0 || daily <= 0) {
+                showAlert('Mohon masukkan nilai yang valid!', 'warning');
+                return;
+            }
+
+            const days = Math.ceil(target / daily);
+            const months = Math.floor(days / 30);
+            const remainingDays = days % 30;
+
+            let timeText = `${days} hari`;
+            if (months > 0) {
+                timeText = `${months} bulan ${remainingDays} hari`;
+            }
+
+            document.getElementById('targetDays').textContent = timeText;
+            document.getElementById('targetResult').style.display = 'block';
+
+            // Simulate progress (for demonstration)
+            const currentSaving = daily * Math.min(days, 30); // Assume 30 days progress
+            const percentage = Math.min((currentSaving / target) * 100, 100);
+            
+            document.getElementById('targetPercentage').textContent = `${percentage.toFixed(1)}%`;
+            document.getElementById('targetProgressFill').style.width = `${percentage}%`;
+            document.getElementById('targetProgress').style.display = 'block';
+
+            showAlert(`Target dapat dicapai dalam ${timeText}!`);
+        }
+
+        // Simulator 2: Tabungan Harian
+        function addDailySaving() {
+            const amount = parseFloat(document.getElementById('todaySaving').value) || 0;
+
+            if (amount <= 0) {
+                showAlert('Mohon masukkan jumlah tabungan yang valid!', 'warning');
+                return;
+            }
+
+            const saving = {
+                date: new Date(),
+                amount: amount
+            };
+
+            savingsData.push(saving);
+            document.getElementById('todaySaving').value = '';
+            
+            updateSavingsList();
+            updateSavingsStats();
+            showAlert(`Tabungan ${formatCurrency(amount)} berhasil ditambahkan!`);
+        }
+
+        function updateSavingsList() {
+            const listElement = document.getElementById('savingsList');
+            
+            if (savingsData.length === 0) {
+                listElement.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">💸</div>
+                        <p>Belum ada catatan tabungan</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const sortedData = [...savingsData].sort((a, b) => b.date - a.date);
+            
+            listElement.innerHTML = sortedData.map(saving => `
+                <div class="savings-item">
+                    <div>
+                        <div class="savings-amount">${formatCurrency(saving.amount)}</div>
+                        <div class="savings-date">${formatDate(saving.date)}</div>
+                    </div>
+                    <button onclick="removeSaving(${savingsData.indexOf(saving)})" 
+                            style="background: #ff6b6b; color: white; border: none; border-radius: 5px; padding: 5px 10px; cursor: pointer;">
+                        ✕
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function updateSavingsStats() {
+            const total = savingsData.reduce((sum, saving) => sum + saving.amount, 0);
+            const average = savingsData.length > 0 ? total / savingsData.length : 0;
+
+            document.getElementById('totalSavings').textContent = formatCurrency(total);
+            document.getElementById('avgDaily').textContent = formatCurrency(average);
+        }
+
+        function removeSaving(index) {
+            savingsData.splice(index, 1);
+            updateSavingsList();
+            updateSavingsStats();
+            showAlert('Catatan tabungan berhasil dihapus!');
+        }
+
+        function clearSavings() {
+            if (savingsData.length === 0) {
+                showAlert('Tidak ada data untuk dihapus!', 'warning');
+                return;
+            }
+
+            if (confirm('Apakah Anda yakin ingin menghapus semua data tabungan?')) {
+                savingsData = [];
+                updateSavingsList();
+                updateSavingsStats();
+                showAlert('Semua data tabungan berhasil dihapus!');
+            }
+        }
+
+        // Simulator 3: Kalkulator Bunga
+        function calculateInterest() {
+            const principal = parseFloat(document.getElementById('initialAmount').value) || 0;
+            const rate = parseFloat(document.getElementById('interestRate').value) || 0;
+            const time = parseFloat(document.getElementById('timePeriod').value) || 0;
+
+            if (principal <= 0 || rate <= 0 || time <= 0) {
+                showAlert('Mohon masukkan semua nilai yang valid!', 'warning');
+                return;
+            }
+
+            // Compound interest calculation
+            const finalAmount = principal * Math.pow(1 + (rate / 100), time);
+            const earnedInterest = finalAmount - principal;
+            const growthPercentage = ((finalAmount - principal) / principal) * 100;
+
+            document.getElementById('finalAmount').textContent = formatCurrency(finalAmount);
+            document.getElementById('earnedInterest').textContent = formatCurrency(earnedInterest);
+            document.getElementById('interestGrowth').textContent = `+${growthPercentage.toFixed(1)}%`;
+
+            // Progress bar animation
+            const maxGrowth = 200; // Maximum growth percentage for progress bar
+            const progressPercentage = Math.min((growthPercentage / maxGrowth) * 100, 100);
+            document.getElementById('interestProgressFill').style.width = `${progressPercentage}%`;
+
+            document.getElementById('interestResult').style.display = 'block';
+            document.getElementById('interestProgress').style.display = 'block';
+            document.getElementById('interestBreakdown').style.display = 'block';
+
+            showAlert(`Simulasi bunga berhasil dihitung!`);
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateSavingsList();
+            updateSavingsStats();
+        });
+
+        // Add enter key support for inputs
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                const target = e.target;
+                if (target.id === 'targetAmount' || target.id === 'dailySaving') {
+                    calculateTarget();
+                } else if (target.id === 'todaySaving') {
+                    addDailySaving();
+                } else if (target.id === 'initialAmount' || target.id === 'interestRate' || target.id === 'timePeriod') {
+                    calculateInterest();
+                }
+            }
+        });
+    </script>
+</body>
+</html>

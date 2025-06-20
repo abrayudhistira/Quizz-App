@@ -1,5 +1,7 @@
-const Sequelize = require('sequelize');
-module.exports = function(sequelize, DataTypes) {
+// models/quiz.js
+const { Sequelize, DataTypes } = require('sequelize');
+
+module.exports = function(sequelize) {
   return sequelize.define('quiz', {
     id: {
       autoIncrement: true,
@@ -15,6 +17,18 @@ module.exports = function(sequelize, DataTypes) {
         key: 'id'
       },
       unique: "quiz_ibfk_1"
+    },
+
+    // Override timestamps:
+    createdAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
     }
   }, {
     sequelize,
@@ -25,17 +39,13 @@ module.exports = function(sequelize, DataTypes) {
         name: "PRIMARY",
         unique: true,
         using: "BTREE",
-        fields: [
-          { name: "id" },
-        ]
+        fields: [{ name: "id" }]
       },
       {
         name: "module_id",
         unique: true,
         using: "BTREE",
-        fields: [
-          { name: "module_id" },
-        ]
+        fields: [{ name: "module_id" }]
       },
     ]
   });

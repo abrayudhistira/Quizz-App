@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🕵️ Detektif Pengeluaran</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header::before {
+            content: '🔍💰';
+            font-size: 4rem;
+            position: absolute;
+            top: 10px;
+            left: 30px;
+            opacity: 0.3;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .progress-bar {
+            background: rgba(255,255,255,0.2);
+            height: 10px;
+            border-radius: 5px;
+            margin-top: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #4CAF50;
+            border-radius: 5px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 30px;
+            background: #f8f9fa;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-card .icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .stat-card .number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .stat-card .label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            padding: 30px;
+        }
+
+        .form-section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+        }
+
+        .form-section h2 {
+            color: #333;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn-add {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            width: 100%;
+        }
+
+        .btn-add:hover {
+            transform: translateY(-2px);
+        }
+
+        .expenses-list {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .expense-item {
+            background: white;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .expense-info {
+            flex: 1;
+        }
+
+        .expense-amount {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #e74c3c;
+        }
+
+        .expense-category {
+            background: #667eea;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            margin-right: 10px;
+        }
+
+        .delete-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .analysis-section {
+            grid-column: 1 / -1;
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+
+        .category-chart {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .category-item {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .category-bar {
+            height: 20px;
+            background: #ddd;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .category-fill {
+            height: 100%;
+            transition: width 0.5s ease;
+        }
+
+        .achievement {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .achievement.show {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🕵️ Detektif Pengeluaran</h1>
+            <p>Lacak setiap rupiah yang "kabur" dari kantongmu!</p>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <p id="progressText" style="margin-top: 10px;">0/15 transaksi tercatat</p>
+        </div>
+
+        <div class="stats">
+            <div class="stat-card">
+                <div class="icon">📊</div>
+                <div class="number" id="totalTransactions">0</div>
+                <div class="label">Total Transaksi</div>
+            </div>
+            <div class="stat-card">
+                <div class="icon">💸</div>
+                <div class="number" id="totalSpent">Rp 0</div>
+                <div class="label">Total Pengeluaran</div>
+            </div>
+            <div class="stat-card">
+                <div class="icon">📅</div>
+                <div class="number" id="daysTracked">0</div>
+                <div class="label">Hari Dilacak</div>
+            </div>
+            <div class="stat-card">
+                <div class="icon">🎯</div>
+                <div class="number" id="avgPerDay">Rp 0</div>
+                <div class="label">Rata-rata/Hari</div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="form-section">
+                <h2>📝 Catat Pengeluaran</h2>
+                <form id="expenseForm">
+                    <div class="form-group">
+                        <label for="date">Tanggal *</label>
+                        <input type="date" id="date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="amount">Jumlah (Rp) *</label>
+                        <input type="number" id="amount" min="0" step="500" placeholder="10000" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="category">Kategori *</label>
+                        <select id="category" required>
+                            <option value="">Pilih kategori...</option>
+                            <option value="Makanan & Minuman">🍔 Makanan & Minuman</option>
+                            <option value="Transportasi">🚗 Transportasi</option>
+                            <option value="Hiburan">🎮 Hiburan</option>
+                            <option value="Belanja">🛒 Belanja</option>
+                            <option value="Pendidikan">📚 Pendidikan</option>
+                            <option value="Kesehatan">⚕️ Kesehatan</option>
+                            <option value="Lainnya">📦 Lainnya</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Keterangan *</label>
+                        <textarea id="description" rows="2" placeholder="Beli nasi gudeg di kantin..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn-add">➕ Tambah Pengeluaran</button>
+                </form>
+            </div>
+
+            <div class="expenses-list">
+                <h2>📋 Daftar Pengeluaran</h2>
+                <div id="expensesList">
+                    <p style="text-align: center; color: #999; margin-top: 50px;">
+                        Belum ada pengeluaran tercatat.<br>
+                        Mulai catat pengeluaranmu! 🔍
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="analysis-section">
+            <h2>🔍 Analisis Detektif</h2>
+            <div id="analysisContent">
+                <p style="text-align: center; color: #999;">
+                    Catat minimal 15 transaksi dalam 3 hari untuk melihat analisis lengkap! 📊
+                </p>
+            </div>
+        </div>
+
+        <div class="achievement" id="achievement">
+            <h2>🏆 Selamat! Badge "Money Detective" Berhasil Didapat!</h2>
+            <p>Kamu telah berhasil melacak pengeluaran selama 3 hari dengan minimal 15 transaksi!</p>
+            <p><strong>+100 Poin!</strong> 🎉</p>
+        </div>
+    </div>
+
+    <script>
+        let expenses = [];
+        let currentDay = 1;
+
+        // Set tanggal hari ini sebagai default
+        document.getElementById('date').valueAsDate = new Date();
+
+        // Form submission
+        document.getElementById('expenseForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const date = document.getElementById('date').value;
+            const amount = parseInt(document.getElementById('amount').value);
+            const category = document.getElementById('category').value;
+            const description = document.getElementById('description').value;
+
+            if (!date || !amount || !category || !description) {
+                alert('Semua field wajib diisi! 📝');
+                return;
+            }
+
+            const expense = {
+                id: Date.now(),
+                date: date,
+                amount: amount,
+                category: category,
+                description: description
+            };
+
+            expenses.push(expense);
+            updateDisplay();
+            this.reset();
+            document.getElementById('date').valueAsDate = new Date();
+        });
+
+        function updateDisplay() {
+            updateStats();
+            updateExpensesList();
+            updateProgress();
+            updateAnalysis();
+            checkAchievement();
+        }
+
+        function updateStats() {
+            const totalTransactions = expenses.length;
+            const totalSpent = expenses.reduce((sum, expense) => sum + expense.amount, 0);
+            const uniqueDates = [...new Set(expenses.map(expense => expense.date))].length;
+            const avgPerDay = uniqueDates > 0 ? Math.round(totalSpent / uniqueDates) : 0;
+
+            document.getElementById('totalTransactions').textContent = totalTransactions;
+            document.getElementById('totalSpent').textContent = `Rp ${totalSpent.toLocaleString('id-ID')}`;
+            document.getElementById('daysTracked').textContent = uniqueDates;
+            document.getElementById('avgPerDay').textContent = `Rp ${avgPerDay.toLocaleString('id-ID')}`;
+        }
+
+        function updateExpensesList() {
+            const expensesList = document.getElementById('expensesList');
+            
+            if (expenses.length === 0) {
+                expensesList.innerHTML = `
+                    <p style="text-align: center; color: #999; margin-top: 50px;">
+                        Belum ada pengeluaran tercatat.<br>
+                        Mulai catat pengeluaranmu! 🔍
+                    </p>
+                `;
+                return;
+            }
+
+            const sortedExpenses = expenses.sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            expensesList.innerHTML = sortedExpenses.map(expense => `
+                <div class="expense-item">
+                    <div class="expense-info">
+                        <div>
+                            <span class="expense-category">${expense.category}</span>
+                            <span class="expense-amount">Rp ${expense.amount.toLocaleString('id-ID')}</span>
+                        </div>
+                        <div style="font-size: 0.9rem; color: #666; margin-top: 5px;">
+                            📅 ${new Date(expense.date).toLocaleDateString('id-ID')} - ${expense.description}
+                        </div>
+                    </div>
+                    <button class="delete-btn" onclick="deleteExpense(${expense.id})">🗑️</button>
+                </div>
+            `).join('');
+        }
+
+        function deleteExpense(id) {
+            expenses = expenses.filter(expense => expense.id !== id);
+            updateDisplay();
+        }
+
+        function updateProgress() {
+            const progress = Math.min((expenses.length / 15) * 100, 100);
+            document.getElementById('progressFill').style.width = `${progress}%`;
+            document.getElementById('progressText').textContent = `${expenses.length}/15 transaksi tercatat`;
+        }
+
+        function updateAnalysis() {
+            const analysisContent = document.getElementById('analysisContent');
+            
+            if (expenses.length < 15) {
+                analysisContent.innerHTML = `
+                    <p style="text-align: center; color: #999;">
+                        Catat minimal 15 transaksi dalam 3 hari untuk melihat analisis lengkap! 📊<br>
+                        <small>Progress: ${expenses.length}/15 transaksi</small>
+                    </p>
+                `;
+                return;
+            }
+
+            // Analisis kategori
+            const categoryTotals = {};
+            expenses.forEach(expense => {
+                categoryTotals[expense.category] = (categoryTotals[expense.category] || 0) + expense.amount;
+            });
+
+            const totalSpent = expenses.reduce((sum, expense) => sum + expense.amount, 0);
+            const sortedCategories = Object.entries(categoryTotals)
+                .sort((a, b) => b[1] - a[1]);
+
+            const colors = ['#e74c3c', '#3498db', '#2ecc71', '#f39c12', '#9b59b6', '#1abc9c', '#34495e'];
+
+            let analysisHTML = `
+                <h3>🔍 Hasil Investigasi Detektif</h3>
+                <p><strong>Tersangka Utama (Kategori Terboros):</strong> ${sortedCategories[0][0]} - Rp ${sortedCategories[0][1].toLocaleString('id-ID')} (${Math.round(sortedCategories[0][1]/totalSpent*100)}%)</p>
+                <div class="category-chart">
+            `;
+
+            sortedCategories.forEach(([category, amount], index) => {
+                const percentage = Math.round((amount / totalSpent) * 100);
+                analysisHTML += `
+                    <div class="category-item">
+                        <h4>${category}</h4>
+                        <div class="category-bar">
+                            <div class="category-fill" style="width: ${percentage}%; background: ${colors[index % colors.length]};"></div>
+                        </div>
+                        <p>Rp ${amount.toLocaleString('id-ID')} (${percentage}%)</p>
+                    </div>
+                `;
+            });
+
+            analysisHTML += '</div>';
+
+            // Tips berdasarkan kategori terbesar
+            const topCategory = sortedCategories[0][0];
+            let tip = '';
+            switch(topCategory) {
+                case 'Makanan & Minuman':
+                    tip = '🍔 Tip: Coba bawa bekal dari rumah atau cari warung dengan harga lebih ekonomis!';
+                    break;
+                case 'Transportasi':
+                    tip = '🚗 Tip: Pertimbangkan naik angkutan umum atau jalan kaki untuk jarak dekat!';
+                    break;
+                case 'Hiburan':
+                    tip = '🎮 Tip: Cari hiburan gratis seperti main di taman atau nonton film gratis!';
+                    break;
+                case 'Belanja':
+                    tip = '🛒 Tip: Buat daftar belanja dan tahan godaan untuk beli yang tidak perlu!';
+                    break;
+                default:
+                    tip = '💡 Tip: Pertimbangkan apakah pengeluaran ini benar-benar diperlukan sebelum beli!';
+            }
+
+            analysisHTML += `
+                <div style="background: #fff3cd; padding: 15px; border-radius: 10px; margin-top: 20px; border-left: 4px solid #ffc107;">
+                    <strong>💡 Rekomendasi Detektif:</strong><br>
+                    ${tip}
+                </div>
+            `;
+
+            analysisContent.innerHTML = analysisHTML;
+        }
+
+        function checkAchievement() {
+            const uniqueDates = [...new Set(expenses.map(expense => expense.date))].length;
+            
+            if (expenses.length >= 15 && uniqueDates >= 3) {
+                document.getElementById('achievement').classList.add('show');
+            }
+        }
+
+        // Inisialisasi
+        updateDisplay();
+    </script>
+</body>
+</html>
