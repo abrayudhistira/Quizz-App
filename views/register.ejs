@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Daftar Akun Baru</title>
+
+  <!-- Flaticon UIcons -->
+  <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/3.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css" />
+
+  <!-- Global CSS -->
+  <link rel="stylesheet" href="/css/globals.css" />
+
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      background: var(--putih);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+  display: flex;
+  width: 1400px;
+  height: 760px;
+  border-radius: 48px;
+  overflow: hidden;
+  position: relative;
+  background: var(--kuning); /* GANTI DARI var(--putih) KE var(--kuning) */
+  box-shadow: 0 4px 40px rgba(0, 0, 0, 0.1);
+}
+
+    .row-kiri,
+    .row-kanan {
+      flex: 1;
+      height: 100%;
+    }
+
+    .row-kiri {
+      background: var(--kuning);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .row-kanan {
+      background: var(--ungu);
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      border-radius: 48px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .register-illustration {
+      width: 95%;
+      max-width: 500px;
+      object-fit: contain;
+      border-radius: 32px;
+      display: block;
+    }
+
+    .left-box {
+      width: 80%;
+      max-width: 420px;
+    }
+
+    .judul {
+      font-size: 3rem;
+      font-weight: bold;
+      color: var(--hitam);
+      margin-bottom: 18px;
+      text-align: center;
+      letter-spacing: -1px;
+    }
+
+    .deskripsi {
+      font-size: 1.25rem;
+      color: var(--hitam);
+      margin-bottom: 44px;
+      text-align: center;
+      line-height: 1.4;
+    }
+
+    .form-group {
+      margin-bottom: 24px;
+    }
+
+    .input-wrapper {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      background: var(--putih);
+      border-radius: 32px;
+      box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05);
+      height: 56px;
+      padding: 0 20px;
+    }
+
+    .form-icon {
+      font-size: 1.3rem;
+      color: var(--abu);
+      margin-right: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .form-input {
+      flex: 1;
+      height: 100%;
+      border: none;
+      outline: none;
+      font-size: 1.15rem;
+      background: transparent;
+      color: var(--hitam);
+    }
+
+    .form-input::placeholder {
+      color: var(--abu);
+    }
+
+    .btn-register {
+      width: 100%;
+      padding: 20px;
+      border: none;
+      border-radius: 32px;
+      background: var(--navy);
+      color: var(--putih);
+      font-size: 1.3rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 8px;
+      margin-bottom: 10px;
+      letter-spacing: 1px;
+      transition: background 0.2s;
+      box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    .btn-register:hover {
+      background: #222060;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="row-kiri">
+      <div class="left-box">
+        <div class="judul">Register</div>
+        <div class="deskripsi">Daftarkan akun mu dan<br />mulai petualangan baru!</div>
+        <form id="registerForm" action="/register" method="POST">
+          <div class="form-group">
+            <div class="input-wrapper">
+              <i class="fi fi-rr-user form-icon"></i>
+              <input class="form-input" type="text" name="username" placeholder="Username" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-wrapper">
+              <i class="fi fi-rr-envelope form-icon"></i>
+              <input class="form-input" type="email" name="email" placeholder="Email" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-wrapper">
+              <i class="fi fi-rr-eye-crossed form-icon"></i>
+              <input class="form-input" type="password" name="password" placeholder="Password" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-wrapper">
+              <i class="fi fi-rr-eye-crossed form-icon"></i>
+              <input class="form-input" type="password" name="confirmPassword" placeholder="Confirm Password" required />
+            </div>
+          </div>
+          <button type="submit" class="btn-register">Register</button>
+        </form>
+      </div>
+    </div>
+    <div class="row-kanan">
+      <img class="register-illustration" src="/images/login.png" alt="Register Illustration" />
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('registerForm').addEventListener('submit', function (e) {
+      const pwd = document.querySelector('input[name="password"]').value;
+      const cpwd = document.querySelector('input[name="confirmPassword"]').value;
+      if (pwd !== cpwd) {
+        e.preventDefault();
+        alert('Password dan Confirm Password tidak sama');
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dana Darurat Tracker - Slow & Steady</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            padding: 30px;
+            text-align: center;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            padding: 30px;
+        }
+
+        .tracker-section {
+            background: #f8f9ff;
+            padding: 25px;
+            border-radius: 15px;
+            border: 2px solid #e3f2fd;
+        }
+
+        .tips-section {
+            background: #fff8e1;
+            padding: 25px;
+            border-radius: 15px;
+            border: 2px solid #fff3c4;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #34495e;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #4facfe;
+            box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.1);
+        }
+
+        .progress-container {
+            margin: 25px 0;
+            position: relative;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 25px;
+            background: #e0e0e0;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+            width: 0%;
+            transition: width 0.8s ease;
+            position: relative;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.3) 50%, transparent 100%);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .progress-text {
+            text-align: center;
+            margin-top: 10px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #4facfe;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+
+        .tips-list {
+            list-style: none;
+        }
+
+        .tip-item {
+            background: white;
+            margin-bottom: 15px;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #f39c12;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .tip-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+
+        .tip-title {
+            font-weight: 600;
+            color: #e67e22;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tip-description {
+            color: #5d6d7e;
+            line-height: 1.5;
+        }
+
+        .illustration {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .turtle-icon {
+            font-size: 4rem;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        .achievement-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin: 10px 5px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            .header h1 {
+                font-size: 2rem;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .motivational-quote {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            margin: 20px 0;
+            border: 2px solid #f8d7da;
+        }
+
+        .quote-text {
+            font-style: italic;
+            font-size: 1.1rem;
+            color: #8b4513;
+            margin-bottom: 10px;
+        }
+
+        .quote-author {
+            font-weight: 600;
+            color: #d2691e;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🐢 Dana Darurat Tracker</h1>
+            <p>Slow and Steady Wins the Race</p>
+        </div>
+
+        <div class="main-content">
+            <!-- Tracker Section -->
+            <div class="tracker-section">
+                <h2 class="section-title">
+                    📊 Progress Tracker
+                </h2>
+
+                <div class="input-group">
+                    <label for="targetAmount">Target Dana Darurat (Rp)</label>
+                    <input type="number" id="targetAmount" placeholder="Contoh: 50000000" value="50000000">
+                </div>
+
+                <div class="input-group">
+                    <label for="currentAmount">Jumlah Saat Ini (Rp)</label>
+                    <input type="number" id="currentAmount" placeholder="Contoh: 15000000" value="0">
+                </div>
+
+                <div class="input-group">
+                    <label for="monthlyContribution">Kontribusi Bulanan (Rp)</label>
+                    <input type="number" id="monthlyContribution" placeholder="Contoh: 2000000" value="2000000">
+                </div>
+
+                <button class="btn" onclick="updateProgress()">Update Progress</button>
+
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <div class="progress-text" id="progressText">0% tercapai</div>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="percentageComplete">0%</div>
+                        <div class="stat-label">Selesai</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="remainingAmount">Rp 0</div>
+                        <div class="stat-label">Tersisa</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="monthsToGoal">0</div>
+                        <div class="stat-label">Bulan Lagi</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="estimatedCompletion">-</div>
+                        <div class="stat-label">Target Selesai</div>
+                    </div>
+                </div>
+
+                <div id="achievementBadges"></div>
+
+                <div class="illustration">
+                    <div class="turtle-icon">🐢</div>
+                    <p style="color: #7f8c8d; margin-top: 10px;">Perlahan tapi pasti menuju tujuan</p>
+                </div>
+            </div>
+
+            <!-- Tips Section -->
+            <div class="tips-section">
+                <h2 class="section-title">
+                    💡 Tips Slow and Steady
+                </h2>
+
+                <div class="motivational-quote">
+                    <div class="quote-text">"Perjalanan seribu mil dimulai dengan satu langkah"</div>
+                    <div class="quote-author">- Lao Tzu</div>
+                </div>
+
+                <ul class="tips-list">
+                    <li class="tip-item">
+                        <div class="tip-title">🎯 Mulai dengan Target Realistis</div>
+                        <div class="tip-description">
+                            Tentukan target dana darurat 6-12 bulan pengeluaran. Jangan terburu-buru, konsistensi lebih penting dari jumlah besar.
+                        </div>
+                    </li>
+
+                    <li class="tip-item">
+                        <div class="tip-title">🔄 Otomatisasi Tabungan</div>
+                        <div class="tip-description">
+                            Set auto-debit bulanan ke rekening dana darurat. Treat it like a bill yang harus dibayar setiap bulan.
+                        </div>
+                    </li>
+
+                    <li class="tip-item">
+                        <div class="tip-title">📈 Mulai dari Yang Kecil</div>
+                        <div class="tip-description">
+                            Tidak perlu langsung Rp 2 juta per bulan. Mulai dari Rp 500rb, lalu tingkatkan bertahap setiap 3-6 bulan.
+                        </div>
+                    </li>
+
+                    <li class="tip-item">
+                        <div class="tip-title">🏆 Rayakan Milestone</div>
+                        <div class="tip-description">
+                            Rayakan setiap pencapaian 25%, 50%, 75%. Berikan reward kecil untuk mempertahankan motivasi.
+                        </div>
+                    </li>
+
+                    <li class="tip-item">
+                        <div class="tip-title">💰 Manfaatkan Bonus & THR</div>
+                        <div class="tip-description">
+                            Alokasikan 50-70% dari bonus, THR, atau rejeki nomplok langsung ke dana darurat untuk boost progress.
+                        </div>
+                    </li>
+
+                    <li class="tip-item">
+                        <div class="tip-title">🔒 Pisahkan Rekening</div>
+                        <div class="tip-description">
+                            Buat rekening khusus dana darurat di bank berbeda. Semakin sulit diakses, semakin aman dari godaan.
+                        </div>
+                    </li>
+
+                    <li class="tip-item">
+                        <div class="tip-title">📊 Review Bulanan</div>
+                        <div class="tip-description">
+                            Evaluasi progress setiap bulan. Jika ada kekurangan, cari tahu penyebabnya dan buat adjustment plan.
+                        </div>
+                    </li>
+
+                    <li class="tip-item">
+                        <div class="tip-title">🚫 Jangan Sentuh Kecuali Darurat</div>
+                        <div class="tip-description">
+                            Dana darurat hanya untuk emergency nyata: kehilangan pekerjaan, sakit, atau force majeure. Bukan untuk liburan atau gadget baru.
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data untuk tracking progress (dalam implementasi nyata, ini akan tersimpan di database)
+        let progressData = {
+            targetAmount: 50000000,
+            currentAmount: 0,
+            monthlyContribution: 2000000,
+            startDate: new Date(),
+            achievements: []
+        };
+
+        // Format currency ke Rupiah
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+                minimumFractionDigits: 0
+            }).format(amount);
+        }
+
+        // Format number dengan pemisah ribuan
+        function formatNumber(num) {
+            return new Intl.NumberFormat('id-ID').format(num);
+        }
+
+        // Hitung tanggal estimasi selesai
+        function calculateCompletionDate(monthsToGo) {
+            const today = new Date();
+            const completionDate = new Date(today.getFullYear(), today.getMonth() + monthsToGo, today.getDate());
+            return completionDate.toLocaleDateString('id-ID', { 
+                year: 'numeric', 
+                month: 'long'
+            });
+        }
+
+        // Cek achievement berdasarkan progress
+        function checkAchievements(percentage) {
+            const achievements = [];
+            const milestones = [
+                { threshold: 10, title: "First Step", emoji: "👶" },
+                { threshold: 25, title: "Quarter Master", emoji: "🥉" },
+                { threshold: 50, title: "Half Way Hero", emoji: "🥈" },
+                { threshold: 75, title: "Almost There", emoji: "🥇" },
+                { threshold: 90, title: "Final Push", emoji: "🚀" },
+                { threshold: 100, title: "Emergency Fund Complete!", emoji: "🎉" }
+            ];
+
+            milestones.forEach(milestone => {
+                if (percentage >= milestone.threshold && !progressData.achievements.includes(milestone.title)) {
+                    achievements.push(milestone);
+                    progressData.achievements.push(milestone.title);
+                }
+            });
+
+            return achievements;
+        }
+
+        // Update progress dan tampilan
+        function updateProgress() {
+            // Ambil input values
+            const targetAmount = parseFloat(document.getElementById('targetAmount').value) || 0;
+            const currentAmount = parseFloat(document.getElementById('currentAmount').value) || 0;
+            const monthlyContribution = parseFloat(document.getElementById('monthlyContribution').value) || 0;
+
+            // Update progress data
+            progressData.targetAmount = targetAmount;
+            progressData.currentAmount = currentAmount;
+            progressData.monthlyContribution = monthlyContribution;
+
+            // Hitung persentase
+            const percentage = targetAmount > 0 ? Math.min((currentAmount / targetAmount) * 100, 100) : 0;
+            
+            // Hitung sisa amount
+            const remainingAmount = Math.max(targetAmount - currentAmount, 0);
+            
+            // Hitung estimasi bulan tersisa
+            const monthsToGo = monthlyContribution > 0 && remainingAmount > 0 ? 
+                Math.ceil(remainingAmount / monthlyContribution) : 0;
+
+            // Update progress bar
+            const progressFill = document.getElementById('progressFill');
+            const progressText = document.getElementById('progressText');
+            
+            progressFill.style.width = percentage + '%';
+            progressText.textContent = `${percentage.toFixed(1)}% tercapai`;
+
+            // Update stats
+            document.getElementById('percentageComplete').textContent = percentage.toFixed(1) + '%';
+            document.getElementById('remainingAmount').textContent = formatCurrency(remainingAmount);
+            document.getElementById('monthsToGoal').textContent = monthsToGo;
+            document.getElementById('estimatedCompletion').textContent = 
+                monthsToGo > 0 ? calculateCompletionDate(monthsToGo) : 'Selesai!';
+
+            // Cek achievements
+            const newAchievements = checkAchievements(percentage);
+            
+            // Update achievement badges
+            const badgesContainer = document.getElementById('achievementBadges');
+            badgesContainer.innerHTML = '';
+            
+            progressData.achievements.forEach(achievement => {
+                const milestone = [
+                    { threshold: 10, title: "First Step", emoji: "👶" },
+                    { threshold: 25, title: "Quarter Master", emoji: "🥉" },
+                    { threshold: 50, title: "Half Way Hero", emoji: "🥈" },
+                    { threshold: 75, title: "Almost There", emoji: "🥇" },
+                    { threshold: 90, title: "Final Push", emoji: "🚀" },
+                    { threshold: 100, title: "Emergency Fund Complete!", emoji: "🎉" }
+                ].find(m => m.title === achievement);
+                
+                if (milestone) {
+                    const badge = document.createElement('span');
+                    badge.className = 'achievement-badge';
+                    badge.innerHTML = `${milestone.emoji} ${milestone.title}`;
+                    badgesContainer.appendChild(badge);
+                }
+            });
+
+            // Tampilkan notifikasi untuk achievement baru
+            newAchievements.forEach(achievement => {
+                setTimeout(() => {
+                    alert(`🎉 Achievement Unlocked: ${achievement.emoji} ${achievement.title}!`);
+                }, 500);
+            });
+
+            // Animasi progress bar
+            setTimeout(() => {
+                progressFill.style.transform = 'scaleX(1)';
+            }, 100);
+        }
+
+        // Initialize progress on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            updateProgress();
+            
+            // Auto-update saat input berubah
+            ['targetAmount', 'currentAmount', 'monthlyContribution'].forEach(id => {
+                document.getElementById(id).addEventListener('input', updateProgress);
+            });
+        });
+
+        // EJS Template Functions (simulasi untuk demo)
+        const ejsHelpers = {
+            formatCurrency: formatCurrency,
+            formatNumber: formatNumber,
+            calculateProgress: (current, target) => {
+                return target > 0 ? ((current / target) * 100).toFixed(1) : 0;
+            },
+            getMotivationalMessage: (percentage) => {
+                if (percentage >= 100) return "🎉 Selamat! Dana darurat Anda sudah lengkap!";
+                if (percentage >= 75) return "💪 Hampir sampai! Tetap semangat!";
+                if (percentage >= 50) return "🏃‍♂️ Sudah setengah jalan! Keep going!";
+                if (percentage >= 25) return "🌱 Progress yang bagus! Terus konsisten!";
+                if (percentage > 0) return "🚀 Langkah pertama sudah dimulai!";
+                return "🎯 Yuk mulai nabung dana darurat!";
+            }
+        };
+
+        // Contoh penggunaan EJS helpers
+        console.log('EJS Helpers loaded:', ejsHelpers);
+    </script>
+</body>
+</html>

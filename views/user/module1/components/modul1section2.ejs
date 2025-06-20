@@ -1,0 +1,471 @@
+
+    <div class="container">
+
+        <h1 class="subtitle">Kenapa Uangmu Selalu Lenyap?</h1>
+        
+        <div class="wallet"></div>
+        
+        <!-- Items yang bikin boros -->
+        <div class="item coffee">
+            ☕
+            <div class="price-tag">15k/hari</div>
+        </div>
+        <div class="item snack">
+            🍿
+            <div class="price-tag">10k/hari</div>
+        </div>
+        <div class="item shopping">
+            🛍️
+            <div class="price-tag">100k/minggu</div>
+        </div>
+        <div class="item transport">
+            🚗
+            <div class="price-tag">20k/hari</div>
+        </div>
+        <div class="item entertainment">
+            🎮
+            <div class="price-tag">50k/bulan</div>
+        </div>
+        <div class="item food">
+            🍔
+            <div class="price-tag">25k/hari</div>
+        </div>
+        
+        <!-- Koin-koin yang terbang -->
+        <div class="coin coin1"></div>
+        <div class="coin coin2"></div>
+        <div class="coin coin3"></div>
+        <div class="coin coin4"></div>
+        <div class="coin coin5"></div>
+        <div class="coin coin6"></div>
+        
+        <!-- Sparkle effects -->
+        <div class="sparkle sparkle1">✨</div>
+        <div class="sparkle sparkle2">✨</div>
+        <div class="sparkle sparkle3">✨</div>
+        <div class="sparkle sparkle4">✨</div>
+        
+        <div class="meme-text">*Dompet go brrr... ke minus* 💸</div>
+    </div>
+
+    <script>
+        // Add some interactive elements
+        document.querySelectorAll('.item').forEach(item => {
+            item.addEventListener('click', function() {
+                this.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                }, 200);
+                
+                // Create burst effect
+                for(let i = 0; i < 5; i++) {
+                    setTimeout(() => {
+                        createCoinBurst(this);
+                    }, i * 100);
+                }
+            });
+        });
+        
+        function createCoinBurst(element) {
+            const burst = document.createElement('div');
+            burst.className = 'coin';
+            burst.style.position = 'absolute';
+            burst.style.left = element.offsetLeft + element.offsetWidth/2 + 'px';
+            burst.style.top = element.offsetTop + element.offsetHeight/2 + 'px';
+            burst.style.opacity = '1';
+            burst.style.animation = 'none';
+            document.body.appendChild(burst);
+            
+            // Random direction
+            const angle = Math.random() * Math.PI * 2;
+            const distance = 50 + Math.random() * 50;
+            const endX = Math.cos(angle) * distance;
+            const endY = Math.sin(angle) * distance;
+            
+            burst.animate([
+                { transform: 'translate(0, 0) scale(0.5)', opacity: 1 },
+                { transform: `translate(${endX}px, ${endY}px) scale(0)`, opacity: 0 }
+            ], {
+                duration: 800,
+                easing: 'ease-out'
+            }).onfinish = () => {
+                burst.remove();
+            };
+        }
+        
+        // Dynamic meme text rotation
+        const memeTexts = [
+            "*Dompet go brrr... ke minus* 💸",
+            "*Uang jajan speedrun habis any%* 🏃‍♂️💨",
+            "*Dompet: Adios amigos* 👋💸",
+            "*Plot twist: Dompet jadi decorasi* 🎭",
+            "*Uang: I must go, my people need me* 🚀"
+        ];
+        
+        let currentTextIndex = 0;
+        const memeTextElement = document.querySelector('.meme-text');
+        
+        setInterval(() => {
+            currentTextIndex = (currentTextIndex + 1) % memeTexts.length;
+            memeTextElement.textContent = memeTexts[currentTextIndex];
+        }, 4000);
+    </script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+     
+        .container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .title {
+            position: absolute;
+            top: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 2.5rem;
+            font-weight: 800;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            z-index: 10;
+        }
+        
+        .subtitle {
+            position: absolute;
+            top: 120px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #FFD700;
+            font-size: 1.5rem;
+            font-weight: 600;
+            text-align: center;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            z-index: 10;
+        }
+        
+        .wallet {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 150px;
+            height: 100px;
+            background: linear-gradient(45deg, #8B4513, #A0522D);
+            border-radius: 10px;
+            border: 3px solid #654321;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            z-index: 5;
+            animation: walletPulse 2s ease-in-out infinite;
+        }
+        
+        .wallet::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px;
+            height: 50px;
+            background: #654321;
+            border-radius: 5px;
+        }
+        
+        .wallet::after {
+            content: '💸';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2rem;
+        }
+        
+        @keyframes walletPulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.05); }
+        }
+        
+        .item {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        
+        .item:hover {
+            transform: scale(1.1);
+        }
+        
+        .coffee {
+            top: 20%;
+            right: 15%;
+            background: linear-gradient(45deg, #8B4513, #CD853F);
+            animation: hop 3s ease-in-out infinite;
+        }
+        
+        .snack {
+            top: 20%;
+            left: 15%;
+            background: linear-gradient(45deg, #FF6347, #FF4500);
+            animation: hop 3s ease-in-out infinite 0.5s;
+        }
+        
+        .shopping {
+            bottom: 20%;
+            right: 15%;
+            background: linear-gradient(45deg, #FF1493, #FF69B4);
+            animation: hop 3s ease-in-out infinite 1s;
+        }
+        
+        .transport {
+            bottom: 20%;
+            left: 15%;
+            background: linear-gradient(45deg, #32CD32, #228B22);
+            animation: hop 3s ease-in-out infinite 1.5s;
+        }
+        
+        .entertainment {
+            top: 50%;
+            right: 8%;
+            background: linear-gradient(45deg, #9932CC, #8A2BE2);
+            animation: hop 3s ease-in-out infinite 2s;
+        }
+        
+        .food {
+            top: 50%;
+            left: 8%;
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            animation: hop 3s ease-in-out infinite 2.5s;
+        }
+        
+        @keyframes hop {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .coin {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background: radial-gradient(circle, #FFD700, #FFA500);
+            border-radius: 50%;
+            border: 2px solid #DAA520;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #8B4513;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+            opacity: 0;
+            z-index: 1;
+        }
+        
+        .coin::before {
+            content: '₹';
+        }
+        
+        @keyframes coinToCoffee {
+            0% { 
+                left: 50%; 
+                top: 50%; 
+                transform: translate(-50%, -50%); 
+                opacity: 1; 
+                scale: 0.5;
+            }
+            50% { 
+                opacity: 1; 
+                scale: 1;
+            }
+            100% { 
+                left: 85%; 
+                top: 20%; 
+                transform: translate(-50%, -50%); 
+                opacity: 0; 
+                scale: 0.3;
+            }
+        }
+        
+        @keyframes coinToSnack {
+            0% { 
+                left: 50%; 
+                top: 50%; 
+                transform: translate(-50%, -50%); 
+                opacity: 1; 
+                scale: 0.5;
+            }
+            50% { 
+                opacity: 1; 
+                scale: 1;
+            }
+            100% { 
+                left: 15%; 
+                top: 20%; 
+                transform: translate(-50%, -50%); 
+                opacity: 0; 
+                scale: 0.3;
+            }
+        }
+        
+        @keyframes coinToShopping {
+            0% { 
+                left: 50%; 
+                top: 50%; 
+                transform: translate(-50%, -50%); 
+                opacity: 1; 
+                scale: 0.5;
+            }
+            50% { 
+                opacity: 1; 
+                scale: 1;
+            }
+            100% { 
+                left: 85%; 
+                top: 80%; 
+                transform: translate(-50%, -50%); 
+                opacity: 0; 
+                scale: 0.3;
+            }
+        }
+        
+        @keyframes coinToTransport {
+            0% { 
+                left: 50%; 
+                top: 50%; 
+                transform: translate(-50%, -50%); 
+                opacity: 1; 
+                scale: 0.5;
+            }
+            50% { 
+                opacity: 1; 
+                scale: 1;
+            }
+            100% { 
+                left: 15%; 
+                top: 80%; 
+                transform: translate(-50%, -50%); 
+                opacity: 0; 
+                scale: 0.3;
+            }
+        }
+        
+        @keyframes coinToEntertainment {
+            0% { 
+                left: 50%; 
+                top: 50%; 
+                transform: translate(-50%, -50%); 
+                opacity: 1; 
+                scale: 0.5;
+            }
+            50% { 
+                opacity: 1; 
+                scale: 1;
+            }
+            100% { 
+                left: 92%; 
+                top: 50%; 
+                transform: translate(-50%, -50%); 
+                opacity: 0; 
+                scale: 0.3;
+            }
+        }
+        
+        @keyframes coinToFood {
+            0% { 
+                left: 50%; 
+                top: 50%; 
+                transform: translate(-50%, -50%); 
+                opacity: 1; 
+                scale: 0.5;
+            }
+            50% { 
+                opacity: 1; 
+                scale: 1;
+            }
+            100% { 
+                left: 8%; 
+                top: 50%; 
+                transform: translate(-50%, -50%); 
+                opacity: 0; 
+                scale: 0.3;
+            }
+        }
+        
+        .coin1 { animation: coinToCoffee 2s ease-out infinite; }
+        .coin2 { animation: coinToSnack 2s ease-out infinite 0.3s; }
+        .coin3 { animation: coinToShopping 2s ease-out infinite 0.6s; }
+        .coin4 { animation: coinToTransport 2s ease-out infinite 0.9s; }
+        .coin5 { animation: coinToEntertainment 2s ease-out infinite 1.2s; }
+        .coin6 { animation: coinToFood 2s ease-out infinite 1.5s; }
+        
+        .price-tag {
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            white-space: nowrap;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        
+        .meme-text {
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            z-index: 10;
+            animation: fadeInOut 4s ease-in-out infinite;
+        }
+        
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0; transform: translateX(-50%) translateY(10px); }
+            50% { opacity: 1; transform: translateX(-50%) translateY(0px); }
+        }
+        
+        .sparkle {
+            position: absolute;
+            color: #FFD700;
+            font-size: 1.5rem;
+            animation: sparkle 2s ease-in-out infinite;
+            opacity: 0;
+        }
+        
+        @keyframes sparkle {
+            0%, 100% { opacity: 0; transform: scale(0.5) rotate(0deg); }
+            50% { opacity: 1; transform: scale(1) rotate(180deg); }
+        }
+        
+        .sparkle1 { top: 15%; left: 25%; animation-delay: 0s; }
+        .sparkle2 { top: 25%; right: 20%; animation-delay: 0.5s; }
+        .sparkle3 { bottom: 30%; left: 20%; animation-delay: 1s; }
+        .sparkle4 { bottom: 15%; right: 25%; animation-delay: 1.5s; }
+    </style>

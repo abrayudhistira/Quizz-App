@@ -1,0 +1,161 @@
+<section class="max-width: 1200px;">
+  <h2 class="text-white text-3xl font-bold text-center mb-2">Refleksi Pengeluaran Minggu Ini</h2>
+  <p class="text-center text-white mb-6">Pantau dan analisis pengeluaran Anda dengan visualisasi interaktif</p>
+
+  <!-- Form Input -->
+  <div class="bg-white p-6 rounded shadow mb-6">
+    <h3 class="text-xl font-semibold mb-4">📝 Tambah Pengeluaran</h3>
+    <form id="expenseForm" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Kiri -->
+      <div class="flex flex-col gap-4">
+        <div>
+          <label class="block text-sm mb-1">Kategori:</label>
+          <input type="text" id="category" class="w-full border border-gray-300 px-3 py-2 rounded" placeholder="Contoh: Makanan" required>
+        </div>
+        <div>
+          <label class="block text-sm mb-1">Deskripsi:</label>
+          <input type="text" id="description" class="w-full border border-gray-300 px-3 py-2 rounded" placeholder="Contoh: Makan siang di warung" required>
+        </div>
+        <div>
+          <label class="block text-sm mb-1">🎯 Target Budget Mingguan (Rp):</label>
+          <div class="flex gap-2">
+            <input type="number" id="weeklyBudgetInput" class="border border-gray-300 px-3 py-2 rounded w-full" placeholder="Contoh: 500000">
+            <button type="button" onclick="setBudget()" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded">Set</button>
+          </div>
+        </div>
+      </div>
+      <!-- Kanan -->
+      <div class="flex flex-col gap-4">
+        <div>
+          <label class="block text-sm mb-1">Jumlah (Rp):</label>
+          <input type="number" id="amount" class="w-full border border-gray-300 px-3 py-2 rounded" required>
+        </div>
+        <div>
+          <label class="block text-sm mb-1">Tanggal:</label>
+          <input type="date" id="date" class="w-full border border-gray-300 px-3 py-2 rounded" required>
+        </div>
+        <div class="mt-auto">
+          <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded w-full md:w-auto">Tambah Pengeluaran</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- Ringkasan -->
+  <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6 text-center">
+    <div class="bg-white p-4 rounded shadow">
+      <p class="text-gray-500">Rp<span id="totalSpent">0</span></p>
+      <p class="font-semibold">Total Pengeluaran</p>
+    </div>
+    <div class="bg-white p-4 rounded shadow">
+      <p class="text-gray-500">Rp<span id="weeklyBudget">0</span></p>
+      <p class="font-semibold">Budget Mingguan</p>
+    </div>
+    <div class="bg-white p-4 rounded shadow">
+      <p class="text-gray-500"><span id="budgetUsedPercent">0%</span> dari budget terpakai</p>
+      <p class="font-semibold">Sisa Budget</p>
+    </div>
+  </div>
+
+  <!-- Grafik -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+    <div class="bg-white p-6 rounded shadow h-[340px] flex flex-col">
+      <h3 class="text-lg font-semibold mb-4">📊 Pengeluaran per Kategori</h3>
+      <canvas id="categoryChart" class="flex-grow"></canvas>
+    </div>
+    <div class="bg-white p-6 rounded shadow h-[340px] flex flex-col">
+      <h3 class="text-lg font-semibold mb-4">📈 Tren Pengeluaran Harian</h3>
+      <canvas id="dailyChart" class="flex-grow"></canvas>
+    </div>
+  </div>
+
+  <!-- Riwayat -->
+  <div class="bg-white p-6 rounded shadow mb-6">
+    <h3 class="text-lg font-semibold mb-2">📋 Riwayat Pengeluaran</h3>
+    <ul id="historyList" class="text-sm text-gray-700 space-y-2">
+      <li class="text-gray-400 italic">Belum ada pengeluaran yang dicatat.</li>
+    </ul>
+  </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  let expenses = [];
+  let budget = 0;
+
+  const totalSpentEl = document.getElementById('totalSpent');
+  const budgetEl = document.getElementById('weeklyBudget');
+  const percentEl = document.getElementById('budgetUsedPercent');
+  const historyList = document.getElementById('historyList');
+
+  const categoryCtx = document.getElementById('categoryChart').getContext('2d');
+  const dailyCtx = document.getElementById('dailyChart').getContext('2d');
+  let categoryChart, dailyChart;
+
+  document.getElementById('expenseForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const category = document.getElementById('category').value.trim();
+    const description = document.getElementById('description').value.trim();
+    const amount = parseInt(document.getElementById('amount').value);
+    const date = document.getElementById('date').value;
+
+    if (category && description && amount && date) {
+      expenses.push({ category, description, amount, date });
+      updateUI();
+      this.reset();
+    }
+  });
+
+  function setBudget() {
+    budget = parseInt(document.getElementById('weeklyBudgetInput').value) || 0;
+    updateUI();
+  }
+
+  function updateUI() {
+    const total = expenses.reduce((sum, e) => sum + e.amount, 0);
+    totalSpentEl.textContent = total.toLocaleString();
+    budgetEl.textContent = budget.toLocaleString();
+    const percent = budget > 0 ? Math.min(100, Math.round((total / budget) * 100)) : 0;
+    percentEl.textContent = percent + '%';
+
+    // History
+    historyList.innerHTML = expenses.length === 0
+      ? '<li class="text-gray-400 italic">Belum ada pengeluaran yang dicatat.</li>'
+      : expenses.map(e =>
+          `<li>📌 <strong>${e.category}</strong> - ${e.description} | Rp ${e.amount.toLocaleString()} (${e.date})</li>`
+        ).join('');
+
+    // Category Chart
+    const byCategory = {};
+    expenses.forEach(e => byCategory[e.category] = (byCategory[e.category] || 0) + e.amount);
+    if (categoryChart) categoryChart.destroy();
+    categoryChart = new Chart(categoryCtx, {
+      type: 'doughnut',
+      data: {
+        labels: Object.keys(byCategory),
+        datasets: [{
+          data: Object.values(byCategory),
+          backgroundColor: ['#3b82f6', '#f97316', '#10b981', '#f43f5e', '#8b5cf6'],
+        }]
+      }
+    });
+
+    // Daily Chart
+    const byDate = {};
+    expenses.forEach(e => byDate[e.date] = (byDate[e.date] || 0) + e.amount);
+    if (dailyChart) dailyChart.destroy();
+    dailyChart = new Chart(dailyCtx, {
+      type: 'line',
+      data: {
+        labels: Object.keys(byDate),
+        datasets: [{
+          label: 'Rp',
+          data: Object.values(byDate),
+          borderColor: '#3b82f6',
+          fill: false,
+          tension: 0.3
+        }]
+      }
+    });
+  }
+</script>

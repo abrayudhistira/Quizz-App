@@ -1,5 +1,7 @@
-const Sequelize = require('sequelize');
-module.exports = function(sequelize, DataTypes) {
+// models/user.js
+const { Sequelize, DataTypes } = require('sequelize');
+
+module.exports = function(sequelize) {
   return sequelize.define('user', {
     id: {
       autoIncrement: true,
@@ -21,13 +23,24 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false
     },
     role: {
-      type: DataTypes.ENUM('admin','user','mentor','student'),
+      type: DataTypes.ENUM('admin','user'),
       allowNull: true,
       defaultValue: "user"
     },
     photo: {
-      type: DataTypes.TEXT,
-      allowNull: true
+      type: DataTypes.STRING,
+      defaultValue: 'uploads/profile-pictures/avatar.png'
+    },
+    // override timestamps
+    createdAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
     }
   }, {
     sequelize,
@@ -38,17 +51,13 @@ module.exports = function(sequelize, DataTypes) {
         name: "PRIMARY",
         unique: true,
         using: "BTREE",
-        fields: [
-          { name: "id" },
-        ]
+        fields: [{ name: "id" }]
       },
       {
         name: "email",
         unique: true,
         using: "BTREE",
-        fields: [
-          { name: "email" },
-        ]
+        fields: [{ name: "email" }]
       },
     ]
   });

@@ -1,5 +1,7 @@
-const Sequelize = require('sequelize');
-module.exports = function(sequelize, DataTypes) {
+// models/subbab.js
+const { Sequelize, DataTypes } = require('sequelize');
+
+module.exports = function(sequelize) {
   return sequelize.define('subbab', {
     id: {
       autoIncrement: true,
@@ -30,6 +32,18 @@ module.exports = function(sequelize, DataTypes) {
     image_video_url: {
       type: DataTypes.TEXT,
       allowNull: true
+    },
+
+    // override timestamps
+    createdAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
     }
   }, {
     sequelize,
@@ -40,16 +54,12 @@ module.exports = function(sequelize, DataTypes) {
         name: "PRIMARY",
         unique: true,
         using: "BTREE",
-        fields: [
-          { name: "id" },
-        ]
+        fields: [{ name: "id" }]
       },
       {
         name: "modul_id",
         using: "BTREE",
-        fields: [
-          { name: "modul_id" },
-        ]
+        fields: [{ name: "modul_id" }]
       },
     ]
   });
