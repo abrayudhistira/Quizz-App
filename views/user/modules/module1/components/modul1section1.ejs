@@ -1,72 +1,59 @@
-<div class="container1" style="background: var(--kuning); border-radius: 16px; padding: 20px; width: 100%; max-width: 1200px; margin: 0 auto;">
-    <!-- Card Video (Putih, Full Width) -->
-    <div class="cardvideo" style="background: var(--putih); border-radius: 20px; box-shadow: 0 6px 24px rgba(44,44,86,0.08); padding: 32px 24px; width: 100%; max-width: 100%; margin: 0 auto 32px auto; text-align: center;">
-        <h1 style="color: var(--navy); font-size: 2rem; font-weight: 800; margin-bottom: 10px;">💸 Uang Jajan Kok Cepet Habis?!</h1>
-        <div style="color: var(--navy); font-size: 1.1rem; font-weight: 500; margin-bottom: 8px;">Modul 1: Mengenal Pola Belanja Impulsif Gen-Z</div>
-        <div style="color: var(--navy); font-size: 1rem; font-weight: 400; margin-bottom: 18px;">
-            Kenapa ya uang jajan kita selalu habis lebih cepet dari yang direncanakan? Yuk, kita bahas bareng tentang kebiasaan belanja yang sering bikin kita nyesal di akhir bulan!
+<section id="m1s1" class="w-full py-10 px-4 md:px-10 rounded-2xl">
+  <div class="bg-[var(--putih)] rounded-3xl px-6 py-10 max-w-screen-xl mx-auto">
+    <!-- Row 1: Video & Deskripsi -->
+    <div class="flex flex-col md:flex-row items-stretch gap-6">
+      <!-- Kiri: Video (centered vertically & horizontally, full height) -->
+      <div class="w-full md:w-1/2 flex items-center justify-center mb-6 md:mb-0">
+        <div class="w-full flex items-center justify-center h-full">
+          <video controls loop class="w-full max-w-2xl rounded-lg shadow-lg aspect-video" style="height: 290px; margin-top: -25px;">
+            <source src="https://raw.githubusercontent.com/luthfibphoenix/apmul/main/Remaja_dan_Pasar_Malam_Disney.mp4" type="video/mp4">
+            Browser Anda tidak mendukung video.
+          </video>
         </div>
-        <div style="margin: 0 auto 18px; max-width: 500px;">
-            <div style="position: relative; width: 100%; aspect-ratio: 16/9; background: linear-gradient(135deg, #ff6b6b, #4ecdc4); border-radius: 16px; overflow: hidden; cursor: pointer;" onclick="playVideo()">
-                <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #667eea, #764ba2);">
-                    <div style="width: 64px; height: 64px; background: rgba(255,255,255,0.9); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; color: #667eea;">
-                        <i class="fas fa-play"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div style="color: var(--navy); font-size: 1.1rem; font-weight: 700; margin-bottom: 0;">
-            Siklus Belanja Impulsif yang Bikin Kantong Jebol
-        </div>
+      </div>
+      <!-- Kanan: Judul & Deskripsi -->
+      <div class="w-full md:w-1/2 flex flex-col justify-center h-full">
+        <h2 class="text-2xl md:text-4xl font-bold mb-4 text-[var(--navy)]">
+          💸 Uang Jajan Kok Cepet Habis?!
+        </h2>
+        <p class="text-base md:text-lg text-[var(--navy)] mb-2">
+          Modul 1: Mengenal Pola Belanja Impulsif Gen-Z
+        </p>
+        <p class="text-base md:text-lg text-[var(--navy)] mb-8 max-w-2xl text-justify">
+          Kenapa ya uang jajan kita selalu habis lebih cepat dari yang direncanakan? 😩<br/>
+          Yuk, bahas bareng tentang kebiasaan belanja yang sering bikin kita nyesel di akhir bulan! Di modul ini, kamu akan melihat animasi kocak yang menggambarkan siklus belanja impulsif Gen-Z, lengkap dengan humor dan tips biar dompet tetap aman.
+        </p>
+      </div>
     </div>
-
-    <!-- Card Fun Fact (4 Card Horizontal, Full Width) -->
-    <div class="cardfunfact" style="background: var(--putih); border-radius: 16px; box-shadow: 0 4px 16px rgba(44,44,86,0.06); padding: 20px; width: 100%; max-width: 100%; margin: 0 auto; display: flex; flex-direction: row; gap: 20px;">
-        <!-- Card 1 -->
-        <div style="flex: 1; display: flex; flex-direction: column; align-items: flex-start; gap: 10px;">
-            <div style="width: 44px; height: 44px; background: linear-gradient(135deg, #ff6b6b, #4ecdc4); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 20px; margin-bottom: 8px;">
-                <i class="fas fa-shopping-cart"></i>
-            </div>
-            <div style="color: var(--navy); font-weight: 700;">78% Gen-Z Belanja Impulsif</div>
-            <div style="color: var(--navy); font-size: 0.97rem;">
-                Penelitian menunjukkan bahwa 78% remaja sering melakukan pembelian yang tidak direncanakan, terutama saat melihat diskon atau promo menarik di media sosial.
-            </div>
+    <!-- Row 2: Analogi & Fun Fact Cards -->
+    <div class="">
+      <div class="text-center font-semibold text-base md:text-lg text-[#333] mb-8">
+        <i class="fas fa-shopping-cart text-[var(--navy)]"></i>
+        Belanja impulsif itu kayak siklus tanpa akhir: seru di awal, nyesel di akhir bulan!
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-[var(--kuning)] p-6 rounded-xl shadow text-left flex flex-col items-start">
+          <div class="text-2xl mb-2 text-[var(--navy)]"><i class="fas fa-sync-alt"></i></div>
+          <div class="font-bold mb-1">70% Gen-Z Pernah Belanja Impulsif</div>
+          <div class="text-sm text-gray-700 text-justify">
+            Survei OJK 2023: Mayoritas anak muda sering belanja tanpa rencana, akhirnya menyesal di akhir bulan.
+          </div>
         </div>
-        <!-- Card 2 -->
-        <div style="flex: 1; display: flex; flex-direction: column; align-items: flex-start; gap: 10px;">
-            <div style="width: 44px; height: 44px; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 20px; margin-bottom: 8px;">
-                <i class="fas fa-mobile-alt"></i>
-            </div>
-            <div style="color: var(--navy); font-weight: 700;">3 Detik Keputusan Beli</div>
-            <div style="color: var(--navy); font-size: 0.97rem;">
-                Rata-rata Gen-Z hanya butuh 3 detik untuk memutuskan membeli sesuatu setelah melihat iklan atau postingan produk di Instagram atau TikTok. Super cepat kan?
-            </div>
+        <div class="bg-[var(--kuning)] p-6 rounded-xl shadow text-left flex flex-col items-start">
+          <div class="text-2xl mb-2 text-[#f6ad55]"><i class="fas fa-laugh-squint"></i></div>
+          <div class="font-bold mb-1">FOMO = Dompet Jebol</div>
+          <div class="text-sm text-gray-700 text-justify">
+            Efek FOMO dan promo bikin Gen-Z gampang tergoda beli barang yang sebenarnya nggak dibutuhkan.
+          </div>
         </div>
-        <!-- Card 3 -->
-        <div style="flex: 1; display: flex; flex-direction: column; align-items: flex-start; gap: 10px;">
-            <div style="width: 44px; height: 44px; background: linear-gradient(135deg, #f093fb, #f5576c); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 20px; margin-bottom: 8px;">
-                <i class="fas fa-credit-card"></i>
-            </div>
-            <div style="color: var(--navy); font-weight: 700;">Rp 250ribu Per Bulan</div>
-            <div style="color: var(--navy); font-size: 0.97rem;">
-                Rata-rata remaja Indonesia menghabiskan Rp 250ribu per bulan untuk pembelian impulsif, mulai dari makanan, aksesoris, hingga barang-barang unik yang viral.
-            </div>
+        <div class="bg-[var(--kuning)] p-6 rounded-xl shadow text-left flex flex-col items-start">
+          <div class="text-2xl mb-2 text-[#38b2ac]"><i class="fas fa-lightbulb"></i></div>
+          <div class="font-bold mb-1">Tips: Catat & Kontrol</div>
+          <div class="text-sm text-gray-700 text-justify">
+            Mulai biasakan catat pengeluaran dan bedakan mana kebutuhan, mana keinginan. Dompet aman, hati tenang!
+          </div>
         </div>
-        <!-- Card 4 -->
-        <div style="flex: 1; display: flex; flex-direction: column; align-items: flex-start; gap: 10px;">
-            <div style="width: 44px; height: 44px; background: linear-gradient(135deg, #11998e, #38ef7d); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 20px; margin-bottom: 8px;">
-                <i class="fas fa-heart"></i>
-            </div>
-            <div style="color: var(--navy); font-weight: 700;">Emosi = Belanja</div>
-            <div style="color: var(--navy); font-size: 0.97rem;">
-                65% Gen-Z mengaku sering belanja sebagai cara untuk meningkatkan mood atau mengatasi stres. Shopping therapy memang nyata adanya!
-            </div>
-        </div>
+      </div>
     </div>
-</div>
-
-<script>
-    function playVideo() {
-        alert('Video akan dimulai! 🎬\n\nDi sini kamu akan melihat animasi lucu tentang bagaimana uang jajan bisa habis tanpa disadari. Siap-siap ketawa tapi juga belajar ya! 😄');
-    }
-</script>
+  </div>
+</section>

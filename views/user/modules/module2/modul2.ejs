@@ -3,28 +3,160 @@
 <head>
   <meta charset="UTF-8">
   <title>Modul 2</title>
+  <script src="https://cdn.tailwindcss.com"></script>
   <style>
     :root {
-      --kuning: #FFE149ff;
-      --ungu: #857BE4ff;
-      --putih: #FFFFFFff;
+      --putih: #ffffff;
+      --kuning: #ffe44d;
+      --ungu: #6559ff;
       --navy: #2D2C56ff;
+      --hitam: #0f0f0f;
     }
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       background: var(--ungu);
-      min-height: 100vh;
+      min-height: 50vh;
       color: #333;
+    }
+    .section-nav-btn.active, .section-nav-btn:hover {
+      background: var(--putih);
+      color: var(--navy);
+      border-radius: 16rem;
+    }
+    #section-nav-container {
+      max-width: 1090px;
+      margin: 0 auto;
+    }
+    #prev-module, #next-module {
+      background: var(--kuning);
+      color: black;
+      font-weight: bold;
+      padding: 0.5rem 1rem;
+      border-radius: 16rem;
+      transition: background-color 0.3s ease;
+    }
+    #prev-module:hover, #next-module:hover {
+      background: #FFD700;
+    }
+    .middle-container h1 {
+      background: var(--kuning);
+      color: var(--navy);
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      border-radius: 16rem;
+      font-weight: bold;
+      margin-bottom: 0;
+    }
+    .nav-left {
+      flex: 1;
+      text-align: left;
+    }
+    .nav-right {
+      flex: 1;
+      text-align: right;
+    }
+    .nav-center {
+      flex: 3;
+      display: flex;
+      gap: 1rem;
+      justify-content: space-between;
+    }
+    .section-nav-btn {
+      flex: 1;
+      font-weight: 600;
+      padding: 0.5rem 0.75rem;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      color: white;
+      text-align: center;
+      transition: background-color 0.3s ease;
+      white-space: nowrap;
+    }
+    .section-nav-btn:hover, .section-nav-btn.active {
+      background: var(--putih);
+      color: var(--navy);
+      border-radius: 16rem;
     }
   </style>
 </head>
 <body>
-  <%- include('../../partials/header') %>
-  <%- include('components/modul2section1') %>
-  <%- include('components/modul2section2') %>
-  <%- include('components/modul2section3') %>
-  <%- include('components/modul2section4') %>
-  <%- include('components/modul2section5') %>
-  <%- include('../../partials/footer') %>
+  <%- include('../../../partials/header') %>
+
+  <div id="module2" class="max-w-screen-xl mx-auto px-4 py-6 mt-14">
+    <!-- Top Container -->
+    <div class="top-container max-w-screen-xl mx-auto px-4 md:px-20 flex items-center justify-between mb-10">
+      <!-- Kiri: Tombol Modul Sebelumnya -->
+      <div class="flex-1 text-left">
+        <button id="prev-module" onclick="window.location.href='/module1'">
+          &larr; Modul Sebelumnya
+        </button>
+      </div>
+      <!-- Tengah: Judul -->
+      <div class="flex-1 flex justify-center px-4 middle-container text-[var(--navy)]">
+        <div class="w-full text-center">
+          <h1 class="text-xl md:text-xl bg-[var(--kuning)] text-[var(--navy)] font-bold rounded-full px-8 py-3 shadow inline-block">
+            Modul 2: Tabungan itu Gaya Hidup Bukan Paksaan
+          </h1>
+        </div>
+      </div>
+      <!-- Kanan: Tombol Modul Selanjutnya -->
+      <div class="flex-1 text-right">
+        <button id="next-module" onclick="window.location.href='/module3'">
+          Modul Selanjutnya &rarr;
+        </button>
+      </div>
+    </div>
+
+    <!-- Navigasi Section S1-S5 dengan alignment kiri-kanan -->
+    <div id="section-nav-container" class="mt-6">
+      <div class="nav-left"></div>
+      <div class="nav-center">
+        <button class="section-nav-btn" data-section="1" id="nav-s1">1. Tentang Modul</button>
+        <button class="section-nav-btn" data-section="2" id="nav-s2">2. Mitos vs Fakta</button>
+        <button class="section-nav-btn" data-section="3" id="nav-s3">3. Micro-Saving</button>
+        <button class="section-nav-btn" data-section="4" id="nav-s4">4. Tentukan Tujuan Nabung</button>
+        <button class="section-nav-btn" data-section="5" id="nav-s5">5. Penutup Modul 2</button>
+      </div>
+      <div class="nav-right"></div>
+    </div>
+    <!-- Garis horizontal custom -->
+    <div class="w-full flex justify-center">
+      <div class="h-1 bg-[#cbd5e1] rounded-full mt-4 mb-4" style="width: 100%; max-width: 1090px;"></div>
+    </div>
+
+    <!-- Container Section -->
+    <div id="modul2-sections" class="bottom-container max-w-screen-xl mx-auto px-4 md:px-10 ">
+      <div id="section-1"><%- include('./components/modul2section1') %></div>
+      <div id="section-2" style="display:none"><%- include('./components/modul2section2') %></div>
+      <div id="section-3" style="display:none"><%- include('./components/modul2section3') %></div>
+      <div id="section-4" style="display:none"><%- include('./components/modul2section4') %></div>
+      <div id="section-5" style="display:none"><%- include('./components/modul2section5') %></div>
+    </div>
+  </div>
+
+  <%- include('../../../partials/footer') %>
+
+  <script>
+    const totalSections = 5;
+    let currentSection = 1;
+
+    function showSection(idx) {
+      for (let i = 1; i <= totalSections; i++) {
+        document.getElementById('section-' + i).style.display = (i === idx) ? '' : 'none';
+        document.getElementById('nav-s' + i).classList.toggle('active', i === idx);
+      }
+    }
+
+    document.querySelectorAll('.section-nav-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const idx = parseInt(this.getAttribute('data-section'));
+        currentSection = idx;
+        showSection(currentSection);
+      });
+    });
+
+    showSection(currentSection);
+  </script>
 </body>
 </html>

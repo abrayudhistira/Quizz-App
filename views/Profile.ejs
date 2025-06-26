@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Profil Pengguna</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { font-family: 'Inter', Arial, sans-serif; }
+    /* Tambahan agar avatar tidak terpotong */
+    .avatar-wrapper {
+      background: #fff;
+      border-radius: 9999px;
+      border: 4px solid #FFE149;
+      box-shadow: 0 4px 24px 0 rgba(44,44,90,0.08);
+      width: 128px;
+      height: 128px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 20;
+    }
+    .avatar-img {
+      width: 112px;
+      height: 112px;
+      object-fit: contain;
+      border-radius: 9999px;
+      background: #fff;
+    }
+    @media (max-width: 600px) {
+      .avatar-wrapper { width: 96px; height: 96px; }
+      .avatar-img { width: 84px; height: 84px; }
+    }
+  </style>
+</head>
+<body class="bg-[#6559ff] min-h-screen flex items-center justify-center px-4">
+
+  <div class="w-full max-w-4xl rounded-[40px] overflow-hidden shadow-xl">
+    <!-- Banner Header -->
+    <div class="relative h-48 bg-cover bg-center" style="background-image: url('https://raw.githubusercontent.com/luthfibphoenix/apmul/main/Tabungan.png');">
+      <!-- Tombol Back ke Dashboard -->
+      <a href="/dashboard" class="absolute top-5 left-5 bg-white text-[#2D2C56] px-4 py-1 rounded-full text-sm font-semibold shadow hover:bg-gray-100 flex items-center gap-2 transition z-30">
+        &larr; Dashboard
+      </a>
+      <!-- Avatar -->
+      <div class="absolute left-8 -bottom-16 z-20">
+        <div class="avatar-wrapper">
+          <img 
+            src="https://raw.githubusercontent.com/luthfibphoenix/apmul/main/BD.png" 
+            alt="Avatar" 
+            class="avatar-img"
+          />
+        </div>
+      </div>
+    </div>
+    
+    <!-- Card Kuning -->
+    <div class="bg-[#FFE149] px-12 pt-20 pb-10 rounded-b-[40px] relative">
+      <div class="flex justify-between items-start">
+        <!-- Kiri: Nama, Poin, Title -->
+        <div class="mt-2">
+          <div class="text-3xl font-bold text-[#2D2C56]">Muhammad Azmi</div>
+          <div class="flex items-center gap-2 text-[#2D2C56] font-semibold text-lg mt-3">
+            <svg width="24" height="24" fill="none" stroke="#2D2C56" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2l2.09 6.26L20 9.27l-5 3.64L16.18 20 12 16.77 7.82 20 9 12.91l-5-3.64 5.91-.91L12 2z"/></svg>
+            <span>2000</span>
+          </div>
+          <div class="flex items-center gap-2 text-[#2D2C56] font-semibold text-lg mt-2">
+            <svg width="22" height="22" fill="none" stroke="#2D2C56" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            <span>The Iron Man</span>
+          </div>
+        </div>
+        <!-- Kanan: Edit Profile & Progress -->
+        <div class="flex flex-col items-end w-52">
+          <a href="/profile/edit" class="bg-[#2D2C56] text-white px-6 py-2 rounded-full font-medium text-base mb-6 shadow hover:bg-[#39387a] transition text-center block">Edit Profil</a>
+          <div class="text-right text-[#2D2C56] text-xl font-semibold space-y-1">
+            <div>Modul 3/4</div>
+            <div>Quiz 3/4</div>
+            <div>Tantangan 3/4</div>
+          </div>
+        </div>
+      </div>
+      <!-- Badge -->
+      <div class="flex flex-row gap-6 justify-center mt-12">
+        <div class="bg-white rounded-2xl px-6 py-4 flex flex-row items-center shadow w-[300px]">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-[#2D2C56] mr-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17 17v1a3 3 0 01-3 3H10a3 3 0 01-3-3v-1m9-4a5 5 0 10-10 0 5 5 0 0010 0zm-5-7v3m0 0H7m5 0h3"/>
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4"/>
+          </svg>
+          <div>
+            <div class="font-bold text-base text-[#2D2C56]">Pemula yang cermat</div>
+            <div class="text-[#2D2C56] text-sm mt-1">Selamat! Tantangan pertama berhasil kamu taklukkan!</div>
+          </div>
+        </div>
+        <div class="bg-white rounded-2xl px-6 py-4 flex flex-row items-center shadow w-[300px]">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-[#2D2C56] mr-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17 17v1a3 3 0 01-3 3H10a3 3 0 01-3-3v-1m9-4a5 5 0 10-10 0 5 5 0 0010 0zm-5-7v3m0 0H7m5 0h3"/>
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4"/>
+          </svg>
+          <div>
+            <div class="font-bold text-base text-[#2D2C56]">Pemula yang cermat</div>
+            <div class="text-[#2D2C56] text-sm mt-1">Selamat! Tantangan pertama berhasil kamu taklukkan!</div>
+          </div>
+        </div>
+        <div class="bg-white rounded-2xl px-6 py-4 flex flex-row items-center shadow w-[300px]">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-[#2D2C56] mr-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17 17v1a3 3 0 01-3 3H10a3 3 0 01-3-3v-1m9-4a5 5 0 10-10 0 5 5 0 0010 0zm-5-7v3m0 0H7m5 0h3"/>
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4"/>
+          </svg>
+          <div>
+            <div class="font-bold text-base text-[#2D2C56]">Pemula yang cermat</div>
+            <div class="text-[#2D2C56] text-sm mt-1">Selamat! Tantangan pertama berhasil kamu taklukkan!</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+</body>
+</html>

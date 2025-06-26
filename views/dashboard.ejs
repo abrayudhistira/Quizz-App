@@ -206,7 +206,7 @@
         <div class="icon-group">
           <i class="fi fi-rr-settings"></i> <span>The Iron Man</span>
         </div>
-        <img src="/<%= user.photo %>" alt="User Photo" />
+        <img src="/<%= user.photo %>" alt="User Photo" id="profile-photo" style="cursor:pointer;" />
         <form action="/logout" method="POST">
           <button class="logout-button" type="submit"><i class="fi fi-rr-exit"></i></button>
         </form>
@@ -288,20 +288,21 @@
 <script>
     document.addEventListener("DOMContentLoaded", function () {
       const navItems = document.querySelectorAll(".nav-item");
-  
+      const profilePhoto = document.getElementById("profile-photo");
+
       navItems.forEach((item) => {
         item.addEventListener("click", () => {
           const label = item.innerText.trim().toLowerCase();
-  
+
           switch (label) {
             case "modul":
               window.location.href = "/list-module";
               break;
             case "quiz":
-              window.location.href = "/quiz1";
+              window.location.href = "/list-quiz";
               break;
             case "tantangan":
-              window.location.href = "/tantangan1";
+              window.location.href = "/list-tantangan";
               break;
             case "simulasi":
               window.location.href = "/simulasi";
@@ -311,6 +312,13 @@
           }
         });
       });
+
+      // Tambahkan event untuk foto profil
+      if (profilePhoto) {
+        profilePhoto.addEventListener("click", function () {
+          window.location.href = "/profile";
+        });
+      }
     });
   </script>
   

@@ -1,68 +1,58 @@
-<div class="container" style="max-width:1200px;margin:0 auto;padding:20px;">
-    <header class="header" style="text-align:center;color:white;margin-bottom:40px;">
-        <h1 style="font-size:2.7rem;margin-bottom:18px;
-            background:linear-gradient(45deg,#fff,#b2fefa);
-            -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-            background-clip:text;">
-            🎮 Budgeting Gak Ribet, Asal Tahu Triknya!
-        </h1>
-        <p class="subtitle" style="font-size:1.2rem;opacity:0.9;margin-bottom:10px;">
-            Modul 3: Cara Seru Atur Uang ala Game Point System
+<section id="m3s1" class="w-full py-10 px-4 md:px-10 rounded-2xl">
+  <div class="bg-[var(--putih)] rounded-3xl px-6 py-10 max-w-screen-xl mx-auto">
+    <!-- Row 1: Video & Deskripsi -->
+    <div class="flex flex-col md:flex-row items-stretch gap-6">
+      <!-- Kiri: Video (centered vertically & horizontally, full height) -->
+      <div class="w-full md:w-1/2 flex items-center justify-center mb-6 md:mb-0">
+        <div class="w-full flex items-center justify-center h-full">
+          <video id="main-video" class="w-full max-w-2xl rounded-lg shadow-lg aspect-video" style="height: 290px; margin-top: -25px;" controls loop autoplay>
+            <source src="https://raw.githubusercontent.com/luthfibphoenix/apmul/main/m3.mp4" type="video/mp4">
+            Browser Anda tidak mendukung video.
+          </video>
+        </div>
+      </div>
+      <!-- Kanan: Judul & Deskripsi -->
+      <div class="w-full md:w-1/2 flex flex-col justify-center h-full">
+        <h2 class="text-2xl md:text-4xl font-bold mb-4 text-black">
+          <span class="text-[#4fd1c5]">🎮</span> Budgeting Gak Ribet, Asal Tahu Triknya!
+        </h2>
+        <p class="text-base md:text-lg text-gray-600 mb-2">
+          Modul 3: Cara Seru Atur Uang ala Game Point System
         </p>
-        <p class="description" style="font-size:1.1rem;opacity:0.85;max-width:600px;margin:0 auto 18px auto;line-height:1.6;">
-            Pernah nggak sih, ngerasa uang bulanan selalu habis padahal baru pertengahan bulan? Tenang, budgeting itu nggak harus ribet kok! Di modul ini, kamu akan belajar cara mengatur uang dengan trik seru, pakai analogi game point system yang gampang banget dipraktikkan. Yuk, mulai perjalanan finansialmu jadi lebih terkontrol dan tetap fun!
+        <p class="text-base md:text-lg text-gray-700 mb-8 max-w-2xl text-justify">
+          Pernah nggak sih, ngerasa uang bulanan selalu habis padahal baru pertengahan bulan? Tenang, budgeting itu nggak harus ribet kok! Di modul ini, kamu akan belajar cara mengatur uang dengan trik seru, pakai analogi game point system yang gampang banget dipraktikkan. Yuk, mulai perjalanan finansialmu jadi lebih terkontrol dan tetap fun!
         </p>
-    </header>
-
-    <main class="main-card" style="background:rgba(255,255,255,0.97);border-radius:20px;padding:36px;margin:30px 0;box-shadow:0 20px 40px rgba(0,0,0,0.08);backdrop-filter:blur(8px);position:relative;overflow:hidden;">
-        <div style="width:100%;max-width:700px;margin:0 auto 28px auto;">
-            <video id="main-video" width="100%" controls loop autoplay style="border-radius:15px;box-shadow:0 10px 25px rgba(0,0,0,0.08);background:#000;">
-                <source src="/video/video3-1.mp4" type="video/mp4">
-                Browser Anda tidak mendukung video.
-            </video>
+      </div>
+    </div>
+    <!-- Row 2: Analogi & Fun Fact Cards -->
+    <div class="">
+      <div class="text-center font-semibold text-base md:text-lg text-[#333] mb-8">
+        <i class="fas fa-gamepad text-[#4fd1c5]"></i>
+        Budgeting itu kayak main game: Setiap pengeluaran = point, dan kamu harus atur strategi biar point-mu nggak habis sebelum "level" berikutnya!
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-[var(--kuning)] p-6 rounded-xl shadow text-left flex flex-col items-start">
+          <div class="text-2xl mb-2 text-[#4fd1c5]"><i class="fas fa-coins"></i></div>
+          <div class="font-bold mb-1">Gen-Z Jarang Punya Anggaran</div>
+          <div class="text-sm text-gray-700 text-justify">
+            Survei OJK 2023: Mayoritas anak muda belum punya kebiasaan budgeting, padahal ini kunci biar uang nggak bocor tiap bulan!
+          </div>
         </div>
-        <div style="color:#333;font-size:1.15rem;font-weight:700;text-align:center;margin-bottom:28px;">
-            <i class="fas fa-gamepad" style="color:#4fd1c5;"></i>
-            Budgeting itu kayak main game: Setiap pengeluaran = point, dan kamu harus atur strategi biar point-mu nggak habis sebelum "level" berikutnya!
+        <div class="bg-[var(--kuning)] p-6 rounded-xl shadow text-left flex flex-col items-start">
+          <div class="text-2xl mb-2 text-[#f6ad55]"><i class="fas fa-bolt"></i></div>
+          <div class="font-bold mb-1">Budgeting = Bebas Stres</div>
+          <div class="text-sm text-gray-700 text-justify">
+            Studi University of Cambridge: Remaja yang rutin budgeting lebih jarang stres soal keuangan dan lebih percaya diri ambil keputusan.
+          </div>
         </div>
-
-        <div class="funfact-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:22px;margin:30px 0;">
-            <div class="funfact-card" style="background:#f0f8ff;padding:22px 18px;border-radius:14px;box-shadow:0 6px 18px rgba(44,44,86,0.07);text-align:left;">
-                <div style="font-size:2rem;margin-bottom:10px;color:#4fd1c5;"><i class="fas fa-coins"></i></div>
-                <div style="font-weight:700;margin-bottom:6px;">Hanya 1 dari 3 Gen-Z Punya Anggaran Bulanan</div>
-                <div style="font-size:0.98rem;opacity:0.85;">
-                    Survei OJK 2023: Mayoritas anak muda belum punya kebiasaan budgeting, padahal ini kunci biar uang nggak bocor tiap bulan!
-                </div>
-            </div>
-            <div class="funfact-card" style="background:#fffbe7;padding:22px 18px;border-radius:14px;box-shadow:0 6px 18px rgba(44,44,86,0.07);text-align:left;">
-                <div style="font-size:2rem;margin-bottom:10px;color:#f6ad55;"><i class="fas fa-bolt"></i></div>
-                <div style="font-weight:700;margin-bottom:6px;">Budgeting = Bebas Stres</div>
-                <div style="font-size:0.98rem;opacity:0.85;">
-                    Studi University of Cambridge: Remaja yang rutin budgeting lebih jarang stres soal keuangan dan lebih percaya diri ambil keputusan.
-                </div>
-            </div>
-            <div class="funfact-card" style="background:#e6fffa;padding:22px 18px;border-radius:14px;box-shadow:0 6px 18px rgba(44,44,86,0.07);text-align:left;">
-                <div style="font-size:2rem;margin-bottom:10px;color:#38b2ac;"><i class="fas fa-trophy"></i></div>
-                <div style="font-weight:700;margin-bottom:6px;">Budgeting = Skill Hidup</div>
-                <div style="font-size:0.98rem;opacity:0.85;">
-                    Budgeting itu bukan cuma soal uang, tapi juga skill penting biar kamu bisa capai target dan mimpi lebih cepat!
-                </div>
-            </div>
+        <div class="bg-[var(--kuning)] p-6 rounded-xl shadow text-left flex flex-col items-start">
+          <div class="text-2xl mb-2 text-[#38b2ac]"><i class="fas fa-trophy"></i></div>
+          <div class="font-bold mb-1">Budgeting = Skill Hidup</div>
+          <div class="text-sm text-gray-700 text-justify">
+            Budgeting itu bukan cuma soal uang, tapi juga skill penting biar kamu bisa capai target dan mimpi lebih cepat!
+          </div>
         </div>
-    </main>
-</div>
-<!-- Minimal responsive style for mobile -->
-<style>
-@media (max-width: 768px) {
-    .header h1 { font-size:2rem !important; }
-    .main-card { padding:20px !important; }
-    .funfact-grid { grid-template-columns:1fr !important; }
-    video { height:200px !important; }
-}
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #b2fefa 0%, #4fd1c5 100%);
-    min-height: 100vh;
-    overflow-x: hidden;
-}
-</style>
+      </div>
+    </div>
+  </div>
+</section>

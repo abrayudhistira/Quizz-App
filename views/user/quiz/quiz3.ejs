@@ -1,566 +1,578 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🕵️ Detektif Pengeluaran</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            overflow: hidden;
-        }
-
-        .header {
-            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
-            color: white;
-            padding: 30px;
-            text-align: center;
-            position: relative;
-        }
-
-        .header::before {
-            content: '🔍💰';
-            font-size: 4rem;
-            position: absolute;
-            top: 10px;
-            left: 30px;
-            opacity: 0.3;
-        }
-
-        .header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-
-        .progress-bar {
-            background: rgba(255,255,255,0.2);
-            height: 10px;
-            border-radius: 5px;
-            margin-top: 20px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: #4CAF50;
-            border-radius: 5px;
-            transition: width 0.3s ease;
-            width: 0%;
-        }
-
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            padding: 30px;
-            background: #f8f9fa;
-        }
-
-        .stat-card {
-            background: white;
-            padding: 20px;
-            border-radius: 15px;
-            text-align: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .stat-card .icon {
-            font-size: 2rem;
-            margin-bottom: 10px;
-        }
-
-        .stat-card .number {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #333;
-        }
-
-        .stat-card .label {
-            color: #666;
-            font-size: 0.9rem;
-        }
-
-        .main-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            padding: 30px;
-        }
-
-        .form-section {
-            background: #f8f9fa;
-            padding: 25px;
-            border-radius: 15px;
-        }
-
-        .form-section h2 {
-            color: #333;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-            color: #555;
-        }
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #ddd;
-            border-radius: 10px;
-            font-size: 1rem;
-            transition: border-color 0.3s ease;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-
-        .btn-add {
-            background: linear-gradient(135deg, #4CAF50, #45a049);
-            color: white;
-            padding: 12px 25px;
-            border: none;
-            border-radius: 10px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-            width: 100%;
-        }
-
-        .btn-add:hover {
-            transform: translateY(-2px);
-        }
-
-        .expenses-list {
-            background: #f8f9fa;
-            padding: 25px;
-            border-radius: 15px;
-            max-height: 600px;
-            overflow-y: auto;
-        }
-
-        .expense-item {
-            background: white;
-            padding: 15px;
-            margin-bottom: 10px;
-            border-radius: 10px;
-            border-left: 4px solid #667eea;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .expense-info {
-            flex: 1;
-        }
-
-        .expense-amount {
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: #e74c3c;
-        }
-
-        .expense-category {
-            background: #667eea;
-            color: white;
-            padding: 4px 8px;
-            border-radius: 5px;
-            font-size: 0.8rem;
-            margin-right: 10px;
-        }
-
-        .delete-btn {
-            background: #e74c3c;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 0.8rem;
-        }
-
-        .analysis-section {
-            grid-column: 1 / -1;
-            background: #f8f9fa;
-            padding: 25px;
-            border-radius: 15px;
-            margin-top: 20px;
-        }
-
-        .category-chart {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .category-item {
-            background: white;
-            padding: 15px;
-            border-radius: 10px;
-            text-align: center;
-        }
-
-        .category-bar {
-            height: 20px;
-            background: #ddd;
-            border-radius: 10px;
-            overflow: hidden;
-            margin: 10px 0;
-        }
-
-        .category-fill {
-            height: 100%;
-            transition: width 0.5s ease;
-        }
-
-        .achievement {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            color: white;
-            padding: 20px;
-            border-radius: 15px;
-            text-align: center;
-            margin-top: 20px;
-            display: none;
-        }
-
-        .achievement.show {
-            display: block;
-            animation: slideIn 0.5s ease;
-        }
-
-        @keyframes slideIn {
-            from { transform: translateY(-20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        @media (max-width: 768px) {
-            .main-content {
-                grid-template-columns: 1fr;
-            }
-            
-            .stats {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kuis Interaktif</title>
+  <style>
+    :root {
+      --putih: #fff;
+      --kuning: #ffe44d;
+      --navy: #232343;
+      --ungu: #6559ff;
+      --hitam: #0f0f0f;
+    }
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', Arial, sans-serif;
+      background: var(--ungu);
+      color: var(--hitam);
+      width: 100vw;
+      min-height: 100vh;
+      box-sizing: border-box;
+    }
+    .ultra-container {
+      min-height: 100vh;
+      min-width: 100vw;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      box-sizing: border-box;
+    }
+    .quiz-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .top-nav-row,
+    .middle-container,
+    .main-container {
+      width: 1100px;
+      max-width: 95vw;
+      margin-left: 0;
+      margin-right: 0;
+      padding-left: 0;
+      padding-right: 0;
+      box-sizing: border-box;
+    }
+    .top-nav-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 32px;
+    }
+    .nav-btn {
+      background: var(--putih);
+      color: var(--hitam);
+      border: none;
+      border-radius: 32px;
+      padding: 16px 48px;
+      font-size: 1.1rem;
+      font-weight: 500;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(101, 89, 255, 0.10);
+      transition: background 0.2s;
+    }
+    .nav-btn:active {
+      background: #f1f1f1;
+    }
+    .nav-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .title-badge {
+      background: var(--kuning);
+      color: var(--navy);
+      border-radius: 32px;
+      padding: 16px 48px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      border: none;
+      box-shadow: 0 2px 8px rgba(101, 89, 255, 0.10);
+      letter-spacing: 0.5px;
+    }
+    .middle-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 32px;
+    }
+    .quiz-question {
+      color: var(--putih);
+      font-size: 2.6rem;
+      font-weight: bold;
+      margin-bottom: 0;
+      margin-top: 0;
+      text-align: center;
+      letter-spacing: 0.5px;
+      line-height: 1.2;
+    }
+    .main-container {
+      background: var(--kuning);
+      border-radius: 40px;
+      box-shadow: 0 8px 32px rgba(101, 89, 255, 0.15);
+      padding: 50px 0 50px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+      align-items: stretch;
+    }
+    .option-list {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+    .option-item {
+      border-radius: 32px;
+      overflow: hidden;
+    }
+    .option-label {
+      margin: 0 20px 0 20px;
+      display: flex;
+      align-items: center;
+      background: var(--putih);
+      color: var(--hitam);
+      border-radius: 32px;
+      padding: 22px 36px;
+      font-size: 1.22rem;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      transition: background 0.2s, color 0.2s, border 0.2s;
+      position: relative;
+      box-shadow: 0 2px 8px rgba(101, 89, 255, 0.03);
+      gap: 16px;
+    }
+    .option-label.selected {
+      background: var(--navy);
+      color: var(--putih);
+    }
+    .option-label input[type="radio"] {
+      accent-color: var(--ungu);
+      margin-right: 18px;
+      width: 24px;
+      height: 24px;
+      cursor: pointer;
+      appearance: none;
+      border: 3px solid var(--ungu);
+      border-radius: 50%;
+      background: var(--putih);
+      outline: none;
+      position: relative;
+      transition: border 0.2s;
+      display: inline-block;
+    }
+    .option-label.selected input[type="radio"] {
+      border: 8px solid var(--putih);
+      background: var(--navy);
+      box-shadow: 0 0 0 4px var(--navy);
+    }
+    .option-label.selected::before {
+      content: '✔';
+      font-size: 1.2rem;
+      color: var(--putih);
+      background: var(--navy);
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      left: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 2;
+    }
+    .option-label.selected input[type="radio"] {
+      visibility: hidden;
+    }
+    .option-label.selected span {
+      margin-left: 28px;
+    }
+    /* Hasil */
+    .result-screen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-top: 0;
+      width: 100vw;
+    }
+    .score-title {
+      color: var(--putih);
+      font-size: 2.5rem;
+      font-weight: bold;
+      margin-bottom: 10px;
+      text-align: center;
+      letter-spacing: 0.5px;
+    }
+    .score-point {
+      background: var(--kuning);
+      color: var(--navy);
+      font-size: 2rem;
+      font-weight: 700;
+      border-radius: 32px;
+      padding: 16px 48px;
+      margin-bottom: 24px;
+      text-align: center;
+      letter-spacing: 1px;
+      box-shadow: 0 2px 8px rgba(101, 89, 255, 0.10);
+      display: inline-block;
+    }
+    .score-detail {
+      color: var(--putih);
+      font-size: 1.2rem;
+      margin-bottom: 32px;
+      text-align: center;
+    }
+    .result-btn-group {
+      display: flex;
+      gap: 16px;
+      margin-top: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .result-btn {
+      background: var(--putih);
+      color: var(--hitam);
+      border: none;
+      border-radius: 32px;
+      padding: 16px 48px;
+      font-size: 1.1rem;
+      font-weight: 500;
+      cursor: pointer;
+      margin: 0 12px;
+      box-shadow: 0 2px 8px rgba(101, 89, 255, 0.10);
+      transition: background 0.2s;
+    }
+    .result-btn:active {
+      background: #f1f1f1;
+    }
+    .result-btn-tantangan {
+      background: var(--kuning);
+      color: var(--navy);
+      font-weight: 700;
+    }
+    .result-btn-tantangan:active {
+      background: #ffe44d;
+    }
+    /* Modal Tantangan */
+    #tantangan-modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.35);
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+    #tantangan-modal .modal-card {
+      background: var(--putih);
+      color: var(--navy);
+      border-radius: 32px;
+      padding: 40px 32px;
+      box-shadow: 0 4px 32px rgba(101,89,255,0.18);
+      min-width: 320px;
+      max-width: 90vw;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+    }
+    #tantangan-modal .modal-card h2 {
+      margin-top: 0;
+      margin-bottom: 8px;
+      font-size: 1.6rem;
+      font-weight: 700;
+    }
+    #tantangan-modal .modal-card p {
+      margin: 0 0 12px 0;
+      color: var(--navy);
+      font-size: 1.13rem;
+    }
+    #tantangan-modal .modal-card .modal-btn {
+      background: var(--kuning);
+      color: var(--navy);
+      font-weight: 700;
+      border: none;
+      border-radius: 32px;
+      padding: 16px 48px;
+      font-size: 1.1rem;
+      margin-top: 12px;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(101, 89, 255, 0.10);
+      transition: background 0.2s;
+    }
+    #tantangan-modal .modal-card .modal-btn:active {
+      background: #ffe44d;
+    }
+    #tantangan-modal .modal-card .modal-cancel {
+      background: none;
+      color: var(--ungu);
+      border: none;
+      font-size: 1rem;
+      margin-top: 8px;
+      cursor: pointer;
+      font-weight: 500;
+      text-decoration: underline;
+    }
+    @media (max-width: 1200px) {
+      .main-container,
+      .top-nav-row,
+      .middle-container {
+        width: 98vw;
+        min-width: 0;
+        max-width: 98vw;
+        padding-left: 0;
+        padding-right: 0;
+      }
+      .main-container {
+        padding: 28px 0;
+        border-radius: 18px;
+      }
+    }
+    @media (max-width: 700px) {
+      .main-container,
+      .top-nav-row,
+      .middle-container {
+        width: 100vw;
+        padding-left: 0;
+        padding-right: 0;
+      }
+      .main-container {
+        padding: 12px 0;
+        border-radius: 12px;
+      }
+      .quiz-question {
+        font-size: 1.2rem;
+      }
+      .option-label {
+        font-size: 1rem;
+        padding: 12px 12px;
+        border-radius: 18px;
+      }
+      .option-label.selected::before {
+        width: 22px;
+        height: 22px;
+        font-size: 1rem;
+        left: 10px;
+      }
+      .option-label.selected span {
+        margin-left: 18px;
+      }
+      .title-badge {
+        padding: 10px 10px;
+        font-size: 1rem;
+      }
+      .nav-btn {
+        padding: 10px 10px;
+        font-size: 1rem;
+      }
+      .badge-img {
+        width: 110px;
+        height: 110px;
+      }
+      .score-title {
+        font-size: 1.3rem;
+      }
+      .score-point {
+        font-size: 1.2rem;
+        padding: 10px 20px;
+      }
+      .result-btn {
+        padding: 10px 18px;
+        font-size: 1rem;
+      }
+      #tantangan-modal .modal-card {
+        padding: 18px 8px;
+        border-radius: 18px;
+        min-width: 0;
+        font-size: 1rem;
+      }
+      #tantangan-modal .modal-card h2 {
+        font-size: 1.1rem;
+      }
+      #tantangan-modal .modal-card .modal-btn {
+        padding: 10px 20px;
+        font-size: 1rem;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>🕵️ Detektif Pengeluaran</h1>
-            <p>Lacak setiap rupiah yang "kabur" dari kantongmu!</p>
-            <div class="progress-bar">
-                <div class="progress-fill" id="progressFill"></div>
-            </div>
-            <p id="progressText" style="margin-top: 10px;">0/15 transaksi tercatat</p>
-        </div>
-
-        <div class="stats">
-            <div class="stat-card">
-                <div class="icon">📊</div>
-                <div class="number" id="totalTransactions">0</div>
-                <div class="label">Total Transaksi</div>
-            </div>
-            <div class="stat-card">
-                <div class="icon">💸</div>
-                <div class="number" id="totalSpent">Rp 0</div>
-                <div class="label">Total Pengeluaran</div>
-            </div>
-            <div class="stat-card">
-                <div class="icon">📅</div>
-                <div class="number" id="daysTracked">0</div>
-                <div class="label">Hari Dilacak</div>
-            </div>
-            <div class="stat-card">
-                <div class="icon">🎯</div>
-                <div class="number" id="avgPerDay">Rp 0</div>
-                <div class="label">Rata-rata/Hari</div>
-            </div>
-        </div>
-
-        <div class="main-content">
-            <div class="form-section">
-                <h2>📝 Catat Pengeluaran</h2>
-                <form id="expenseForm">
-                    <div class="form-group">
-                        <label for="date">Tanggal *</label>
-                        <input type="date" id="date" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="amount">Jumlah (Rp) *</label>
-                        <input type="number" id="amount" min="0" step="500" placeholder="10000" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="category">Kategori *</label>
-                        <select id="category" required>
-                            <option value="">Pilih kategori...</option>
-                            <option value="Makanan & Minuman">🍔 Makanan & Minuman</option>
-                            <option value="Transportasi">🚗 Transportasi</option>
-                            <option value="Hiburan">🎮 Hiburan</option>
-                            <option value="Belanja">🛒 Belanja</option>
-                            <option value="Pendidikan">📚 Pendidikan</option>
-                            <option value="Kesehatan">⚕️ Kesehatan</option>
-                            <option value="Lainnya">📦 Lainnya</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="description">Keterangan *</label>
-                        <textarea id="description" rows="2" placeholder="Beli nasi gudeg di kantin..." required></textarea>
-                    </div>
-                    <button type="submit" class="btn-add">➕ Tambah Pengeluaran</button>
-                </form>
-            </div>
-
-            <div class="expenses-list">
-                <h2>📋 Daftar Pengeluaran</h2>
-                <div id="expensesList">
-                    <p style="text-align: center; color: #999; margin-top: 50px;">
-                        Belum ada pengeluaran tercatat.<br>
-                        Mulai catat pengeluaranmu! 🔍
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <div class="analysis-section">
-            <h2>🔍 Analisis Detektif</h2>
-            <div id="analysisContent">
-                <p style="text-align: center; color: #999;">
-                    Catat minimal 15 transaksi dalam 3 hari untuk melihat analisis lengkap! 📊
-                </p>
-            </div>
-        </div>
-
-        <div class="achievement" id="achievement">
-            <h2>🏆 Selamat! Badge "Money Detective" Berhasil Didapat!</h2>
-            <p>Kamu telah berhasil melacak pengeluaran selama 3 hari dengan minimal 15 transaksi!</p>
-            <p><strong>+100 Poin!</strong> 🎉</p>
-        </div>
+  <div class="ultra-container">
+    <div class="quiz-group" id="quiz-container">
+      <!-- Top Navigation -->
+      <div class="top-nav-row" id="nav-row">
+        <button class="nav-btn" id="prev-btn">Kembali</button>
+        <div class="title-badge" id="quiz-title">Modul 3: Budgeting Gak Ribet, Asal Tahu Triknya</div>
+        <button class="nav-btn" id="next-btn">Next</button>
+      </div>
+      <!-- Middle: Judul Soal -->
+      <div class="middle-container" id="middle-container">
+        <div class="quiz-question" id="question-text"></div>
+      </div>
+      <!-- Main Container (Options) -->
+      <div class="main-container" id="main-container">
+        <div class="option-list" id="option-list"></div>
+      </div>
     </div>
+    <!-- Hasil (hidden by default) -->
+    <div class="result-screen" id="result-screen" style="display:none;">
+      <div class="score-title" id="score-title">Skor Kamu</div>
+      <div class="score-point" id="score-point"></div>
+      <div class="score-detail" id="score-detail"></div>
+      <div class="result-btn-group">
+        <button class="result-btn" onclick="window.location.href='/module3'">Back to Modul</button>
+        <button class="result-btn" onclick="location.reload()">Ulangi Kuis</button>
+        <button class="result-btn result-btn-tantangan" onclick="openTantanganModal()">Next to Tantangan</button>
+      </div>
+    </div>
+  </div>
+  <!-- Modal Tantangan -->
+  <div id="tantangan-modal">
+    <div class="modal-card">
+      <h2>Tantangan Selanjutnya!</h2>
+      <p>Siap untuk tantangan berikutnya?<br>Klik lanjut untuk mulai tantangan!</p>
+      <button class="modal-btn" onclick="window.location.href='/tantangan3'">Lanjut ke Tantangan</button>
+      <button class="modal-cancel" onclick="closeTantanganModal()">Batal</button>
+    </div>
+  </div>
+  <script>
+    // Soal & Jawaban untuk Modul 3
+    const questions = [
+      {
+        question: "Pengertian budgeting yang paling tepat adalah...",
+        options: [
+          "Membatasi semua pengeluaran",
+          "Rencana penggunaan uang untuk periode tertentu",
+          "Menghitung total pemasukan saja",
+          "Menyimpan uang di bank",
+          "Menghindari pengeluaran yang tidak perlu"
+        ],
+        answer: 1
+      },
+      {
+        question: "Metode budgeting 50/30/20 artinya...",
+        options: [
+          "50% kebutuhan, 30% keinginan, 20% tabungan",
+          "50% tabungan, 30% kebutuhan, 20% keinginan",
+          "50% keinginan, 30% tabungan, 20% kebutuhan",
+          "50% untuk orang tua, 30% untuk diri sendiri, 20% untuk teman",
+          "50% cash, 30% e-wallet, 20% kartu"
+        ],
+        answer: 0
+      },
+      {
+        question: "Kesalahan umum dalam membuat budget adalah...",
+        options: [
+          "Terlalu detail dalam pencatatan",
+          "Membuat budget yang tidak realistis",
+          "Melakukan review budget secara berkala",
+          "Menyesuaikan budget dengan kondisi",
+          "Melibatkan keluarga dalam budgeting"
+        ],
+        answer: 1
+      },
+      {
+        question: "Tools yang paling praktis untuk budgeting Gen-Z adalah...",
+        options: [
+          "Aplikasi budgeting di smartphone",
+          "Kalkulator biasa",
+          "Minta bantuan orang tua",
+          "Menghitung di kepala saja",
+          "Buku catatan manual"
+        ],
+        answer: 0
+      },
+      {
+        question: "Langkah pertama dalam membuat budget adalah...",
+        options: [
+          "Menentukan target tabungan",
+          "Menghitung total pemasukan",
+          "Membuat list keinginan",
+          "Melihat budget orang lain",
+          "Membeli aplikasi budgeting premium"
+        ],
+        answer: 1
+      }
+    ];
 
-    <script>
-        let expenses = [];
-        let currentDay = 1;
+    let currentQuestion = 0;
+    let userAnswers = new Array(questions.length).fill(null);
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const questionText = document.getElementById('question-text');
+    const optionList = document.getElementById('option-list');
+    const quizContainer = document.getElementById('quiz-container');
+    const resultScreen = document.getElementById('result-screen');
+    const scorePoint = document.getElementById('score-point');
+    const scoreDetail = document.getElementById('score-detail');
 
-        // Set tanggal hari ini sebagai default
-        document.getElementById('date').valueAsDate = new Date();
-
-        // Form submission
-        document.getElementById('expenseForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const date = document.getElementById('date').value;
-            const amount = parseInt(document.getElementById('amount').value);
-            const category = document.getElementById('category').value;
-            const description = document.getElementById('description').value;
-
-            if (!date || !amount || !category || !description) {
-                alert('Semua field wajib diisi! 📝');
-                return;
-            }
-
-            const expense = {
-                id: Date.now(),
-                date: date,
-                amount: amount,
-                category: category,
-                description: description
-            };
-
-            expenses.push(expense);
-            updateDisplay();
-            this.reset();
-            document.getElementById('date').valueAsDate = new Date();
+    function renderQuestion(index) {
+      questionText.textContent = questions[index].question;
+      let html = '';
+      questions[index].options.forEach((opt, i) => {
+        const isSelected = userAnswers[index] === i ? 'selected' : '';
+        html += `
+        <div class="option-item">
+          <label class="option-label ${isSelected}">
+            <input type="radio" name="quiz${index}" ${userAnswers[index] === i ? 'checked' : ''} value="${i}">
+            <span>${opt}</span>
+          </label>
+        </div>`;
+      });
+      optionList.innerHTML = html;
+      
+      document.querySelectorAll('.option-label input[type="radio"]').forEach((el, idx) => {
+        el.addEventListener('change', () => {
+          userAnswers[index] = idx;
+          renderQuestion(index);
         });
+      });
+      
+      prevBtn.disabled = index === 0;
+      nextBtn.disabled = userAnswers[index] === null;
+      nextBtn.textContent = index === questions.length - 1 ? "Selesai" : "Next";
+    }
 
-        function updateDisplay() {
-            updateStats();
-            updateExpensesList();
-            updateProgress();
-            updateAnalysis();
-            checkAchievement();
-        }
+    prevBtn.addEventListener('click', () => {
+      if (currentQuestion > 0) {
+        currentQuestion--;
+        renderQuestion(currentQuestion);
+      }
+    });
 
-        function updateStats() {
-            const totalTransactions = expenses.length;
-            const totalSpent = expenses.reduce((sum, expense) => sum + expense.amount, 0);
-            const uniqueDates = [...new Set(expenses.map(expense => expense.date))].length;
-            const avgPerDay = uniqueDates > 0 ? Math.round(totalSpent / uniqueDates) : 0;
+    nextBtn.addEventListener('click', () => {
+      if (currentQuestion < questions.length - 1) {
+        currentQuestion++;
+        renderQuestion(currentQuestion);
+      } else {
+        showResult();
+      }
+    });
 
-            document.getElementById('totalTransactions').textContent = totalTransactions;
-            document.getElementById('totalSpent').textContent = `Rp ${totalSpent.toLocaleString('id-ID')}`;
-            document.getElementById('daysTracked').textContent = uniqueDates;
-            document.getElementById('avgPerDay').textContent = `Rp ${avgPerDay.toLocaleString('id-ID')}`;
-        }
+    function showResult() {
+      quizContainer.style.display = "none";
+      resultScreen.style.display = "flex";
+      let benar = 0;
+      userAnswers.forEach((ans, i) => {
+        if (ans === questions[i].answer) benar++;
+      });
+      let poin = benar * 20;
+      scorePoint.textContent = poin + " Poin";
+      scoreDetail.textContent = `${benar} dari ${questions.length} jawaban benar.`;
+    }
 
-        function updateExpensesList() {
-            const expensesList = document.getElementById('expensesList');
-            
-            if (expenses.length === 0) {
-                expensesList.innerHTML = `
-                    <p style="text-align: center; color: #999; margin-top: 50px;">
-                        Belum ada pengeluaran tercatat.<br>
-                        Mulai catat pengeluaranmu! 🔍
-                    </p>
-                `;
-                return;
-            }
+    // Modal Tantangan
+    function openTantanganModal() {
+      document.getElementById('tantangan-modal').style.display = 'flex';
+    }
 
-            const sortedExpenses = expenses.sort((a, b) => new Date(b.date) - new Date(a.date));
-            
-            expensesList.innerHTML = sortedExpenses.map(expense => `
-                <div class="expense-item">
-                    <div class="expense-info">
-                        <div>
-                            <span class="expense-category">${expense.category}</span>
-                            <span class="expense-amount">Rp ${expense.amount.toLocaleString('id-ID')}</span>
-                        </div>
-                        <div style="font-size: 0.9rem; color: #666; margin-top: 5px;">
-                            📅 ${new Date(expense.date).toLocaleDateString('id-ID')} - ${expense.description}
-                        </div>
-                    </div>
-                    <button class="delete-btn" onclick="deleteExpense(${expense.id})">🗑️</button>
-                </div>
-            `).join('');
-        }
+    function closeTantanganModal() {
+      document.getElementById('tantangan-modal').style.display = 'none';
+    }
 
-        function deleteExpense(id) {
-            expenses = expenses.filter(expense => expense.id !== id);
-            updateDisplay();
-        }
-
-        function updateProgress() {
-            const progress = Math.min((expenses.length / 15) * 100, 100);
-            document.getElementById('progressFill').style.width = `${progress}%`;
-            document.getElementById('progressText').textContent = `${expenses.length}/15 transaksi tercatat`;
-        }
-
-        function updateAnalysis() {
-            const analysisContent = document.getElementById('analysisContent');
-            
-            if (expenses.length < 15) {
-                analysisContent.innerHTML = `
-                    <p style="text-align: center; color: #999;">
-                        Catat minimal 15 transaksi dalam 3 hari untuk melihat analisis lengkap! 📊<br>
-                        <small>Progress: ${expenses.length}/15 transaksi</small>
-                    </p>
-                `;
-                return;
-            }
-
-            // Analisis kategori
-            const categoryTotals = {};
-            expenses.forEach(expense => {
-                categoryTotals[expense.category] = (categoryTotals[expense.category] || 0) + expense.amount;
-            });
-
-            const totalSpent = expenses.reduce((sum, expense) => sum + expense.amount, 0);
-            const sortedCategories = Object.entries(categoryTotals)
-                .sort((a, b) => b[1] - a[1]);
-
-            const colors = ['#e74c3c', '#3498db', '#2ecc71', '#f39c12', '#9b59b6', '#1abc9c', '#34495e'];
-
-            let analysisHTML = `
-                <h3>🔍 Hasil Investigasi Detektif</h3>
-                <p><strong>Tersangka Utama (Kategori Terboros):</strong> ${sortedCategories[0][0]} - Rp ${sortedCategories[0][1].toLocaleString('id-ID')} (${Math.round(sortedCategories[0][1]/totalSpent*100)}%)</p>
-                <div class="category-chart">
-            `;
-
-            sortedCategories.forEach(([category, amount], index) => {
-                const percentage = Math.round((amount / totalSpent) * 100);
-                analysisHTML += `
-                    <div class="category-item">
-                        <h4>${category}</h4>
-                        <div class="category-bar">
-                            <div class="category-fill" style="width: ${percentage}%; background: ${colors[index % colors.length]};"></div>
-                        </div>
-                        <p>Rp ${amount.toLocaleString('id-ID')} (${percentage}%)</p>
-                    </div>
-                `;
-            });
-
-            analysisHTML += '</div>';
-
-            // Tips berdasarkan kategori terbesar
-            const topCategory = sortedCategories[0][0];
-            let tip = '';
-            switch(topCategory) {
-                case 'Makanan & Minuman':
-                    tip = '🍔 Tip: Coba bawa bekal dari rumah atau cari warung dengan harga lebih ekonomis!';
-                    break;
-                case 'Transportasi':
-                    tip = '🚗 Tip: Pertimbangkan naik angkutan umum atau jalan kaki untuk jarak dekat!';
-                    break;
-                case 'Hiburan':
-                    tip = '🎮 Tip: Cari hiburan gratis seperti main di taman atau nonton film gratis!';
-                    break;
-                case 'Belanja':
-                    tip = '🛒 Tip: Buat daftar belanja dan tahan godaan untuk beli yang tidak perlu!';
-                    break;
-                default:
-                    tip = '💡 Tip: Pertimbangkan apakah pengeluaran ini benar-benar diperlukan sebelum beli!';
-            }
-
-            analysisHTML += `
-                <div style="background: #fff3cd; padding: 15px; border-radius: 10px; margin-top: 20px; border-left: 4px solid #ffc107;">
-                    <strong>💡 Rekomendasi Detektif:</strong><br>
-                    ${tip}
-                </div>
-            `;
-
-            analysisContent.innerHTML = analysisHTML;
-        }
-
-        function checkAchievement() {
-            const uniqueDates = [...new Set(expenses.map(expense => expense.date))].length;
-            
-            if (expenses.length >= 15 && uniqueDates >= 3) {
-                document.getElementById('achievement').classList.add('show');
-            }
-        }
-
-        // Inisialisasi
-        updateDisplay();
-    </script>
+    renderQuestion(currentQuestion);
+  </script>
 </body>
 </html>

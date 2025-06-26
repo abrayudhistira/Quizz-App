@@ -1,0 +1,117 @@
+<section id="m4s3" class="w-full py-10 px-4 md:px-10 rounded-2xl">
+  <div class="bg-[var(--putih)] rounded-3xl px-6 py-10 max-w-screen-xl mx-auto text-center">
+    <!-- Judul -->
+    <h2 class="text-2xl md:text-3xl font-bold mb-4">Kebutuhan vs Keinginan</h2>
+    <p class="text-base md:text-lg text-gray-600 mb-8">
+      Yuk, coba sortir daftar keinginanmu! Seret dan lepas (drag-and-drop) item ke kategori kebutuhan atau keinginan, lalu lihat seimbang nggaknya keputusanmu.
+    </p>
+
+    <!-- 2 Container: Kiri (drag), Kanan (gambar+ilustrasi) -->
+    <div class="flex flex-col md:flex-row gap-8 justify-center items-stretch">
+      <!-- KIRI: Drag & Drop -->
+      <div class="flex-1 flex flex-col justify-center">
+        <div class="bg-white rounded-xl shadow p-6 h-full flex flex-col items-center justify-center min-h-[420px]">
+          <p class="mb-4 font-semibold text-center">Drag & Drop: Kategorikan Wishlist-mu!</p>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 w-full max-w-xl">
+            <!-- Wishlist -->
+            <div class="flex flex-col h-full">
+              <h4 class="font-semibold mb-2 text-center text-gray-700">Wishlist</h4>
+              <ul id="wishlist" class="drop-zone bg-gray-100 rounded-lg p-4 min-h-[320px] flex flex-col justify-start space-y-2 transition-all h-full">
+                <li draggable="true" class="draggable bg-blue-100 rounded px-3 py-2 cursor-move shadow-sm">Laptop Baru</li>
+                <li draggable="true" class="draggable bg-blue-100 rounded px-3 py-2 cursor-move shadow-sm">Liburan ke Bali</li>
+                <li draggable="true" class="draggable bg-blue-100 rounded px-3 py-2 cursor-move shadow-sm">Sepatu Olahraga</li>
+                <li draggable="true" class="draggable bg-blue-100 rounded px-3 py-2 cursor-move shadow-sm">Bayar Uang Kuliah</li>
+                <li draggable="true" class="draggable bg-blue-100 rounded px-3 py-2 cursor-move shadow-sm">Smartphone Baru</li>
+                <li draggable="true" class="draggable bg-blue-100 rounded px-3 py-2 cursor-move shadow-sm">Buku Pelajaran</li>
+              </ul>
+            </div>
+            <!-- Kebutuhan -->
+            <div class="flex flex-col h-full">
+              <h4 class="font-semibold mb-2 text-center text-green-700">Kebutuhan (<span id="count-kebutuhan">0</span>)</h4>
+              <ul id="kebutuhan" class="drop-zone bg-green-50 rounded-lg p-4 min-h-[320px] flex flex-col justify-start space-y-2 transition-all h-full"></ul>
+            </div>
+            <!-- Keinginan -->
+            <div class="flex flex-col h-full">
+              <h4 class="font-semibold mb-2 text-center text-blue-700">Keinginan (<span id="count-keinginan">0</span>)</h4>
+              <ul id="keinginan" class="drop-zone bg-blue-50 rounded-lg p-4 min-h-[320px] flex flex-col justify-start space-y-2 transition-all h-full"></ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- KANAN: Gambar + Ilustrasi -->
+      <div class="flex-1 flex flex-col justify-center">
+        <div class="bg-white rounded-xl shadow p-6 h-full flex flex-col items-center justify-center min-h-[420px]">
+          <div class="relative w-full max-w-md h-96 mx-auto flex flex-col items-center justify-start">
+            <img src="https://raw.githubusercontent.com/MuhammadAzmiAnshari/Apmul/main/m4s3.png?raw=true"
+              alt="Ilustrasi Kebutuhan vs Keinginan"
+              class="w-48 md:w-64 rounded-2xl shadow-xl border-4 border-white mb-4 z-10 relative"
+              style="margin-top: -64px;">
+            <div class="relative w-full h-64 flex items-center justify-center">
+              <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center z-0">
+                <div class="w-2 h-32 bg-gray-400 rounded-full"></div>
+                <div class="w-56 h-2 bg-yellow-400 rounded-full mt-1 mb-1 transition-transform duration-500" id="scale-bar"></div>
+                <div class="w-8 h-4 bg-gray-400 rounded-b-full"></div>
+              </div>
+              <div class="absolute left-1/4 top-1/2 -translate-y-1/2 flex flex-col items-center z-0">
+                <div class="w-20 h-20 bg-green-200 border-4 border-green-400 rounded-full shadow flex flex-col items-center justify-center text-lg font-bold">
+                  🧠<br><span class="text-xs font-semibold">Kebutuhan</span>
+                </div>
+                <div class="w-1 h-8 bg-gray-400"></div>
+              </div>
+              <div class="absolute right-1/4 top-1/2 -translate-y-1/2 flex flex-col items-center z-0">
+                <div class="w-20 h-20 bg-blue-200 border-4 border-blue-400 rounded-full shadow flex flex-col items-center justify-center text-lg font-bold">
+                  💖<br><span class="text-xs font-semibold">Keinginan</span>
+                </div>
+                <div class="w-1 h-8 bg-gray-400"></div>
+              </div>
+            </div>
+          </div>
+          <p class="mt-4 text-sm text-gray-500">Ilustrasi: Semakin condong, semakin dominan pilihanmu</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Script -->
+  <script>
+    const zones = ['wishlist', 'kebutuhan', 'keinginan'];
+    const updateCounts = () => {
+      document.getElementById('count-kebutuhan').textContent = document.getElementById('kebutuhan').children.length;
+      document.getElementById('count-keinginan').textContent = document.getElementById('keinginan').children.length;
+
+      // Update visual scale
+      const needs = document.getElementById('kebutuhan').children.length;
+      const wants = document.getElementById('keinginan').children.length;
+      const scale = document.getElementById('scale-bar');
+
+      if (needs === wants) scale.style.transform = 'rotate(0deg)';
+      else if (needs > wants) scale.style.transform = 'rotate(-12deg)';
+      else scale.style.transform = 'rotate(12deg)';
+    };
+
+    zones.forEach(id => {
+      const el = document.getElementById(id);
+      el.addEventListener('dragover', e => e.preventDefault());
+      el.addEventListener('dragenter', () => el.classList.add('ring-2', 'ring-blue-400'));
+      el.addEventListener('dragleave', () => el.classList.remove('ring-2', 'ring-blue-400'));
+      el.addEventListener('drop', e => {
+        e.preventDefault();
+        el.classList.remove('ring-2', 'ring-blue-400');
+        const data = e.dataTransfer.getData('text/plain');
+        const dragged = document.getElementById(data);
+        if (dragged) el.appendChild(dragged);
+        updateCounts();
+      });
+    });
+
+    document.querySelectorAll('.draggable').forEach((li, idx) => {
+      li.id = 'item-' + idx;
+      li.addEventListener('dragstart', e => {
+        e.dataTransfer.setData('text/plain', li.id);
+      });
+    });
+
+    updateCounts(); // Initial run
+  </script>
+</section>

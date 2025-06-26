@@ -1,413 +1,70 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulasi Dana Darurat</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            overflow: hidden;
-        }
-
-        .header {
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            color: white;
-            padding: 30px;
-            text-align: center;
-        }
-
-        .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-        }
-
-        .content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            padding: 30px;
-        }
-
-        .calculator {
-            background: #f8f9fa;
-            padding: 25px;
-            border-radius: 15px;
-            border: 2px solid #e9ecef;
-        }
-
-        .visualization {
-            padding: 25px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
-            color: #333;
-        }
-
-        input, select {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #ddd;
-            border-radius: 10px;
-            font-size: 16px;
-            transition: border-color 0.3s;
-        }
-
-        input:focus, select:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-
-        .btn {
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 10px;
-            font-size: 16px;
-            cursor: pointer;
-            width: 100%;
-            transition: transform 0.2s;
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-        }
-
-        .result-card {
-            background: linear-gradient(45deg, #51cf66, #40c057);
-            color: white;
-            padding: 20px;
-            border-radius: 15px;
-            margin-top: 20px;
-            text-align: center;
-        }
-
-        .result-value {
-            font-size: 2em;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .stat-item {
-            background: #e3f2fd;
-            padding: 15px;
-            border-radius: 10px;
-            text-align: center;
-            border: 2px solid #bbdefb;
-        }
-
-        .stat-value {
-            font-size: 1.5em;
-            font-weight: bold;
-            color: #1976d2;
-        }
-
-        .stat-label {
-            font-size: 0.9em;
-            color: #666;
-            margin-top: 5px;
-        }
-
-        .chart-container {
-            position: relative;
-            height: 300px;
-            margin-top: 20px;
-        }
-
-        .tips {
-            background: #fff3e0;
-            border: 2px solid #ffcc02;
-            border-radius: 10px;
-            padding: 15px;
-            margin-top: 20px;
-        }
-
-        .tips h3 {
-            color: #f57c00;
-            margin-bottom: 10px;
-        }
-
-        .tips ul {
-            list-style: none;
-            padding-left: 0;
-        }
-
-        .tips li {
-            margin-bottom: 8px;
-            padding-left: 20px;
-            position: relative;
-        }
-
-        .tips li::before {
-            content: "💡";
-            position: absolute;
-            left: 0;
-        }
-
-        @media (max-width: 768px) {
-            .content {
-                grid-template-columns: 1fr;
-            }
-            
-            .header h1 {
-                font-size: 2em;
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>💰 Simulasi Dana Darurat</h1>
-            <p>Hitung kebutuhan dana darurat personal Anda</p>
+<section id="m6s3" class="w-full py-10 px-4 md:px-10 rounded-2xl">
+  <!-- Judul & Deskripsi -->
+  <div class="bg-[var(--putih)] rounded-3xl px-6 py-10 max-w-screen-xl mx-auto text-center">
+    <h2 class="text-2xl md:text-3xl font-bold mb-4">Dream Board & Target Masa Depan</h2>
+    <p class="text-base md:text-lg text-gray-600 mb-8">
+      Buat vision board digitalmu sendiri! Tambahkan mimpi, target, dan visualisasikan masa depan yang ingin kamu capai.
+    </p>
+    <!-- Interaktif Dream Board Builder + Ilustrasi -->
+    <div class="flex flex-col md:flex-row items-center justify-center gap-8">
+      <!-- Dream Board Builder -->
+      <div class="flex-1">
+        <div class="bg-white rounded-xl shadow p-6 mb-4 text-left">
+          <form id="dream-form" class="flex gap-2 mb-4">
+            <input type="text" id="dream-input" class="flex-1 border rounded px-3 py-2" placeholder="Tulis mimpi atau targetmu..." maxlength="50">
+            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">Tambah</button>
+          </form>
+          <div id="dream-board" class="flex flex-wrap gap-3 min-h-[80px]">
+            <!-- Dream items will appear here -->
+          </div>
         </div>
-
-        <div class="content">
-            <!-- Calculator Section -->
-            <div class="calculator">
-                <h2>🧮 Kalkulator Dana Darurat</h2>
-                
-                <div class="form-group">
-                    <label for="gaji">Gaji Bulanan (Rp)</label>
-                    <input type="number" id="gaji" placeholder="8000000" value="8000000">
-                </div>
-
-                <div class="form-group">
-                    <label for="pengeluaran">Pengeluaran Bulanan (Rp)</label>
-                    <input type="number" id="pengeluaran" placeholder="5000000" value="5000000">
-                </div>
-
-                <div class="form-group">
-                    <label for="bulan">Target Bulan Dana Darurat</label>
-                    <select id="bulan">
-                        <option value="3">3 Bulan</option>
-                        <option value="6" selected>6 Bulan (Recommended)</option>
-                        <option value="9">9 Bulan</option>
-                        <option value="12">12 Bulan</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="tabungan">Tabungan Saat Ini (Rp)</label>
-                    <input type="number" id="tabungan" placeholder="0" value="0">
-                </div>
-
-                <div class="form-group">
-                    <label for="nabung">Rencana Nabung per Bulan (Rp)</label>
-                    <input type="number" id="nabung" placeholder="1000000" value="1000000">
-                </div>
-
-                <button class="btn" onclick="hitungDanaDarurat()">
-                    🚀 Hitung Dana Darurat
-                </button>
-
-                <div id="result" class="result-card" style="display: none;">
-                    <div class="result-value" id="targetDana">Rp 0</div>
-                    <div>Target Dana Darurat</div>
-                </div>
-
-                <div class="stats-grid" id="statsGrid" style="display: none;">
-                    <div class="stat-item">
-                        <div class="stat-value" id="waktuTarget">0</div>
-                        <div class="stat-label">Bulan untuk Mencapai Target</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value" id="kekurangan">Rp 0</div>
-                        <div class="stat-label">Kekurangan Dana</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value" id="persentaseGaji">0%</div>
-                        <div class="stat-label">% dari Gaji untuk Nabung</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value" id="statusKeuangan">-</div>
-                        <div class="stat-label">Status Keuangan</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Visualization Section -->
-            <div class="visualization">
-                <h2>📊 Visualisasi & Progress</h2>
-                
-                <div class="chart-container">
-                    <canvas id="progressChart"></canvas>
-                </div>
-
-                <div class="tips">
-                    <h3>💡 Tips Dana Darurat</h3>
-                    <ul>
-                        <li>Mulai dengan target 3 bulan pengeluaran</li>
-                        <li>Simpan di rekening terpisah yang mudah diakses</li>
-                        <li>Gunakan hanya untuk keadaan darurat</li>
-                        <li>Review dan sesuaikan setiap 6 bulan</li>
-                        <li>Prioritaskan likuiditas dibanding return tinggi</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+      </div>
+      <!-- Ilustrasi Dream Board -->
+      <div class="flex-1 flex flex-col items-center">
+        <!-- SVG Ilustrasi Vision Board -->
+        <svg width="260" height="180" viewBox="0 0 260 180" fill="none" xmlns="http://www.w3.org/2000/svg" class="mx-auto w-56 md:w-72 rounded-xl shadow">
+          <!-- Board background -->
+          <rect x="20" y="30" width="220" height="120" rx="18" fill="#fef9c3" stroke="#fde047" stroke-width="3"/>
+          <!-- Pins -->
+          <circle cx="40" cy="45" r="6" fill="#f87171"/>
+          <circle cx="220" cy="45" r="6" fill="#60a5fa"/>
+          <!-- Notes -->
+          <rect x="45" y="55" width="50" height="35" rx="6" fill="#fbbf24" stroke="#f59e42" stroke-width="2"/>
+          <rect x="110" y="65" width="55" height="40" rx="6" fill="#6ee7b7" stroke="#34d399" stroke-width="2"/>
+          <rect x="180" y="55" width="40" height="30" rx="6" fill="#a5b4fc" stroke="#6366f1" stroke-width="2"/>
+          <!-- Doodles -->
+          <ellipse cx="70" cy="120" rx="12" ry="6" fill="#fde68a" opacity="0.7"/>
+          <ellipse cx="200" cy="120" rx="10" ry="5" fill="#fca5a5" opacity="0.5"/>
+          <!-- Text on notes -->
+          <text x="70" y="75" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Rumah</text>
+          <text x="137" y="90" text-anchor="middle" font-size="11" font-weight="bold" fill="#065f46">Karir</text>
+          <text x="200" y="72" text-anchor="middle" font-size="11" font-weight="bold" fill="#312e81">Liburan</text>
+        </svg>
+        <p class="mt-4 text-sm text-gray-500">Ilustrasi: Vision Board Digital</p>
+      </div>
     </div>
+  </div>
+  <script>
+    const dreamForm = document.getElementById('dream-form');
+    const dreamInput = document.getElementById('dream-input');
+    const dreamBoard = document.getElementById('dream-board');
 
-    <script>
-        let chart = null;
+    function addDream(text) {
+      const item = document.createElement('div');
+      item.className = "bg-yellow-100 text-yellow-900 px-4 py-2 rounded-lg shadow flex items-center gap-2";
+      item.innerHTML = `<span>${text}</span>
+        <button type="button" class="remove-dream text-red-500 hover:text-red-700 font-bold" title="Hapus">&times;</button>`;
+      item.querySelector('.remove-dream').onclick = () => item.remove();
+      dreamBoard.appendChild(item);
+    }
 
-        function formatRupiah(number) {
-            return new Intl.NumberFormat('id-ID', {
-                style: 'currency',
-                currency: 'IDR',
-                minimumFractionDigits: 0
-            }).format(number);
-        }
-
-        function hitungDanaDarurat() {
-            const gaji = parseInt(document.getElementById('gaji').value) || 0;
-            const pengeluaran = parseInt(document.getElementById('pengeluaran').value) || 0;
-            const bulan = parseInt(document.getElementById('bulan').value) || 6;
-            const tabunganSaatIni = parseInt(document.getElementById('tabungan').value) || 0;
-            const nabungPerBulan = parseInt(document.getElementById('nabung').value) || 0;
-
-            // Hitung target dana darurat
-            const targetDana = pengeluaran * bulan;
-            const kekurangan = Math.max(0, targetDana - tabunganSaatIni);
-            const waktuTarget = nabungPerBulan > 0 ? Math.ceil(kekurangan / nabungPerBulan) : 0;
-            const persentaseGaji = gaji > 0 ? ((nabungPerBulan / gaji) * 100).toFixed(1) : 0;
-
-            // Tentukan status keuangan
-            let statusKeuangan = "Aman";
-            if (tabunganSaatIni < pengeluaran * 3) statusKeuangan = "Risiko Tinggi";
-            else if (tabunganSaatIni < pengeluaran * 6) statusKeuangan = "Perlu Ditingkatkan";
-
-            // Update UI
-            document.getElementById('targetDana').textContent = formatRupiah(targetDana);
-            document.getElementById('waktuTarget').textContent = waktuTarget;
-            document.getElementById('kekurangan').textContent = formatRupiah(kekurangan);
-            document.getElementById('persentaseGaji').textContent = persentaseGaji + '%';
-            document.getElementById('statusKeuangan').textContent = statusKeuangan;
-
-            // Show results
-            document.getElementById('result').style.display = 'block';
-            document.getElementById('statsGrid').style.display = 'grid';
-
-            // Update chart
-            updateChart(tabunganSaatIni, targetDana, nabungPerBulan, waktuTarget);
-        }
-
-        function updateChart(tabunganSaatIni, targetDana, nabungPerBulan, waktuTarget) {
-            const ctx = document.getElementById('progressChart').getContext('2d');
-
-            // Destroy existing chart
-            if (chart) {
-                chart.destroy();
-            }
-
-            // Generate data for progress simulation
-            const labels = [];
-            const data = [];
-            let currentAmount = tabunganSaatIni;
-
-            for (let i = 0; i <= waktuTarget; i++) {
-                labels.push(`Bulan ${i}`);
-                data.push(currentAmount);
-                if (i < waktuTarget) {
-                    currentAmount += nabungPerBulan;
-                }
-            }
-
-            chart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Progress Dana Darurat',
-                        data: data,
-                        borderColor: '#667eea',
-                        backgroundColor: 'rgba(102, 126, 234, 0.1)',
-                        borderWidth: 3,
-                        fill: true,
-                        tension: 0.4
-                    }, {
-                        label: 'Target Dana Darurat',
-                        data: new Array(labels.length).fill(targetDana),
-                        borderColor: '#51cf66',
-                        backgroundColor: 'rgba(81, 207, 102, 0.1)',
-                        borderWidth: 2,
-                        borderDash: [5, 5],
-                        fill: false
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        title: {
-                            display: true,
-                            text: 'Proyeksi Pencapaian Dana Darurat'
-                        },
-                        legend: {
-                            display: true,
-                            position: 'top'
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                callback: function(value) {
-                                    return 'Rp ' + (value / 1000000).toFixed(1) + 'jt';
-                                }
-                            }
-                        }
-                    },
-                    elements: {
-                        point: {
-                            radius: 4,
-                            hoverRadius: 6
-                        }
-                    }
-                }
-            });
-        }
-
-        // Auto calculate on input change
-        document.querySelectorAll('input, select').forEach(element => {
-            element.addEventListener('input', () => {
-                if (document.getElementById('result').style.display === 'block') {
-                    hitungDanaDarurat();
-                }
-            });
-        });
-
-        // Initial calculation
-        hitungDanaDarurat();
-    </script>
-</body>
-</html>
+    dreamForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const value = dreamInput.value.trim();
+      if (value) {
+        addDream(value);
+        dreamInput.value = '';
+      }
+    });
+  </script>
+</section>

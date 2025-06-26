@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏆 Future Planner Champion</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --putih: #ffffff;
+            --kuning: #ffe44d;
+            --ungu: #6559ff;
+            --navy: #2D2C56ff;
+            --hitam: #0f0f0f;
+        }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--ungu);
+            min-height: 100vh;
+            color: var(--hitam);
+        }
+        .maincontainer {
+            background: var(--kuning);
+        }
+        .progress-bar {
+            background: #ffffff;
+            height: 12px;
+            border-radius: 9999px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: var(--kuning);
+            border-radius: 9999px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+        .stats-card {
+            background: var(--putih);
+            color: var(--navy);
+        }
+        .form-section {
+            background: var(--putih);
+        }
+        .list-section {
+            background: var(--putih);
+            color: var(--navy);
+        }
+        .analysis-section {
+            background: var(--putih);
+        }
+        .goal-item {
+            background: var(--navy);
+            color: var(--putih);
+        }
+        .goal-item .category {
+            background: var(--kuning);
+            color: var(--navy);
+        }
+        .goal-item .desc {
+            color: var(--kuning);
+        }
+        .achievement {
+            background: var(--kuning);
+        }
+        *:focus {
+            outline: none !important;
+            box-shadow: none !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Container Navigasi -->
+    <div class="top-container max-w-screen-xl mx-auto px-4 md:px-20 flex items-center justify-between mb-10 mt-14">
+        <div class="flex-1 text-left">
+            <button id="prev-challenge" onclick="window.location.href='http://localhost:3000/tantangan5'" class="bg-[var(--kuning)] text-[var(--navy)] font-bold py-2 px-6 rounded-full border-2 border-[var(--ungu)] transition hover:bg-[var(--navy)] hover:text-[var(--kuning)]">
+                &larr; Tantangan Sebelumnya
+            </button>
+        </div>
+        <div class="flex-1 flex justify-center px-4 middle-container text-[var(--navy)]">
+            <div class="w-full text-center">
+                <h1 class="text-xl md:text-2xl bg-[var(--kuning)] text-[var(--navy)] font-bold rounded-full px-8 py-3 shadow inline-block border-2 border-[var(--ungu)]">
+                    Tantangan 6: Future Planner Champion
+                </h1>
+            </div>
+        </div>
+        <div class="flex-1 text-right">
+            <!-- Tidak ada tombol next -->
+        </div>
+    </div>
+
+    <!-- Garis horizontal custom -->
+    <div class="w-full flex justify-center">
+        <div class="h-1 bg-[var(--kuning)] rounded-full mt-2 mb-8" style="width: 100%; max-width: 1090px;"></div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="maincontainer max-w-screen-xl mx-auto px-4 py-8 rounded-3xl shadow-lg">
+        <!-- Header -->
+        <div class="rounded-3xl shadow-lg bg-[var(--navy)] text-[var(--kuning)] px-8 py-8 mb-8 relative overflow-hidden border-2 border-[var(--kuning)]">
+            <div class="absolute left-6 top-6 text-6xl opacity-20 select-none pointer-events-none">🏆</div>
+            <h2 class="text-3xl md:text-4xl font-bold mb-2 inline-block bg-[var(--kuning)] text-[var(--navy)] px-6 py-2 rounded-full shadow border-2">
+                🏆 Future Planner Champion
+            </h2>
+            <p class="text-lg mt-4 mb-4 max-w-2xl text-[var(--putih)]">
+                Time to think BIG! Buat rencana finansial untuk 1 tahun ke depan dan mulai langkah pertama menuju mimpi. Your future self will thank you!
+            </p>
+            <ul class="bg-[var(--putih)] rounded-xl px-6 py-4 mb-4 text-base max-w-2xl mx-auto border border-[var(--kuning)] text-[var(--navy)]">
+                <li><strong>🎯 Tugas:</strong> Buat financial plan untuk 12 bulan ke depan, termasuk <b>3 goal utama</b>, breakdown per bulan, dan action plan. Lalu mulai eksekusi minggu pertama.</li>
+                <li><strong>✅ Selesai jika:</strong> Financial plan lengkap 12 bulan, ada 3 goal yang jelas & terukur, action plan detail, dan berhasil eksekusi week 1.</li>
+                <li><strong>❌ Tidak selesai jika:</strong> Plan tidak lengkap, goal tidak jelas/terukur, atau tidak eksekusi week 1.</li>
+                <li><strong>🏆 Reward:</strong> Badge <b>"Future Champion"</b> + <b>300 poin</b></li>
+            </ul>
+            <div class="progress-bar mb-2">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <p id="progressText" class="text-sm text-[var(--kuning)] font-semibold">0/4 langkah utama tercapai</p>
+        </div>
+
+        <!-- Stats -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+            <div class="stats-card rounded-2xl shadow p-6 flex flex-col items-center">
+                <div class="text-3xl mb-2">🎯</div>
+                <div class="text-2xl font-bold" id="goalCount">0/3</div>
+                <div class="text-gray-500">Goal Utama</div>
+            </div>
+            <div class="stats-card rounded-2xl shadow p-6 flex flex-col items-center">
+                <div class="text-3xl mb-2">📅</div>
+                <div class="text-2xl font-bold" id="monthPlan">0/12</div>
+                <div class="text-gray-500">Bulan Terisi</div>
+            </div>
+            <div class="stats-card rounded-2xl shadow p-6 flex flex-col items-center">
+                <div class="text-3xl mb-2">📝</div>
+                <div class="text-2xl font-bold" id="actionPlan">0</div>
+                <div class="text-gray-500">Action Plan</div>
+            </div>
+            <div class="stats-card rounded-2xl shadow p-6 flex flex-col items-center">
+                <div class="text-3xl mb-2">🚀</div>
+                <div class="text-2xl font-bold" id="week1">❌</div>
+                <div class="text-gray-500">Eksekusi Week 1</div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="grid md:grid-cols-2 gap-8 mb-8">
+            <!-- Form Section -->
+            <div class="form-section rounded-2xl shadow p-8">
+                <h2 class="text-xl font-bold mb-6 flex items-center gap-2 text-[var(--navy)]">📝 Buat Financial Plan</h2>
+                <form id="planForm">
+                    <!-- 3 Goal Utama -->
+                    <div class="mb-4">
+                        <div class="bg-[#2D2C56] rounded-xl p-0 mb-4">
+                            <div class="font-bold text-[var(--putih)] px-6 pt-6 pb-2 text-base">3 Goal Utama *</div>
+                            <div class="px-6 pb-6">
+                                <input type="text" id="goal1" placeholder="Goal 1 (misal: Dana Pendidikan Rp 5jt)" required class="w-full border-0 rounded-xl px-4 py-4 mb-3 bg-[#2D2C56] text-[var(--putih)] placeholder:text-gray-300 focus:ring-2 focus:ring-[var(--kuning)] transition" />
+                                <input type="text" id="goal2" placeholder="Goal 2 (misal: Liburan ke Bali)" required class="w-full border-0 rounded-xl px-4 py-4 mb-3 bg-[#2D2C56] text-[var(--putih)] placeholder:text-gray-300 focus:ring-2 focus:ring-[var(--kuning)] transition" />
+                                <input type="text" id="goal3" placeholder="Goal 3 (misal: Gadget Baru)" required class="w-full border-0 rounded-xl px-4 py-4 bg-[#2D2C56] text-[var(--putih)] placeholder:text-gray-300 focus:ring-2 focus:ring-[var(--kuning)] transition" />
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Breakdown 12 Bulan -->
+                    <div class="mb-4">
+                        <div class="bg-[#2D2C56] rounded-xl p-0 mb-4">
+                            <div class="font-bold text-[var(--putih)] px-6 pt-6 pb-2 text-base">Breakdown 12 Bulan *</div>
+                            <div class="px-6 pb-6">
+                                <div class="grid grid-cols-2 gap-2">
+                                    <input type="text" id="bulan1" placeholder="Januari" required class="border-0 rounded-xl px-4 py-4 bg-[#2D2C56] text-[var(--putih)] placeholder:text-gray-300 focus:ring-2 focus:ring-[var(--kuning)] transition" />
+                                    <input type="text" id="bulan2" placeholder="Februari" required class="border-0 rounded-xl px-4 py-4 bg-[#2D2C56] text-[var(--putih)] placeholder:text-gray-300 focus:ring-2 focus:ring-[var(--kuning)] transition" />
+                                    <input type="text" id="bulan3" placeholder="Maret" required class="border-0 rounded-xl px-4 py-4 bg-[#2D2C56] text-[var(--putih)] placeholder:text-gray-300 focus:ring-2 focus:ring-[var(--kuning)] transition" />
+                                    <input type="text" id="bulan4" placeholder="April" required class="border-0 rounded-xl px-4 py-4 bg-[#2D2C56] text-[var(--putih)] placeholder:text-gray-300 focus:ring-2 focus:ring-[var(--kuning)] transition" />
+                                    <input type="text" id="bulan5" placeholder="Mei" required class="border-0 rounded-xl px-4 py-4 bg-[#2D2C56] text-[var(--putih)] placeholder:text-gray-300 focus:ring-2 focus:ring-[var(--kuning)] transition" />
+                                    <input type="text" id="bulan6" placeholder="Juni" required class="border-0 rounded-xl px-4 py-4 bg-[#2D2C56] text-[var(--putih)] placeholder:text-gray-300 focus:ring-2 focus:ring-[var(--kuning)] transition" />
+                                    <input type="text" id="bulan7" placeholder="Juli" required class="border-0 rounded-xl px-4 py-4 bg-[#2D2C56] text-[var(--putih)] placeholder:text-gray-300 focus:ring-2 focus:ring-[var(--kuning)] transition" />
+                                    <input type="text" id="bulan8" placeholder="Agustus" required class="border-0 rounded-xl px-4 py-4 bg-[#2D2C56] text-[var(--putih)] placeholder:text-gray-300 focus:ring-2 focus:ring-[var(--kuning)] transition" />
+                                    <input type="text" id="bulan9" placeholder="September" required class="border-0 rounded-xl px-4 py-4 bg-[#2D2C56] text-[var(--putih)] placeholder:text-gray-300 focus:ring-2 focus:ring-[var(--kuning)] transition" />
+                                    <input type="text" id="bulan10" placeholder="Oktober" required class="border-0 rounded-xl px-4 py-4 bg-[#2D2C56] text-[var(--putih)] placeholder:text-gray-300 focus:ring-2 focus:ring-[var(--kuning)] transition" />
+                                    <input type="text" id="bulan11" placeholder="November" required class="border-0 rounded-xl px-4 py-4 bg-[#2D2C56] text-[var(--putih)] placeholder:text-gray-300 focus:ring-2 focus:ring-[var(--kuning)] transition" />
+                                    <input type="text" id="bulan12" placeholder="Desember" required class="border-0 rounded-xl px-4 py-4 bg-[#2D2C56] text-[var(--putih)] placeholder:text-gray-300 focus:ring-2 focus:ring-[var(--kuning)] transition" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Action Plan -->
+                    <div class="mb-4">
+                        <div class="bg-[#2D2C56] rounded-xl p-0 mb-4">
+                            <div class="font-bold text-[var(--putih)] px-6 pt-6 pb-2 text-base">Action Plan Detail *</div>
+                            <div class="px-6 pb-6">
+                                <textarea id="actionPlanInput" rows="3" placeholder="Langkah-langkah utama, misal: Menabung Rp 500rb/bulan, cari side income, dll" required class="w-full border-0 rounded-xl px-4 py-4 bg-[#2D2C56] text-[var(--putih)] placeholder:text-gray-300 focus:ring-2 focus:ring-[var(--kuning)] transition"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Eksekusi Week 1 -->
+                    <div class="mb-6">
+                        <div class="bg-[#2D2C56] rounded-xl p-0 mb-4">
+                            <div class="font-bold text-[var(--putih)] px-6 pt-6 pb-2 text-base">Eksekusi Week 1 *</div>
+                            <div class="px-6 pb-6">
+                                <select id="week1Exec" required class="w-full border-0 rounded-xl px-4 py-4 bg-[#2D2C56] text-[var(--putih)] focus:ring-2 focus:ring-[var(--kuning)] transition">
+                                    <option value="">Pilih status...</option>
+                                    <option value="done">Sudah dieksekusi</option>
+                                    <option value="notyet">Belum dieksekusi</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="w-full bg-[var(--kuning)] text-[var(--navy)] font-bold py-3 rounded-xl shadow hover:bg-yellow-300 transition border-0 mt-2">💡 Simpan Financial Plan</button>
+                </form>
+            </div>
+            <!-- Goals List -->
+            <div class="list-section rounded-2xl shadow p-8">
+                <h2 class="text-xl font-bold mb-6 text-[var(--navy)]">📋 Rangkuman Financial Plan</h2>
+                <div id="planSummary">
+                    <p class="text-center text-gray-400 mt-12">
+                        Belum ada financial plan tercatat.<br>
+                        Yuk, buat rencana keuanganmu untuk 1 tahun ke depan! 🚀
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Achievement -->
+        <div class="achievement text-[var(--navy)] font-bold p-8 rounded-2xl text-center mt-6 shadow" id="successMessage" style="display:none;">
+            <h2 class="text-2xl mb-2">🏆 Selamat! Badge "Future Champion" Berhasil Didapat!</h2>
+            <p class="mb-2">Kamu telah berhasil membuat financial plan lengkap dan mulai eksekusi week 1!</p>
+            <p class="text-xl"><strong>+300 Poin!</strong> 🎉</p>
+        </div>
+
+        <!-- Modal Badge -->
+        <div id="badgeModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40" style="display:none;">
+            <div id="badgeCard" class="bg-[var(--putih)] rounded-3xl shadow-2xl p-8 max-w-xs w-full flex flex-col items-center relative scale-90 opacity-0 transition-all duration-500 modal">
+                <button onclick="closeBadgeModal()" class="absolute top-3 right-4 text-2xl text-[var(--navy)] hover:text-red-500 font-bold">&times;</button>
+                <img src="https://github.com/luthfibphoenix/apmul/blob/main/B6M6.png?raw=true" alt="Badge" class="w-24 h-24 mb-4" />
+                <h3 class="text-xl font-bold text-[var(--navy)] mb-2">Badge Unlocked!</h3>
+                <div class="bg-[var(--kuning)] text-[var(--navy)] font-bold rounded-full px-6 py-2 mb-2 shadow border-2 border-[var(--ungu)]">
+                    Future Champion
+                </div>
+                <div class="text-lg text-[var(--navy)] mb-2">+300 Poin</div>
+                <p class="text-sm text-gray-500">Rencana finansialmu sudah siap! Yuk, wujudkan mimpi setahun ke depan! 🚀</p>
+            </div>
+        </div>
+    </div>
+    <script>
+        let planData = null;
+
+        document.getElementById('planForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Ambil data goals
+            const goals = [
+                document.getElementById('goal1').value.trim(),
+                document.getElementById('goal2').value.trim(),
+                document.getElementById('goal3').value.trim()
+            ].filter(Boolean);
+
+            // Ambil data bulan
+            const months = [];
+            for (let i = 1; i <= 12; i++) {
+                const val = document.getElementById('bulan' + i).value.trim();
+                if (val) months.push(val);
+            }
+
+            // Action plan & eksekusi
+            const actionPlan = document.getElementById('actionPlanInput').value.trim();
+            const week1Exec = document.getElementById('week1Exec').value;
+
+            // Validasi
+            if (goals.length < 3 || months.length < 12 || !actionPlan || !week1Exec) {
+                alert('Semua field wajib diisi dan harus lengkap!');
+                return;
+            }
+
+            planData = {
+                goals,
+                months,
+                actionPlan,
+                week1Exec
+            };
+
+            updateDisplay();
+
+            // Tampilkan modal jika achievement berhasil
+            if (
+                planData.goals.length === 3 &&
+                planData.months.length === 12 &&
+                planData.actionPlan &&
+                planData.week1Exec === 'done'
+            ) {
+                showBadgeModal();
+            }
+        });
+
+        function updateDisplay() {
+            // Update stats
+            document.getElementById('goalCount').textContent = planData.goals.length + '/3';
+            document.getElementById('monthPlan').textContent = planData.months.length + '/12';
+            document.getElementById('actionPlan').textContent = planData.actionPlan ? '1' : '0';
+            document.getElementById('week1').textContent = planData.week1Exec === 'done' ? '✅' : '❌';
+
+            // Progress bar
+            let progress = 0;
+            if (planData.goals.length === 3) progress++;
+            if (planData.months.length === 12) progress++;
+            if (planData.actionPlan) progress++;
+            if (planData.week1Exec === 'done') progress++;
+            document.getElementById('progressFill').style.width = `${progress * 25}%`;
+            document.getElementById('progressText').textContent = `${progress}/4 langkah utama tercapai`;
+
+            // Summary
+            let summary = `
+                <div class="mb-4">
+                    <h3 class="font-bold text-lg mb-2">🎯 3 Goal Utama:</h3>
+                    <ul class="list-disc ml-6">
+                        <li>${planData.goals[0]}</li>
+                        <li>${planData.goals[1]}</li>
+                        <li>${planData.goals[2]}</li>
+                    </ul>
+                </div>
+                <div class="mb-4">
+                    <h3 class="font-bold text-lg mb-2">📅 Breakdown 12 Bulan:</h3>
+                    <ul class="list-decimal ml-6">
+                        ${planData.months.map((m, i) => `<li>Bulan ${i+1}: ${m}</li>`).join('')}
+                    </ul>
+                </div>
+                <div class="mb-4">
+                    <h3 class="font-bold text-lg mb-2">📝 Action Plan:</h3>
+                    <p>${planData.actionPlan}</p>
+                </div>
+                <div>
+                    <h3 class="font-bold text-lg mb-2">🚀 Eksekusi Week 1:</h3>
+                    <p>${planData.week1Exec === 'done' ? '<span class="text-green-600 font-bold">Sudah dieksekusi</span>' : '<span class="text-red-600 font-bold">Belum dieksekusi</span>'}</p>
+                </div>
+            `;
+            document.getElementById('planSummary').innerHTML = summary;
+
+            // Achievement
+            if (
+                planData.goals.length === 3 &&
+                planData.months.length === 12 &&
+                planData.actionPlan &&
+                planData.week1Exec === 'done'
+            ) {
+                document.getElementById('successMessage').style.display = 'block';
+                document.getElementById('successMessage').classList.add('show');
+            }
+        }
+
+        // Animasi modal badge seperti tantangan 4
+        function showBadgeModal() {
+            const modal = document.getElementById('badgeModal');
+            const card = document.getElementById('badgeCard');
+            modal.style.display = 'flex';
+            card.style.transform = 'scale(0.9)';
+            card.style.opacity = '0';
+            setTimeout(() => {
+                card.style.transform = 'scale(1)';
+                card.style.opacity = '1';
+            }, 50);
+        }
+        function closeBadgeModal() {
+            const card = document.getElementById('badgeCard');
+            card.style.transform = 'scale(0.9)';
+            card.style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('badgeModal').style.display = 'none';
+            }, 400);
+        }
+    </script>
+</body>
+</html>

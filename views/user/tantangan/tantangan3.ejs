@@ -3,336 +3,177 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🕵️ Detektif Pengeluaran</title>
+    <title>💼 Budget Master Quest</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --putih: #ffffff;
+            --kuning: #ffe44d;
+            --ungu: #6559ff;
+            --navy: #2D2C56ff;
+            --hitam: #0f0f0f;
         }
-
         body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--ungu);
             min-height: 100vh;
-            padding: 20px;
+            color: var(--hitam);
         }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            overflow: hidden;
+        .maincontainer {
+            background: var(--kuning);
         }
-
-        .header {
-            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
-            color: white;
-            padding: 30px;
-            text-align: center;
-            position: relative;
-        }
-
-        .header::before {
-            content: '🔍💰';
-            font-size: 4rem;
-            position: absolute;
-            top: 10px;
-            left: 30px;
-            opacity: 0.3;
-        }
-
-        .header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-
         .progress-bar {
-            background: rgba(255,255,255,0.2);
-            height: 10px;
-            border-radius: 5px;
-            margin-top: 20px;
+            background: #ffffff;
+            height: 12px;
+            border-radius: 9999px;
             overflow: hidden;
         }
-
         .progress-fill {
             height: 100%;
-            background: #4CAF50;
-            border-radius: 5px;
+            background: var(--kuning);
+            border-radius: 9999px;
             transition: width 0.3s ease;
             width: 0%;
         }
-
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            padding: 30px;
-            background: #f8f9fa;
+        .stats-card {
+            background: var(--putih);
+            color: var(--navy);
         }
-
-        .stat-card {
-            background: white;
-            padding: 20px;
-            border-radius: 15px;
-            text-align: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .stat-card .icon {
-            font-size: 2rem;
-            margin-bottom: 10px;
-        }
-
-        .stat-card .number {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #333;
-        }
-
-        .stat-card .label {
-            color: #666;
-            font-size: 0.9rem;
-        }
-
-        .main-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            padding: 30px;
-        }
-
         .form-section {
-            background: #f8f9fa;
-            padding: 25px;
-            border-radius: 15px;
+            background: var(--putih);
         }
-
-        .form-section h2 {
-            color: #333;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        .list-section {
+            background: var(--putih);
+            color: var(--navy);
         }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-            color: #555;
-        }
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #ddd;
-            border-radius: 10px;
-            font-size: 1rem;
-            transition: border-color 0.3s ease;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-
-        .btn-add {
-            background: linear-gradient(135deg, #4CAF50, #45a049);
-            color: white;
-            padding: 12px 25px;
-            border: none;
-            border-radius: 10px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-            width: 100%;
-        }
-
-        .btn-add:hover {
-            transform: translateY(-2px);
-        }
-
-        .expenses-list {
-            background: #f8f9fa;
-            padding: 25px;
-            border-radius: 15px;
-            max-height: 600px;
-            overflow-y: auto;
-        }
-
-        .expense-item {
-            background: white;
-            padding: 15px;
-            margin-bottom: 10px;
-            border-radius: 10px;
-            border-left: 4px solid #667eea;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .expense-info {
-            flex: 1;
-        }
-
-        .expense-amount {
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: #e74c3c;
-        }
-
-        .expense-category {
-            background: #667eea;
-            color: white;
-            padding: 4px 8px;
-            border-radius: 5px;
-            font-size: 0.8rem;
-            margin-right: 10px;
-        }
-
-        .delete-btn {
-            background: #e74c3c;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 0.8rem;
-        }
-
         .analysis-section {
-            grid-column: 1 / -1;
-            background: #f8f9fa;
-            padding: 25px;
-            border-radius: 15px;
-            margin-top: 20px;
+            background: var(--putih);
         }
-
-        .category-chart {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
+        .expense-item {
+            background: var(--navy);
+            color: var(--putih);
         }
-
-        .category-item {
-            background: white;
-            padding: 15px;
-            border-radius: 10px;
-            text-align: center;
+        .expense-item .category {
+            background: var(--kuning);
+            color: var(--navy);
         }
-
-        .category-bar {
-            height: 20px;
-            background: #ddd;
-            border-radius: 10px;
-            overflow: hidden;
-            margin: 10px 0;
+        .expense-item .amount {
+            color: var(--kuning);
         }
-
-        .category-fill {
-            height: 100%;
-            transition: width 0.5s ease;
+        .expense-item .desc {
+            color: var(--putih);
         }
-
         .achievement {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            color: white;
-            padding: 20px;
-            border-radius: 15px;
-            text-align: center;
-            margin-top: 20px;
-            display: none;
+            background: var(--kuning);
         }
-
-        .achievement.show {
-            display: block;
+        .modal-bg {
+            background: rgba(0,0,0,0.5);
+        }
+        .modal {
             animation: slideIn 0.5s ease;
         }
-
         @keyframes slideIn {
             from { transform: translateY(-20px); opacity: 0; }
             to { transform: translateY(0); opacity: 1; }
         }
-
-        @media (max-width: 768px) {
-            .main-content {
-                grid-template-columns: 1fr;
-            }
-            
-            .stats {
-                grid-template-columns: repeat(2, 1fr);
-            }
+        *:focus {
+            outline: none !important;
+            box-shadow: none !important;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>🕵️ Detektif Pengeluaran</h1>
-            <p>Lacak setiap rupiah yang "kabur" dari kantongmu!</p>
-            <div class="progress-bar">
+    <!-- Top Container Navigasi -->
+    <div class="top-container max-w-screen-xl mx-auto px-4 md:px-20 flex items-center justify-between mb-10 mt-14">
+        <div class="flex-1 text-left">
+            <button id="prev-challenge" onclick="window.location.href='http://localhost:3000/tantangan2'" class="bg-[var(--kuning)] text-[var(--navy)] font-bold py-2 px-6 rounded-full border-2 border-[var(--ungu)] transition hover:bg-[var(--navy)] hover:text-[var(--kuning)]">
+                &larr; Tantangan Sebelumnya
+            </button>
+        </div>
+        <div class="flex-1 flex justify-center px-4 middle-container text-[var(--navy)]">
+            <div class="w-full text-center">
+                <h1 class="text-xl md:text-2xl bg-[var(--kuning)] text-[var(--navy)] font-bold rounded-full px-8 py-3 shadow inline-block border-2">
+                    Tantangan 3: Budget Master Quest
+                </h1>
+            </div>
+        </div>
+        <div class="flex-1 text-right">
+            <button id="next-challenge" onclick="window.location.href='http://localhost:3000/tantangan4'" class="bg-[var(--kuning)] text-[var(--navy)] font-bold py-2 px-6 rounded-full border-2 border-[var(--ungu)] transition hover:bg-[var(--navy)] hover:text-[var(--kuning)]">
+                Tantangan Selanjutnya &rarr;
+            </button>
+        </div>
+    </div>
+
+    <!-- Garis horizontal custom -->
+    <div class="w-full flex justify-center">
+        <div class="h-1 bg-[var(--kuning)] rounded-full mt-2 mb-8" style="width: 100%; max-width: 1090px;"></div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="maincontainer max-w-screen-xl mx-auto px-4 py-8 rounded-3xl shadow-lg">
+        <!-- Header -->
+        <div class="rounded-3xl shadow-lg bg-[var(--navy)] text-[var(--kuning)] px-8 py-8 mb-8 relative overflow-hidden border-2 border-[var(--kuning)]">
+            <div class="absolute left-6 top-6 text-6xl opacity-20 select-none pointer-events-none">💼</div>
+            <h2 class="text-3xl md:text-4xl font-bold mb-2 inline-block bg-[var(--kuning)] text-[var(--navy)] px-6 py-2 rounded-full shadow border-2">
+                💼 Budget Master Quest
+            </h2>
+            <p class="text-lg mt-4 mb-4 max-w-2xl text-center text-[var(--putih)]">
+                Saatnya jadi bos untuk uangmu sendiri! Bikin budget untuk seminggu dan buktikan kamu bisa <b>stick to the plan</b>. No excuses, no drama!
+            </p>
+            <ul class="bg-[var(--putih)] rounded-xl px-6 py-4 mb-4 text-base mx-auto text-[var(--navy)] border border-[var(--kuning)]">
+                <li><strong>📅 Tugas:</strong> Catat minimal <b>5 transaksi</b> pengeluaran mingguan di tracker, isi semua field wajib (<i>tanggal, jumlah, kategori, keterangan</i>).</li>
+                <li><strong>🔍 Analisis:</strong> Setelah itu, analisis kategori pengeluaran terbesar kamu.</li>
+                <li><strong>✅ Selesai jika:</strong> Berhasil mencatat minimal <b>5 transaksi</b> dan menyelesaikan analisis pengeluaran.</li>
+                <li><strong>❌ Tidak selesai jika:</strong> Tidak mencatat minimal 5 transaksi atau tidak menyelesaikan analisis.</li>
+                <li><strong>🎖️ Hadiah:</strong> Badge <b>"Budget Boss"</b> + <b>200 poin</b></li>
+            </ul>
+            <div class="progress-bar mb-2">
                 <div class="progress-fill" id="progressFill"></div>
             </div>
-            <p id="progressText" style="margin-top: 10px;">0/15 transaksi tercatat</p>
+            <p id="progressText" class="text-sm text-[var(--kuning)] font-semibold">0/5 transaksi tercatat</p>
         </div>
 
-        <div class="stats">
-            <div class="stat-card">
-                <div class="icon">📊</div>
-                <div class="number" id="totalTransactions">0</div>
-                <div class="label">Total Transaksi</div>
+        <!-- Stats -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+            <div class="stats-card rounded-2xl shadow p-6 flex flex-col items-center">
+                <div class="text-3xl mb-2">📊</div>
+                <div class="text-2xl font-bold" id="totalTransactions">0</div>
+                <div class="text-gray-500">Total Transaksi</div>
             </div>
-            <div class="stat-card">
-                <div class="icon">💸</div>
-                <div class="number" id="totalSpent">Rp 0</div>
-                <div class="label">Total Pengeluaran</div>
+            <div class="stats-card rounded-2xl shadow p-6 flex flex-col items-center">
+                <div class="text-3xl mb-2">💸</div>
+                <div class="text-2xl font-bold" id="totalSpent">Rp 0</div>
+                <div class="text-gray-500">Total Pengeluaran</div>
             </div>
-            <div class="stat-card">
-                <div class="icon">📅</div>
-                <div class="number" id="daysTracked">0</div>
-                <div class="label">Hari Dilacak</div>
+            <div class="stats-card rounded-2xl shadow p-6 flex flex-col items-center">
+                <div class="text-3xl mb-2">📅</div>
+                <div class="text-2xl font-bold" id="daysTracked">0</div>
+                <div class="text-gray-500">Hari Dilacak</div>
             </div>
-            <div class="stat-card">
-                <div class="icon">🎯</div>
-                <div class="number" id="avgPerDay">Rp 0</div>
-                <div class="label">Rata-rata/Hari</div>
+            <div class="stats-card rounded-2xl shadow p-6 flex flex-col items-center">
+                <div class="text-3xl mb-2">🎯</div>
+                <div class="text-2xl font-bold" id="avgPerDay">Rp 0</div>
+                <div class="text-gray-500">Rata-rata/Hari</div>
             </div>
         </div>
 
-        <div class="main-content">
-            <div class="form-section">
-                <h2>📝 Catat Pengeluaran</h2>
+        <!-- Main Content -->
+        <div class="grid md:grid-cols-2 gap-8 mb-8">
+            <!-- Form Section -->
+            <div class="form-section rounded-2xl shadow p-8">
+                <h2 class="text-xl font-bold mb-6 flex items-center gap-2 text-[var(--navy)]">📝 Catat Pengeluaran</h2>
                 <form id="expenseForm">
-                    <div class="form-group">
-                        <label for="date">Tanggal *</label>
-                        <input type="date" id="date" required>
+                    <div class="mb-4 p-4 rounded-xl bg-[var(--navy)]">
+                        <label for="date" class="block font-semibold mb-1 text-[var(--putih)]">Tanggal *</label>
+                        <input type="date" id="date" required class="w-full rounded-xl px-4 py-2 bg-[var(--navy)] text-[var(--putih)]" />
                     </div>
-                    <div class="form-group">
-                        <label for="amount">Jumlah (Rp) *</label>
-                        <input type="number" id="amount" min="0" step="500" placeholder="10000" required>
+                    <div class="mb-4 p-4 rounded-xl bg-[var(--navy)]">
+                        <label for="amount" class="block font-semibold mb-1 text-[var(--putih)]">Jumlah (Rp) *</label>
+                        <input type="number" id="amount" min="0" step="500" placeholder="10000" required class="w-full rounded-xl px-4 py-2 bg-[var(--navy)] text-[var(--putih)]" />
                     </div>
-                    <div class="form-group">
-                        <label for="category">Kategori *</label>
-                        <select id="category" required>
+                    <div class="mb-4 p-4 rounded-xl bg-[var(--navy)]">
+                        <label for="category" class="block font-semibold mb-1 text-[var(--putih)]">Kategori *</label>
+                        <select id="category" required class="w-full rounded-xl px-4 py-2 bg-[var(--navy)] text-[var(--putih)]">
                             <option value="">Pilih kategori...</option>
                             <option value="Makanan & Minuman">🍔 Makanan & Minuman</option>
                             <option value="Transportasi">🚗 Transportasi</option>
@@ -343,18 +184,21 @@
                             <option value="Lainnya">📦 Lainnya</option>
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label for="description">Keterangan *</label>
-                        <textarea id="description" rows="2" placeholder="Beli nasi gudeg di kantin..." required></textarea>
+                    <div class="mb-6 p-4 rounded-xl bg-[var(--navy)]">
+                        <label for="description" class="block font-semibold mb-1 text-[var(--putih)]">Keterangan *</label>
+                        <textarea id="description" rows="2" placeholder="Beli nasi gudeg di kantin..." required class="w-full rounded-xl px-4 py-2 bg-[var(--navy)] text-[var(--putih)]"></textarea>
                     </div>
-                    <button type="submit" class="btn-add">➕ Tambah Pengeluaran</button>
+                    <button type="submit" class="w-full bg-[var(--kuning)] text-[var(--navy)] font-bold py-3 rounded-xl shadow hover:bg-yellow-300 transition">➕ Tambah Pengeluaran</button>
                 </form>
+                <button id="finishBtn" class="w-full mt-6 bg-[var(--navy)] text-white font-bold py-3 rounded-xl shadow hover:bg-[var(--navy)] transition hidden">
+                    Selesai
+                </button>
             </div>
-
-            <div class="expenses-list">
-                <h2>📋 Daftar Pengeluaran</h2>
+            <!-- Expenses List -->
+            <div class="list-section rounded-2xl shadow p-8">
+                <h2 class="text-xl font-bold mb-6 text-[var(--navy)]">📋 Daftar Pengeluaran</h2>
                 <div id="expensesList">
-                    <p style="text-align: center; color: #999; margin-top: 50px;">
+                    <p class="text-center mt-12 text-[var(--navy)]">
                         Belum ada pengeluaran tercatat.<br>
                         Mulai catat pengeluaranmu! 🔍
                     </p>
@@ -362,25 +206,34 @@
             </div>
         </div>
 
-        <div class="analysis-section">
-            <h2>🔍 Analisis Detektif</h2>
+        <!-- Analysis Section -->
+        <div class="analysis-section rounded-2xl shadow p-8 mb-8">
+            <h2 class="text-xl font-bold mb-4 text-[var(--navy)]">🔍 Analisis Budget</h2>
             <div id="analysisContent">
-                <p style="text-align: center; color: #999;">
-                    Catat minimal 15 transaksi dalam 3 hari untuk melihat analisis lengkap! 📊
+                <p class="text-center text-gray-400">
+                    Catat minimal 5 transaksi untuk melihat analisis lengkap! 📊
                 </p>
             </div>
         </div>
+    </div>
 
-        <div class="achievement" id="achievement">
-            <h2>🏆 Selamat! Badge "Money Detective" Berhasil Didapat!</h2>
-            <p>Kamu telah berhasil melacak pengeluaran selama 3 hari dengan minimal 15 transaksi!</p>
-            <p><strong>+100 Poin!</strong> 🎉</p>
+    <!-- Modal Badge -->
+    <div id="badgeModal" class="fixed inset-0 z-50 flex items-center justify-center hidden modal-bg">
+        <div class="bg-white rounded-3xl shadow-lg p-10 max-w-sm w-full text-center modal relative">
+            <button onclick="closeModal()" class="absolute top-3 right-3 text-gray-400 hover:text-gray-700 text-2xl font-bold">&times;</button>
+            <div class="flex flex-col items-center">
+                <img src="https://github.com/luthfibphoenix/apmul/blob/main/B3M3.png?raw=true" alt="Budget Boss Badge" class="w-24 h-24 mb-4">
+                <h2 class="text-2xl font-bold mb-2 text-[var(--navy)]">Badge Didapatkan!</h2>
+                <div class="text-lg font-semibold mb-2 text-[var(--navy)]">Budget Boss</div>
+                <div class="mb-4 text-[var(--navy)]">Kamu berhasil menyelesaikan tantangan dengan mencatat minimal 5 transaksi!</div>
+                <div class="text-xl font-bold text-yellow-500 mb-2">+200 Poin</div>
+                <button onclick="closeModal()" class="mt-2 bg-[var(--kuning)] text-[var(--navy)] font-bold py-2 px-6 rounded-full border-2 border-[var(--navy)] hover:bg-yellow-300 transition">Tutup</button>
+            </div>
         </div>
     </div>
 
     <script>
         let expenses = [];
-        let currentDay = 1;
 
         // Set tanggal hari ini sebagai default
         document.getElementById('date').valueAsDate = new Date();
@@ -388,7 +241,6 @@
         // Form submission
         document.getElementById('expenseForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            
             const date = document.getElementById('date').value;
             const amount = parseInt(document.getElementById('amount').value);
             const category = document.getElementById('category').value;
@@ -418,7 +270,7 @@
             updateExpensesList();
             updateProgress();
             updateAnalysis();
-            checkAchievement();
+            checkFinishButton();
         }
 
         function updateStats() {
@@ -435,31 +287,28 @@
 
         function updateExpensesList() {
             const expensesList = document.getElementById('expensesList');
-            
             if (expenses.length === 0) {
                 expensesList.innerHTML = `
-                    <p style="text-align: center; color: #999; margin-top: 50px;">
+                    <p class="text-center mt-12 text-[var(--navy)]">
                         Belum ada pengeluaran tercatat.<br>
                         Mulai catat pengeluaranmu! 🔍
                     </p>
                 `;
                 return;
             }
-
             const sortedExpenses = expenses.sort((a, b) => new Date(b.date) - new Date(a.date));
-            
             expensesList.innerHTML = sortedExpenses.map(expense => `
-                <div class="expense-item">
-                    <div class="expense-info">
+                <div class="expense-item flex items-center justify-between rounded-xl px-4 py-3 mb-3 shadow-sm">
+                    <div class="flex-1">
                         <div>
-                            <span class="expense-category">${expense.category}</span>
-                            <span class="expense-amount">Rp ${expense.amount.toLocaleString('id-ID')}</span>
+                            <span class="category inline-block text-xs px-3 py-1 rounded-full mr-2">${expense.category}</span>
+                            <span class="amount font-bold">Rp ${expense.amount.toLocaleString('id-ID')}</span>
                         </div>
-                        <div style="font-size: 0.9rem; color: #666; margin-top: 5px;">
+                        <div class="desc text-xs mt-1">
                             📅 ${new Date(expense.date).toLocaleDateString('id-ID')} - ${expense.description}
                         </div>
                     </div>
-                    <button class="delete-btn" onclick="deleteExpense(${expense.id})">🗑️</button>
+                    <button class="ml-4 bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-full text-xs" onclick="deleteExpense(${expense.id})">🗑️</button>
                 </div>
             `).join('');
         }
@@ -470,57 +319,49 @@
         }
 
         function updateProgress() {
-            const progress = Math.min((expenses.length / 15) * 100, 100);
+            const progress = Math.min((expenses.length / 5) * 100, 100);
             document.getElementById('progressFill').style.width = `${progress}%`;
-            document.getElementById('progressText').textContent = `${expenses.length}/15 transaksi tercatat`;
+            document.getElementById('progressText').textContent = `${expenses.length}/5 transaksi tercatat`;
         }
 
         function updateAnalysis() {
             const analysisContent = document.getElementById('analysisContent');
-            
-            if (expenses.length < 15) {
+            if (expenses.length < 5) {
                 analysisContent.innerHTML = `
-                    <p style="text-align: center; color: #999;">
-                        Catat minimal 15 transaksi dalam 3 hari untuk melihat analisis lengkap! 📊<br>
-                        <small>Progress: ${expenses.length}/15 transaksi</small>
+                    <p class="text-center text-gray-400">
+                        Catat minimal 5 transaksi untuk melihat analisis lengkap! 📊<br>
+                        <small>Progress: ${expenses.length}/5 transaksi</small>
                     </p>
                 `;
                 return;
             }
-
             // Analisis kategori
             const categoryTotals = {};
             expenses.forEach(expense => {
                 categoryTotals[expense.category] = (categoryTotals[expense.category] || 0) + expense.amount;
             });
-
             const totalSpent = expenses.reduce((sum, expense) => sum + expense.amount, 0);
             const sortedCategories = Object.entries(categoryTotals)
                 .sort((a, b) => b[1] - a[1]);
-
             const colors = ['#e74c3c', '#3498db', '#2ecc71', '#f39c12', '#9b59b6', '#1abc9c', '#34495e'];
-
             let analysisHTML = `
-                <h3>🔍 Hasil Investigasi Detektif</h3>
-                <p><strong>Tersangka Utama (Kategori Terboros):</strong> ${sortedCategories[0][0]} - Rp ${sortedCategories[0][1].toLocaleString('id-ID')} (${Math.round(sortedCategories[0][1]/totalSpent*100)}%)</p>
-                <div class="category-chart">
+                <h3 class="font-bold text-lg mb-2">🔍 Hasil Investigasi Detektif</h3>
+                <p class="mb-4"><strong>Tersangka Utama (Kategori Terboros):</strong> ${sortedCategories[0][0]} - Rp ${sortedCategories[0][1].toLocaleString('id-ID')} (${Math.round(sortedCategories[0][1]/totalSpent*100)}%)</p>
+                <div class="grid md:grid-cols-3 gap-4 mb-4">
             `;
-
             sortedCategories.forEach(([category, amount], index) => {
                 const percentage = Math.round((amount / totalSpent) * 100);
                 analysisHTML += `
-                    <div class="category-item">
-                        <h4>${category}</h4>
-                        <div class="category-bar">
-                            <div class="category-fill" style="width: ${percentage}%; background: ${colors[index % colors.length]};"></div>
+                    <div class="bg-[var(--navy)]/10 rounded-xl p-4 text-center">
+                        <h4 class="font-semibold mb-2">${category}</h4>
+                        <div class="w-full h-4 bg-gray-200 rounded-full mb-2">
+                            <div style="width: ${percentage}%; background: ${colors[index % colors.length]};" class="h-4 rounded-full transition-all"></div>
                         </div>
-                        <p>Rp ${amount.toLocaleString('id-ID')} (${percentage}%)</p>
+                        <p class="font-bold">Rp ${amount.toLocaleString('id-ID')} <span class="text-xs text-gray-500">(${percentage}%)</span></p>
                     </div>
                 `;
             });
-
             analysisHTML += '</div>';
-
             // Tips berdasarkan kategori terbesar
             const topCategory = sortedCategories[0][0];
             let tip = '';
@@ -540,24 +381,36 @@
                 default:
                     tip = '💡 Tip: Pertimbangkan apakah pengeluaran ini benar-benar diperlukan sebelum beli!';
             }
-
             analysisHTML += `
-                <div style="background: #fff3cd; padding: 15px; border-radius: 10px; margin-top: 20px; border-left: 4px solid #ffc107;">
+                <div class="bg-yellow-100 border-l-4 border-yellow-400 rounded-xl p-4 mt-4">
                     <strong>💡 Rekomendasi Detektif:</strong><br>
                     ${tip}
                 </div>
             `;
-
             analysisContent.innerHTML = analysisHTML;
         }
 
-        function checkAchievement() {
-            const uniqueDates = [...new Set(expenses.map(expense => expense.date))].length;
-            
-            if (expenses.length >= 15 && uniqueDates >= 3) {
-                document.getElementById('achievement').classList.add('show');
+        function checkFinishButton() {
+            const finishBtn = document.getElementById('finishBtn');
+            if (expenses.length >= 5) {
+                finishBtn.classList.remove('hidden');
+            } else {
+                finishBtn.classList.add('hidden');
             }
         }
+
+        // Modal logic
+        function showModal() {
+            document.getElementById('badgeModal').classList.remove('hidden');
+        }
+        function closeModal() {
+            document.getElementById('badgeModal').classList.add('hidden');
+        }
+
+        // Event tombol selesai
+        document.getElementById('finishBtn').addEventListener('click', function() {
+            showModal();
+        });
 
         // Inisialisasi
         updateDisplay();

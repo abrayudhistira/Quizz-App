@@ -1,0 +1,63 @@
+<section id="m4s5" class="w-full py-10 px-4 md:px-10 rounded-2xl">
+  <div class="rounded-3xl px-6 py-10 max-w-screen-xl mx-auto text-center bg-[var(--putih)] shadow-lg">
+    <h2 class="text-3xl font-bold mb-4">Penutup Modul 4</h2>
+    <p class="mb-6 text-gray-700 max-w-3xl mx-auto leading-relaxed">
+      Terima kasih telah mengikuti Modul 4 ini.<br>
+      Semoga kamu semakin paham bagaimana mengelola skala prioritas dengan bijak, membedakan antara kebutuhan dan keinginan, serta menghadapi konflik internal dengan lebih sadar dan terarah.<br>
+      Jangan lupa untuk mengerjakan quiz dan tantangan yang telah disediakan untuk memperkuat kemampuanmu dalam menentukan prioritas keuangan.
+    </p>
+    
+    <div class="flex flex-col md:flex-row justify-center gap-6 mt-8 max-w-md mx-auto">
+      <button id="btnSelesai" class="bg-[var(--kuning)] text-[var(--navy)] px-8 py-3 rounded-full font-semibold hover:bg-yellow-400 transition">
+        Selesai
+      </button>
+      <button id="btnQuiz" class="bg-[var(--navy)] text-[var(--putih)] px-8 py-3 rounded-full font-semibold hover:bg-blue-900 transition">
+        Quiz
+      </button>
+      <button id="btnTantangan" class="bg-[var(--navy)] text-[var(--putih)] px-8 py-3 rounded-full font-semibold hover:bg-blue-900 transition">
+        Tantangan
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- Modal -->
+<div id="modalSelesai" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+  <div class="bg-white rounded-2xl max-w-lg p-6 mx-4 text-center shadow-lg">
+    <h3 class="text-2xl font-bold mb-4">Terima Kasih!</h3>
+    <p class="mb-6 text-gray-700">
+      Kamu telah menyelesaikan Modul 4. Semoga materi yang dipelajari bermanfaat dan dapat membantu kamu mengelola prioritas keuangan dengan lebih bijak dan terarah.
+    </p>
+    <button id="btnCloseModal" class="bg-[var(--kuning)] text-[var(--navy)] px-6 py-2 rounded-full font-semibold hover:bg-yellow-400 transition">
+      Tutup
+    </button>
+  </div>
+</div>
+
+<script>
+  const modal = document.getElementById('modalSelesai');
+  const btnSelesai = document.getElementById('btnSelesai');
+  const btnCloseModal = document.getElementById('btnCloseModal');
+  const btnQuiz = document.getElementById('btnQuiz');
+  const btnTantangan = document.getElementById('btnTantangan');
+
+  // Tampilkan modal saat tombol Selesai diklik
+  btnSelesai.addEventListener('click', () => {
+    modal.classList.remove('hidden');
+  });
+
+  // Tutup modal saat tombol Tutup diklik
+  btnCloseModal.addEventListener('click', () => {
+    modal.classList.add('hidden');
+  });
+
+  // Redirect ke /quiz4 saat tombol Quiz diklik
+  btnQuiz.addEventListener('click', () => {
+    window.location.href = '/quiz4';
+  });
+
+  // Redirect ke /tantangan4 saat tombol Tantangan diklik
+  btnTantangan.addEventListener('click', () => {
+    window.location.href = '/tantangan4';
+  });
+</script>

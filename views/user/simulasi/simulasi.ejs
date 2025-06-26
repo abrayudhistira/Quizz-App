@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Simulasi Interaktif</title>
+  <style>
+    :root {
+      --putih: #ffffff;
+      --kuning: #ffe44d;
+      --ungu: #6559ff;
+      --hitam: #0f0f0f;
+      --navy: #2b265f;
+      --kuning-soft: #fff7c2;
+      --shadow: 0 8px 32px 0 rgba(44,44,90,0.10);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background-color: var(--ungu);
+      font-family: 'Inter', Arial, sans-serif;
+      min-height: 100vh;
+      width: 100vw;
+      overflow-x: hidden;
+    }
+
+    .wrapper {
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 24px 0 24px 0;
+    }
+
+    .back-button {
+      display: inline-block;
+      margin: 8px 0 24px 0;
+      padding: 8px 20px;
+      background-color: var(--putih);
+      color: var(--navy);
+      border: none;
+      border-radius: 999px;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      box-shadow: 0 2px 8px 0 rgba(44,44,90,0.10);
+      transition: background 0.2s;
+      font-size: 1rem;
+    }
+    .back-button:hover {
+      background: #f3f3f3;
+    }
+
+    .simulasi-container {
+      background: var(--kuning);
+      border-radius: 28px;
+      padding: 24px 18px 18px 18px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .simulasi-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .uang-bulanan input {
+      background-color: var(--navy);
+      color: white;
+      border: none;
+      border-radius: 16px;
+      padding: 10px 18px;
+      font-size: 1.1rem;
+      width: 170px;
+      font-weight: bold;
+      text-align: left;
+      box-shadow: 0 2px 8px 0 rgba(44,44,90,0.08);
+      outline: none;
+      transition: box-shadow 0.2s;
+    }
+    .uang-bulanan input:focus {
+      box-shadow: 0 0 0 2px var(--ungu);
+    }
+
+    .judul-simulasi {
+      flex: 1;
+      margin-left: 16px;
+      min-width: 180px;
+    }
+    .judul-simulasi > div {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .judul-simulasi input {
+      padding: 10px 14px;
+      border-radius: 14px;
+      border: none;
+      font-weight: bold;
+      font-size: 1rem;
+      width: 100%;
+      background: #fff;
+      color: var(--navy);
+      box-shadow: 0 2px 8px 0 rgba(44,44,90,0.08);
+      outline: none;
+      transition: box-shadow 0.2s;
+    }
+    .judul-simulasi input:focus {
+      box-shadow: 0 0 0 2px var(--ungu);
+    }
+    .judul-simulasi button {
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.98rem;
+      transition: background 0.2s, color 0.2s;
+    }
+    .judul-simulasi button:nth-child(2) {
+      background-color: var(--navy);
+      color: white;
+    }
+    .judul-simulasi button:nth-child(2):hover {
+      background: #39387a;
+    }
+    .judul-simulasi button:nth-child(3) {
+      background-color: #ffffff;
+      color: var(--navy);
+      border: 1px solid #e0e0e0;
+    }
+    .judul-simulasi button:nth-child(3):hover {
+      background: #f3f3f3;
+    }
+
+    .simulasi-grid {
+      display: flex;
+      gap: 12px;
+      flex-wrap: nowrap;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .simulasi-card {
+      flex: 1 1 0;
+      background-color: white;
+      border-radius: 18px;
+      padding: 12px 10px 10px 10px;
+      font-weight: bold;
+      color: var(--navy);
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      box-shadow: 0 2px 8px 0 rgba(44,44,90,0.06);
+      transition: box-shadow 0.2s;
+      max-width: 250px;
+    }
+    .simulasi-card:hover {
+      box-shadow: 0 4px 16px 0 rgba(44,44,90,0.12);
+    }
+
+    .judul {
+      text-align: center;
+      font-size: 1.05rem;
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: var(--navy);
+      letter-spacing: 0.5px;
+    }
+
+    .item-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin: 6px 0;
+      gap: 6px;
+    }
+
+    .item-name {
+      background-color: var(--navy);
+      color: white;
+      padding: 5px 8px;
+      border-radius: 14px;
+      width: 60%;
+      word-wrap: break-word;
+      text-align: center;
+      font-size: 0.93rem;
+      font-weight: 500;
+      letter-spacing: 0.2px;
+    }
+
+    .item-price {
+      font-weight: bold;
+      white-space: nowrap;
+      font-size: 0.97rem;
+      color: var(--navy);
+    }
+
+    .input-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 6px;
+      margin-top: 8px;
+      width: 100%;
+    }
+
+    .input-navy {
+      background-color: var(--navy);
+      color: white;
+      border: none;
+      border-radius: 999px;
+      padding: 8px 10px;
+      font-size: 0.93rem;
+      width: 60%;
+      outline: none;
+      transition: box-shadow 0.2s;
+    }
+    .input-navy:focus {
+      box-shadow: 0 0 0 2px var(--ungu);
+    }
+
+    .input-plain {
+      background-color: white;
+      color: var(--navy);
+      border: none;
+      border-radius: 999px;
+      padding: 8px 10px;
+      font-size: 0.93rem;
+      width: 40%;
+      outline: none;
+      transition: box-shadow 0.2s;
+    }
+    .input-plain:focus {
+      box-shadow: 0 0 0 2px var(--ungu);
+    }
+
+    .add-btn {
+      background-color: var(--navy);
+      color: white;
+      border: none;
+      border-radius: 999px;
+      padding: 8px;
+      font-size: 0.98rem;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 6px;
+      font-weight: 600;
+      transition: background 0.2s;
+      box-shadow: 0 2px 8px 0 rgba(44,44,90,0.08);
+    }
+    .add-btn:hover {
+      background: #39387a;
+    }
+
+    .sisa-card {
+      background-color: var(--kuning-soft);
+      align-items: center;
+      justify-content: center;
+      min-width: 0;
+      max-width: 250px;
+    }
+
+    .sisa-value-box {
+      background-color: var(--navy);
+      color: white;
+      font-size: 1.4rem;
+      text-align: center;
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 10px;
+      width: 100%;
+      font-weight: bold;
+      letter-spacing: 1px;
+      box-shadow: 0 2px 8px 0 rgba(44,44,90,0.08);
+    }
+
+    .totals-container {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      width: 100%;
+    }
+
+    .total-box {
+      background-color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 8px 10px;
+      width: 100%;
+      font-size: 0.93rem;
+      color: var(--navy);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 1px 4px 0 rgba(44,44,90,0.04);
+    }
+
+    .total-box.grand {
+      background-color: #ffe44d;
+      color: var(--hitam);
+      font-weight: bold;
+      box-shadow: 0 2px 8px 0 rgba(44,44,90,0.08);
+    }
+
+    .simulasi-list-container {
+      margin-top: 18px;
+      width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: flex-start;
+    }
+
+    .simulasi-item {
+      background-color: white;
+      padding: 12px 10px;
+      border-radius: 14px;
+      font-size: 0.97rem;
+      color: var(--navy);
+      flex: 0 0 200px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 4px 12px rgba(44,44,90,0.08);
+      transition: box-shadow 0.2s;
+      min-height: 90px;
+    }
+    .simulasi-item:hover {
+      box-shadow: 0 8px 24px rgba(44,44,90,0.13);
+    }
+
+    .simulasi-item .row {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .simulasi-item span {
+      text-align: center;
+      font-weight: bold;
+      margin-bottom: 8px;
+      word-break: break-word;
+      font-size: 1rem;
+      color: var(--navy);
+    }
+
+    .simulasi-item button {
+      flex: 1;
+      padding: 6px 0;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      background-color: var(--navy);
+      color: white;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: background 0.2s;
+    }
+    .simulasi-item button:first-child {
+      background-color: var(--kuning);
+      color: var(--hitam);
+    }
+    .simulasi-item button:first-child:hover {
+      background: #ffe44d;
+      color: #2b265f;
+    }
+    .simulasi-item button:last-child:hover {
+      background: #39387a;
+    }
+
+    .judul-tantangan {
+      background: var(--kuning);
+      color: var(--hitam);
+      font-size: 1.15rem;
+      font-weight: bold;
+      border-radius: 999px;
+      padding: 8px 32px;
+      margin-left: 8px;
+      display: inline-block;
+      }
+    
+    @media (max-width: 900px) {
+      .simulasi-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+      }
+      .simulasi-grid {
+        flex-direction: column;
+        gap: 10px;
+      }
+      .simulasi-card, .sisa-card {
+        max-width: unset;
+      }
+      .wrapper {
+        padding: 0;
+      }
+    }
+    @media (max-width: 600px) {
+      .simulasi-container {
+        padding: 8px 2vw 8px 2vw;
+        border-radius: 10px;
+      }
+      .simulasi-card, .sisa-card {
+        padding: 8px 4px;
+        border-radius: 8px;
+      }
+      .back-button {
+        font-size: 0.95rem;
+        padding: 6px 12px;
+      }
+    }
+
+    .top-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      gap: 12px;
+      margin-bottom: 32px;
+      margin-top: 32px;
+    }
+
+    .top-btn {
+      background: var(--navy);
+      color: white;
+      border: none;
+      border-radius: 999px;
+      padding: 10px 20px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+    .top-btn:hover {
+      background: #39387a;
+    }
+
+    .top-title {
+      background-color: var(--kuning);
+      border-radius: 999px;
+      padding: 12px 36px;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--hitam);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <div class="top-header">
+      <button class="top-btn" onclick="window.location.href='/dashboard'">&larr; Dashboard</button>
+      <div class="top-title">
+        SIMULASI
+      </div>
+      <button class="top-btn" onclick="window.location.href='/tantangan'">List Tantangan</button>
+    </div>
+    <div class="maincontainer">
+      <div class="simulasi-container">
+        <div class="simulasi-header">
+          <div class="uang-bulanan">
+            <input type="number" id="totalBudgetInput" value="1000000" onchange="updateTotalBudget()" />
+          </div>
+          <div class="judul-simulasi">
+            <div>
+              <input type="text" id="judulSimulasi" value="Simulasi Bebas" />
+              <button onclick="saveSimulasi()">Simpan</button>
+              <button onclick="resetSimulasi()">Reset</button>
+            </div>
+          </div>
+        </div>
+        <div class="simulasi-grid">
+          <div class="simulasi-card" id="kebutuhanCard">
+            <div class="judul">Kebutuhan</div>
+            <div id="kebutuhanList"></div>
+            <div class="input-row">
+              <input type="text" class="input-navy" id="kebutuhanName" placeholder="Nama item">
+              <input type="number" class="input-plain" id="kebutuhanPrice" placeholder="Nominal">
+            </div>
+            <button class="add-btn" onclick="addItem('kebutuhan')">Tambah</button>
+          </div>
+          <div class="simulasi-card" id="keinginanCard">
+            <div class="judul">Keinginan</div>
+            <div id="keinginanList"></div>
+            <div class="input-row">
+              <input type="text" class="input-navy" id="keinginanName" placeholder="Nama item">
+              <input type="number" class="input-plain" id="keinginanPrice" placeholder="Nominal">
+            </div>
+            <button class="add-btn" onclick="addItem('keinginan')">Tambah</button>
+          </div>
+          <div class="simulasi-card" id="menabungCard">
+            <div class="judul">Menabung</div>
+            <div id="menabungList"></div>
+            <div class="input-row">
+              <input type="text" class="input-navy" id="menabungName" placeholder="Nama item">
+              <input type="number" class="input-plain" id="menabungPrice" placeholder="Nominal">
+            </div>
+            <button class="add-btn" onclick="addItem('menabung')">Tambah</button>
+          </div>
+          <div class="simulasi-card sisa-card">
+            <div class="judul">Sisa</div>
+            <div class="sisa-value-box" id="sisaBudget">0</div>
+            <div class="totals-container">
+              <div class="total-box"><span>Total Kebutuhan</span><span id="totalKebutuhan">0</span></div>
+              <div class="total-box"><span>Total Keinginan</span><span id="totalKeinginan">0</span></div>
+              <div class="total-box"><span>Total Menabung</span><span id="totalMenabung">0</span></div>
+              <div class="total-box grand"><span>Grand Total</span><span id="grandTotal">0</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="simulasi-list-container" id="simulasiCards"></div>
+    </div>
+  </div>
+  <script>
+  let totalBudget = 1000000;
+  let kategori = { kebutuhan: [], keinginan: [], menabung: [] };
+
+  function updateTotalBudget() {
+    totalBudget = parseInt(document.getElementById("totalBudgetInput").value) || 0;
+    updateSisa();
+  }
+
+  // Fungsi menambah item ke kebutuhan/keinginan/menabung
+  function addItem(type) {
+    const name = document.getElementById(`${type}Name`).value.trim();
+    const price = parseInt(document.getElementById(`${type}Price`).value);
+    if (name && !isNaN(price)) {
+      kategori[type].push({ name, price });
+      document.getElementById(`${type}Name`).value = "";
+      document.getElementById(`${type}Price`).value = "";
+      renderItems(type);
+      updateSisa();
+    }
+  }
+
+  function renderItems(type) {
+    const container = document.getElementById(`${type}List`);
+    container.innerHTML = "";
+    kategori[type].forEach(item => {
+      const row = document.createElement("div");
+      row.className = "item-row";
+      row.innerHTML = `<div class="item-name">${item.name}</div><div class="item-price">${item.price.toLocaleString("id-ID")}</div>`;
+      container.appendChild(row);
+    });
+  }
+
+  function updateSisa() {
+    let totalUsed = 0;
+    let totals = { kebutuhan: 0, keinginan: 0, menabung: 0 };
+    for (const type in kategori) {
+      totals[type] = kategori[type].reduce((sum, item) => sum + item.price, 0);
+      totalUsed += totals[type];
+    }
+    document.getElementById("totalKebutuhan").textContent = totals.kebutuhan.toLocaleString("id-ID");
+    document.getElementById("totalKeinginan").textContent = totals.keinginan.toLocaleString("id-ID");
+    document.getElementById("totalMenabung").textContent = totals.menabung.toLocaleString("id-ID");
+    document.getElementById("grandTotal").textContent = totalUsed.toLocaleString("id-ID");
+    document.getElementById("sisaBudget").textContent = (totalBudget - totalUsed).toLocaleString("id-ID");
+  }
+
+  function saveSimulasi() {
+    const judul = document.getElementById("judulSimulasi").value;
+    const data = { judul, totalBudget, kategori };
+    let saved = JSON.parse(localStorage.getItem("simulasiList") || "[]");
+    saved.push(data);
+    localStorage.setItem("simulasiList", JSON.stringify(saved));
+    renderSavedSimulasi();
+    alert("Simulasi berhasil disimpan!");
+  }
+
+  function resetSimulasi() {
+    kategori = { kebutuhan: [], keinginan: [], menabung: [] };
+    document.getElementById("judulSimulasi").value = "Simulasi Bebas";
+    document.getElementById("totalBudgetInput").value = 1000000;
+    totalBudget = 1000000;
+    ["kebutuhan", "keinginan", "menabung"].forEach(renderItems);
+    updateSisa();
+  }
+
+  function renderSavedSimulasi() {
+    const container = document.getElementById("simulasiCards");
+    container.innerHTML = "";
+    const saved = JSON.parse(localStorage.getItem("simulasiList") || "[]");
+    saved.forEach((item, i) => {
+      const card = document.createElement("div");
+      card.className = "simulasi-item";
+      card.innerHTML = `
+        <span>${item.judul}</span>
+        <div class="row">
+          <button onclick="loadSimulasi(${i})">Buka</button>
+          <button onclick="deleteSimulasi(${i})">Hapus</button>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+  }
+
+  // Perbaiki fungsi loadSimulasi dan deleteSimulasi
+  function loadSimulasi(index) {
+    const saved = JSON.parse(localStorage.getItem("simulasiList") || "[]");
+    const sim = saved[index];
+    document.getElementById("judulSimulasi").value = sim.judul;
+    document.getElementById("totalBudgetInput").value = sim.totalBudget;
+    totalBudget = sim.totalBudget;
+    kategori = {
+      kebutuhan: sim.kategori.kebutuhan || [],
+      keinginan: sim.kategori.keinginan || [],
+      menabung: sim.kategori.menabung || []
+    };
+    ["kebutuhan", "keinginan", "menabung"].forEach(renderItems);
+    updateSisa();
+  }
+
+  function deleteSimulasi(index) {
+    let saved = JSON.parse(localStorage.getItem("simulasiList") || "[]");
+    saved.splice(index, 1);
+    localStorage.setItem("simulasiList", JSON.stringify(saved));
+    renderSavedSimulasi();
+  }
+
+  // Render data awal
+  ["kebutuhan", "keinginan", "menabung"].forEach(renderItems);
+  updateSisa();
+  renderSavedSimulasi();
+</script>
+</body>
+</html>
+

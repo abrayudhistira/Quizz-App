@@ -1,596 +1,187 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cerita Dana Darurat: Pilihan Hidup Sari</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Comic Sans MS', cursive, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .comic-container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            overflow: hidden;
-        }
-
-        .comic-header {
-            background: linear-gradient(45deg, #ff6b6b, #ffa500);
-            color: white;
-            padding: 30px;
-            text-align: center;
-            position: relative;
-        }
-
-        .comic-header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(255,255,255,0.3)"/><circle cx="80" cy="30" r="1.5" fill="rgba(255,255,255,0.2)"/><circle cx="40" cy="70" r="1" fill="rgba(255,255,255,0.3)"/><circle cx="90" cy="80" r="2.5" fill="rgba(255,255,255,0.2)"/></svg>');
-        }
-
-        .comic-header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-            position: relative;
-            z-index: 1;
-        }
-
-        .comic-header p {
-            font-size: 1.2em;
-            position: relative;
-            z-index: 1;
-        }
-
-        .story-panel {
-            margin: 20px;
-            border: 4px solid #333;
-            border-radius: 15px;
-            background: #f9f9f9;
-            position: relative;
-            display: none;
-            animation: slideIn 0.5s ease-in-out;
-        }
-
-        .story-panel.active {
-            display: block;
-        }
-
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .panel-content {
-            padding: 25px;
-        }
-
-        .character {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            margin: 0 auto 20px;
-            border: 4px solid #333;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 4em;
-            animation: bounce 2s infinite;
-        }
-
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-            40% { transform: translateY(-10px); }
-            60% { transform: translateY(-5px); }
-        }
-
-        .sari { background: linear-gradient(45deg, #ffb3ba, #ff9999); }
-        .worried { background: linear-gradient(45deg, #ffdfba, #ffd1a3); }
-        .happy { background: linear-gradient(45deg, #baffc9, #9fff9f); }
-        .stressed { background: linear-gradient(45deg, #ffb3b3, #ff8080); }
-
-        .speech-bubble {
-            background: white;
-            border: 3px solid #333;
-            border-radius: 20px;
-            padding: 20px;
-            margin: 20px 0;
-            position: relative;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-
-        .speech-bubble::before {
-            content: '';
-            position: absolute;
-            bottom: -12px;
-            left: 30px;
-            width: 0;
-            height: 0;
-            border: 12px solid transparent;
-            border-top-color: #333;
-        }
-
-        .speech-bubble::after {
-            content: '';
-            position: absolute;
-            bottom: -6px;
-            left: 33px;
-            width: 0;
-            height: 0;
-            border: 9px solid transparent;
-            border-top-color: white;
-        }
-
-        .choice-container {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-top: 25px;
-        }
-
-        .choice-btn {
-            background: linear-gradient(45deg, #4ecdc4, #44a08d);
-            color: white;
-            border: none;
-            padding: 15px 25px;
-            border-radius: 25px;
-            font-size: 1.1em;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: 3px solid transparent;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .choice-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-            border-color: #333;
-        }
-
-        .choice-btn.danger {
-            background: linear-gradient(45deg, #ff6b6b, #ee5a52);
-        }
-
-        .choice-btn.success {
-            background: linear-gradient(45deg, #51cf66, #40c057);
-        }
-
-        .stats-panel {
-            background: linear-gradient(45deg, #74b9ff, #0984e3);
-            color: white;
-            padding: 20px;
-            margin: 20px;
-            border-radius: 15px;
-            border: 3px solid #333;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
-            margin-top: 15px;
-        }
-
-        .stat-item {
-            background: rgba(255,255,255,0.2);
-            padding: 15px;
-            border-radius: 10px;
-            text-align: center;
-            border: 2px solid rgba(255,255,255,0.3);
-        }
-
-        .stat-value {
-            font-size: 1.5em;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        .narrator {
-            background: linear-gradient(45deg, #a8edea, #fed6e3);
-            border: 3px dashed #333;
-            padding: 20px;
-            margin: 20px;
-            border-radius: 15px;
-            font-style: italic;
-            text-align: center;
-            font-size: 1.1em;
-        }
-
-        .ending-panel {
-            background: linear-gradient(45deg, #ffeaa7, #fab1a0);
-            border: 4px solid #333;
-            border-radius: 20px;
-            padding: 30px;
-            margin: 20px;
-            text-align: center;
-        }
-
-        .restart-btn {
-            background: linear-gradient(45deg, #6c5ce7, #a29bfe);
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 25px;
-            font-size: 1.2em;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 20px;
-            transition: all 0.3s ease;
-        }
-
-        .restart-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 10px;
-            background: #e0e0e0;
-            border-radius: 5px;
-            margin: 20px 0;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(45deg, #00b894, #00cec9);
-            transition: width 0.5s ease;
-            border-radius: 5px;
-        }
-
-        @media (max-width: 600px) {
-            .comic-header h1 { font-size: 2em; }
-            .comic-header p { font-size: 1em; }
-            .panel-content { padding: 15px; }
-            .character { width: 100px; height: 100px; font-size: 3em; }
-        }
-    </style>
-</head>
-<body>
-    <div class="comic-container">
-        <div class="comic-header">
-            <h1>💰 Cerita Dana Darurat</h1>
-            <p>Pilihan Hidup Sari: Sebuah Kisah Nyata</p>
+<section id="m6s2" class="w-full py-10 px-4 md:px-10 rounded-2xl">
+  <!-- Judul & Deskripsi -->
+  <div class="rounded-3xl px-6 py-10 max-w-screen-xl mx-auto text-center" style="background: var(--putih); box-shadow: 0 2px 8px 0 rgba(45,44,86,0.08);">
+    <h2 class="text-2xl md:text-3xl font-bold mb-4" style="color: var(--navy);">Pentingnya Planning Jangka Panjang</h2>
+    <p class="text-base md:text-lg mb-8" style="color: var(--hitam);">
+      Jelajahi milestone penting dalam hidupmu selama 10 tahun ke depan. Klik setiap tahun di timeline untuk melihat infografik dan insight yang relevan!
+    </p>
+    <!-- Interaktif Timeline + Infografik -->
+    <div class="flex flex-col md:flex-row items-center justify-center gap-10">
+      <!-- Timeline Interaktif -->
+      <div class="flex-1">
+        <div class="rounded-xl shadow-md p-6 mb-4 text-left" style="background: var(--kuning);">
+          <div class="flex flex-row justify-between items-center mb-6">
+            <button class="timeline-btn bg-blue-100 text-blue-700 px-3 py-2 rounded-lg font-semibold transition" data-year="1">Tahun 1</button>
+            <button class="timeline-btn bg-blue-100 text-blue-700 px-3 py-2 rounded-lg font-semibold transition" data-year="3">Tahun 3</button>
+            <button class="timeline-btn bg-blue-100 text-blue-700 px-3 py-2 rounded-lg font-semibold transition" data-year="5">Tahun 5</button>
+            <button class="timeline-btn bg-blue-100 text-blue-700 px-3 py-2 rounded-lg font-semibold transition" data-year="10">Tahun 10</button>
+          </div>
+          <div id="milestone-content" class="text-center">
+            <img src="/assets/img/milestone-1.png" alt="Milestone Tahun 1" class="mx-auto w-48 md:w-64 rounded-xl shadow mb-4" id="milestone-img">
+            <p id="milestone-text" style="color: var(--navy);">
+              Tahun 1: Mulai menabung, belajar investasi, dan membangun kebiasaan finansial sehat.
+            </p>
+          </div>
         </div>
-
-        <div class="progress-bar">
-            <div class="progress-fill" id="progressBar" style="width: 0%"></div>
+      </div>
+      <!-- Infografik SVG Animated -->
+      <div class="flex-1">
+        <div class="rounded-xl shadow-md p-6 flex flex-col items-center" style="background: var(--kuning);">
+          <div id="infografik-svg" class="w-full flex justify-center items-end min-h-[200px]">
+            <!-- SVG animasi akan diganti via JS -->
+          </div>
+          <div class="w-full mt-8">
+            <p class="text-base md:text-base text-center bg-white bg-opacity-80 px-2 py-2 rounded" id="infografik-caption" style="color: var(--navy); letter-spacing:0.5px;">
+              Infografik: Pentingnya Perencanaan Jangka Panjang Tahun 1
+            </p>
+          </div>
         </div>
-
-        <!-- Panel 1: Perkenalan -->
-        <div class="story-panel active" id="panel1">
-            <div class="panel-content">
-                <div class="character sari">👩‍💼</div>
-                <div class="speech-bubble">
-                    <strong>Hai! Aku Sari, umur 28 tahun, bekerja di perusahaan IT di Surabaya.</strong><br><br>
-                    Gaji bulananku Rp 8 juta. Aku punya cicilan motor Rp 1,2 juta, kos Rp 800 ribu, dan pengeluaran sehari-hari sekitar Rp 3 juta per bulan. Sisanya... ya untuk senang-senang! 🛍️
-                </div>
-                <div class="choice-container">
-                    <button class="choice-btn" onclick="nextPanel(2)">Lanjutkan Cerita →</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Panel 2: Situasi Normal -->
-        <div class="story-panel" id="panel2">
-            <div class="panel-content">
-                <div class="character sari">😊</div>
-                <div class="speech-bubble">
-                    <strong>Hidupku cukup nyaman...</strong><br><br>
-                    Setiap weekend aku shopping, makan di restoran bagus, kadang traveling ke Malang atau Jogja. Dana darurat? Ah, masih muda nih, nggak perlu mikir yang ribet-ribet!
-                </div>
-                <div class="stats-panel">
-                    <h3>💼 Status Keuangan Sari</h3>
-                    <div class="stats-grid">
-                        <div class="stat-item">
-                            <div class="stat-value">Rp 8jt</div>
-                            <div>Gaji Bulanan</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-value">Rp 5jt</div>
-                            <div>Pengeluaran Wajib</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-value">Rp 3jt</div>
-                            <div>Uang Sisa</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-value">Rp 0</div>
-                            <div>Dana Darurat</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="choice-container">
-                    <button class="choice-btn" onclick="nextPanel(3)">Lanjutkan →</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Panel 3: Krisis Datang -->
-        <div class="story-panel" id="panel3">
-            <div class="panel-content">
-                <div class="character worried">😰</div>
-                <div class="speech-bubble">
-                    <strong>Tiba-tiba... BRAK! ⚡</strong><br><br>
-                    Bulan Maret 2024, perusahaanku melakukan PHK besar-besaran karena resesi ekonomi. Aku termasuk yang kena! Severance pay cuma 2 bulan gaji. Cicilan motor masih jalan, uang kos harus dibayar...
-                </div>
-                <div class="narrator">
-                    📰 <strong>BREAKING NEWS:</strong> Gelombang PHK melanda industri teknologi Indonesia. Ribuan karyawan kehilangan pekerjaan dalam semalam.
-                </div>
-                <div class="choice-container">
-                    <button class="choice-btn danger" onclick="showChoice1()">Panik Total! 😱</button>
-                    <button class="choice-btn" onclick="showChoice2()">Coba Tetap Tenang 🤔</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Choice 1: Panik -->
-        <div class="story-panel" id="choice1">
-            <div class="panel-content">
-                <div class="character stressed">😭</div>
-                <div class="speech-bubble">
-                    <strong>Aku panik berat!</strong><br><br>
-                    Langsung nelpon ortu minta bantuan, jual barang-barang elektronik dengan harga murah, bahkan sampai pinjam ke teman-teman. Malu banget rasanya... Kenapa aku nggak pernah nabung dana darurat ya?
-                </div>
-                <div class="stats-panel">
-                    <h3>💸 Kondisi Darurat</h3>
-                    <div class="stats-grid">
-                        <div class="stat-item">
-                            <div class="stat-value">Rp 16jt</div>
-                            <div>Severance Pay</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-value">Rp 5jt</div>
-                            <div>Kebutuhan Bulanan</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-value">3 Bulan</div>
-                            <div>Waktu Bertahan</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-value">Tinggi</div>
-                            <div>Tingkat Stres</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="choice-container">
-                    <button class="choice-btn" onclick="nextPanel(4)">Lanjut ke Pencarian Kerja →</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Choice 2: Tenang -->
-        <div class="story-panel" id="choice2">
-            <div class="panel-content">
-                <div class="character sari">🤔</div>
-                <div class="speech-bubble">
-                    <strong>Aku coba tetap tenang...</strong><br><br>
-                    Walau nggak punya dana darurat, aku coba hitung-hitung dulu. Severance pay 16 juta, kebutuhan bulanan 5 juta. Berarti aku punya waktu sekitar 3 bulan. Harus cari kerja dengan strategis!
-                </div>
-                <div class="stats-panel">
-                    <h3>🧮 Perhitungan Finansial</h3>
-                    <div class="stats-grid">
-                        <div class="stat-item">
-                            <div class="stat-value">Rp 16jt</div>
-                            <div>Dana Tersedia</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-value">Rp 5jt</div>
-                            <div>Kebutuhan Bulanan</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-value">3 Bulan</div>
-                            <div>Target Job Hunting</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-value">Sedang</div>
-                            <div>Tingkat Stres</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="choice-container">
-                    <button class="choice-btn success" onclick="nextPanel(4)">Mulai Job Hunting Strategis →</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Panel 4: Job Hunting -->
-        <div class="story-panel" id="panel4">
-            <div class="panel-content">
-                <div class="character sari">💪</div>
-                <div class="speech-bubble">
-                    <strong>2 bulan kemudian...</strong><br><br>
-                    Alhamdulillah! Aku dapet kerja baru dengan gaji Rp 9,5 juta. Pengalaman PHK ini benar-benar mengubah mindset-ku tentang pentingnya dana darurat. Sekarang aku paham kenapa orang bilang "sedia payung sebelum hujan"!
-                </div>
-                <div class="narrator">
-                    💡 <strong>LESSON LEARNED:</strong> Pengalaman adalah guru terbaik. Sari sekarang memahami pentingnya persiapan finansial untuk menghadapi ketidakpastian hidup.
-                </div>
-                <div class="choice-container">
-                    <button class="choice-btn success" onclick="nextPanel(5)">Pelajaran Dana Darurat →</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Panel 5: Pelajaran -->
-        <div class="story-panel" id="panel5">
-            <div class="panel-content">
-                <div class="character happy">🎯</div>
-                <div class="speech-bubble">
-                    <strong>Sekarang aku mulai bangun dana darurat!</strong><br><br>
-                    Target: 6 bulan pengeluaran = Rp 30 juta. Strategi: sisihkan 20% gaji (Rp 1,9 juta) setiap bulan. Dalam 16 bulan, dana daruratku akan terkumpul!
-                </div>
-                <div class="stats-panel">
-                    <h3>📊 Rencana Dana Darurat Sari</h3>
-                    <div class="stats-grid">
-                        <div class="stat-item">
-                            <div class="stat-value">Rp 30jt</div>
-                            <div>Target Dana Darurat</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-value">Rp 1,9jt</div>
-                            <div>Nabung per Bulan</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-value">16 Bulan</div>
-                            <div>Waktu Tercapai</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-value">20%</div>
-                            <div>% dari Gaji</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="choice-container">
-                    <button class="choice-btn" onclick="nextPanel(6)">Tips Dana Darurat →</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Panel 6: Tips -->
-        <div class="story-panel" id="panel6">
-            <div class="panel-content">
-                <div class="character happy">💡</div>
-                <div class="speech-bubble">
-                    <strong>Tips Dana Darurat dari Pengalamanku:</strong><br><br>
-                    1. Mulai dari yang kecil (10% gaji)<br>
-                    2. Simpan di rekening terpisah<br>
-                    3. Gunakan HANYA untuk darurat<br>
-                    4. Target 6 bulan pengeluaran<br>
-                    5. Investasi di instrumen liquid (deposito/tabungan)
-                </div>
-                <div class="narrator">
-                    🏆 <strong>PESAN MORAL:</strong> Dana darurat bukan luxury, tapi necessity! Mulai hari ini, sisihkan sebagian penghasilan untuk dana darurat. Kamu nggak pernah tahu kapan badai akan datang!
-                </div>
-                <div class="choice-container">
-                    <button class="choice-btn success" onclick="showEnding()">Lihat Ending →</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Ending -->
-        <div class="story-panel" id="ending">
-            <div class="ending-panel">
-                <div class="character happy">🌟</div>
-                <h2>🎉 TAMAT 🎉</h2>
-                <p><strong>Cerita Sari mengajarkan kita bahwa dana darurat adalah safety net yang sangat penting dalam hidup.</strong></p>
-                <br>
-                <p>💭 <em>"Pengalaman PHK membuatku sadar bahwa hidup penuh ketidakpastian. Dana darurat memberikan ketenangan pikiran dan kebebasan untuk membuat keputusan yang tepat saat krisis datang."</em> - Sari, 2025</p>
-                <br>
-                <p>🔥 <strong>Mulai bangun dana daruratmu SEKARANG!</strong></p>
-                <button class="restart-btn" onclick="restartStory()">🔄 Baca Ulang Cerita</button>
-            </div>
-        </div>
+      </div>
     </div>
+  </div>
+  <script>
+    // SVG animasi untuk tiap tahun (menggunakan animasi SVG SMIL)
+    const infografikSVG = {
+      1: `<svg width="240" height="160" viewBox="0 0 240 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g>
+              <rect x="20" y="120" width="30" height="0" rx="6" fill="#2563eb">
+                <animate attributeName="y" from="120" to="60" dur="0.7s" fill="freeze" />
+                <animate attributeName="height" from="0" to="60" dur="0.7s" fill="freeze" />
+              </rect>
+              <rect x="75" y="120" width="30" height="0" rx="6" fill="#38bdf8">
+                <animate attributeName="y" from="120" to="40" dur="0.9s" fill="freeze" />
+                <animate attributeName="height" from="0" to="80" dur="0.9s" fill="freeze" />
+              </rect>
+              <rect x="130" y="120" width="30" height="0" rx="6" fill="#6559ff">
+                <animate attributeName="y" from="120" to="80" dur="1.1s" fill="freeze" />
+                <animate attributeName="height" from="0" to="40" dur="1.1s" fill="freeze" />
+              </rect>
+              <rect x="185" y="120" width="30" height="0" rx="6" fill="#a3e635">
+                <animate attributeName="y" from="120" to="100" dur="1.3s" fill="freeze" />
+                <animate attributeName="height" from="0" to="20" dur="1.3s" fill="freeze" />
+              </rect>
+              <text x="35" y="150" text-anchor="middle" font-size="10" font-weight="bold" fill="#2563eb" style="letter-spacing:1px;">Tabung</text>
+              <text x="95" y="150" text-anchor="middle" font-size="10" font-weight="bold" fill="#38bdf8" style="letter-spacing:1px;">Investasi</text>
+              <text x="155" y="150" text-anchor="middle" font-size="10" font-weight="bold" fill="#6559ff" style="letter-spacing:1px;">Kebiasaan</text>
+              <text x="215" y="150" text-anchor="middle" font-size="10" font-weight="bold" fill="#a3e635" style="letter-spacing:1px;">Sehat</text>
+            </g>
+          </svg>`,
+      3: `<svg width="240" height="160" viewBox="0 0 240 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g>
+              <rect x="20" y="120" width="30" height="0" rx="6" fill="#2563eb">
+                <animate attributeName="y" from="120" to="40" dur="0.7s" fill="freeze" />
+                <animate attributeName="height" from="0" to="80" dur="0.7s" fill="freeze" />
+              </rect>
+              <rect x="75" y="120" width="30" height="0" rx="6" fill="#38bdf8">
+                <animate attributeName="y" from="120" to="30" dur="0.9s" fill="freeze" />
+                <animate attributeName="height" from="0" to="90" dur="0.9s" fill="freeze" />
+              </rect>
+              <rect x="130" y="120" width="30" height="0" rx="6" fill="#6559ff">
+                <animate attributeName="y" from="120" to="60" dur="1.1s" fill="freeze" />
+                <animate attributeName="height" from="0" to="60" dur="1.1s" fill="freeze" />
+              </rect>
+              <rect x="185" y="120" width="30" height="0" rx="6" fill="#a3e635">
+                <animate attributeName="y" from="120" to="100" dur="1.3s" fill="freeze" />
+                <animate attributeName="height" from="0" to="20" dur="1.3s" fill="freeze" />
+              </rect>
+              <text x="35" y="150" text-anchor="middle" font-size="12" font-weight="bold" fill="#2563eb" style="letter-spacing:1px;">Darurat</text>
+              <text x="90" y="150" text-anchor="middle" font-size="12" font-weight="bold" fill="#38bdf8" style="letter-spacing:1px;">Pendidikan</text>
+              <text x="145" y="150" text-anchor="middle" font-size="12" font-weight="bold" fill="#6559ff" style="letter-spacing:1px;">Karir</text>
+              <text x="200" y="150" text-anchor="middle" font-size="12" font-weight="bold" fill="#a3e635" style="letter-spacing:1px;">Investasi</text>
+            </g>
+          </svg>`,
+      5: `<svg width="240" height="160" viewBox="0 0 240 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g>
+              <rect x="20" y="120" width="30" height="0" rx="6" fill="#2563eb">
+                <animate attributeName="y" from="120" to="30" dur="0.7s" fill="freeze" />
+                <animate attributeName="height" from="0" to="90" dur="0.7s" fill="freeze" />
+              </rect>
+              <rect x="75" y="120" width="30" height="0" rx="6" fill="#38bdf8">
+                <animate attributeName="y" from="120" to="60" dur="0.9s" fill="freeze" />
+                <animate attributeName="height" from="0" to="60" dur="0.9s" fill="freeze" />
+              </rect>
+              <rect x="130" y="120" width="30" height="0" rx="6" fill="#6559ff">
+                <animate attributeName="y" from="120" to="40" dur="1.1s" fill="freeze" />
+                <animate attributeName="height" from="0" to="80" dur="1.1s" fill="freeze" />
+              </rect>
+              <rect x="185" y="120" width="30" height="0" rx="6" fill="#a3e635">
+                <animate attributeName="y" from="120" to="100" dur="1.3s" fill="freeze" />
+                <animate attributeName="height" from="0" to="20" dur="1.3s" fill="freeze" />
+              </rect>
+              <text x="35" y="150" text-anchor="middle" font-size="12" font-weight="bold" fill="#2563eb" style="letter-spacing:1px;">Menikah</text>
+              <text x="90" y="150" text-anchor="middle" font-size="12" font-weight="bold" fill="#38bdf8" style="letter-spacing:1px;">Rumah</text>
+              <text x="145" y="150" text-anchor="middle" font-size="12" font-weight="bold" fill="#6559ff" style="letter-spacing:1px;">Usaha</text>
+              <text x="200" y="150" text-anchor="middle" font-size="12" font-weight="bold" fill="#a3e635" style="letter-spacing:1px;">Aset</text>
+            </g>
+          </svg>`,
+      10: `<svg width="240" height="160" viewBox="0 0 240 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g>
+              <rect x="20" y="120" width="30" height="0" rx="6" fill="#2563eb">
+                <animate attributeName="y" from="120" to="20" dur="0.7s" fill="freeze" />
+                <animate attributeName="height" from="0" to="100" dur="0.7s" fill="freeze" />
+              </rect>
+              <rect x="75" y="120" width="30" height="0" rx="6" fill="#38bdf8">
+                <animate attributeName="y" from="120" to="40" dur="0.9s" fill="freeze" />
+                <animate attributeName="height" from="0" to="80" dur="0.9s" fill="freeze" />
+              </rect>
+              <rect x="130" y="120" width="30" height="0" rx="6" fill="#6559ff">
+                <animate attributeName="y" from="120" to="30" dur="1.1s" fill="freeze" />
+                <animate attributeName="height" from="0" to="90" dur="1.1s" fill="freeze" />
+              </rect>
+              <rect x="185" y="120" width="30" height="0" rx="6" fill="#a3e635">
+                <animate attributeName="y" from="120" to="60" dur="1.3s" fill="freeze" />
+                <animate attributeName="height" from="0" to="60" dur="1.3s" fill="freeze" />
+              </rect>
+              <text x="35" y="150" text-anchor="middle" font-size="12" font-weight="bold" fill="#2563eb" style="letter-spacing:1px;">Stabil</text>
+              <text x="90" y="150" text-anchor="middle" font-size="12" font-weight="bold" fill="#38bdf8" style="letter-spacing:1px;">Aset</text>
+              <text x="145" y="150" text-anchor="middle" font-size="12" font-weight="bold" fill="#6559ff" style="letter-spacing:1px;">Peluang</text>
+              <text x="200" y="150" text-anchor="middle" font-size="12" font-weight="bold" fill="#a3e635" style="letter-spacing:1px;">Masa Depan</text>
+            </g>
+          </svg>`
+    };
 
-    <script>
-        let currentPanel = 1;
-        const totalPanels = 6;
+    const milestones = {
+      1: {
+        img: "/assets/img/milestone-1.png",
+        text: "Tahun 1: Mulai menabung, belajar investasi, dan membangun kebiasaan finansial sehat.",
+        caption: "Infografik: Pentingnya Perencanaan Jangka Panjang Tahun 1"
+      },
+      3: {
+        img: "/assets/img/milestone-3.png",
+        text: "Tahun 3: Dana darurat sudah aman, mulai menyiapkan dana pendidikan/karir, dan investasi rutin.",
+        caption: "Infografik: Pentingnya Perencanaan Jangka Panjang Tahun 3"
+      },
+      5: {
+        img: "/assets/img/milestone-5.png",
+        text: "Tahun 5: Siap untuk milestone besar seperti menikah, membeli rumah, atau memulai usaha.",
+        caption: "Infografik: Pentingnya Perencanaan Jangka Panjang Tahun 5"
+      },
+      10: {
+        img: "/assets/img/milestone-10.png",
+        text: "Tahun 10: Aset bertambah, keuangan makin stabil, siap menghadapi peluang dan tantangan masa depan.",
+        caption: "Infografik: Pentingnya Perencanaan Jangka Panjang Tahun 10"
+      }
+    };
 
-        function updateProgress() {
-            const progress = (currentPanel / totalPanels) * 100;
-            document.getElementById('progressBar').style.width = progress + '%';
-        }
+    function updateInfografik(year) {
+      document.getElementById('infografik-svg').innerHTML = infografikSVG[year];
+      document.getElementById('infografik-caption').textContent = milestones[year].caption;
+    }
 
-        function nextPanel(panelNumber) {
-            // Hide current panel
-            document.querySelectorAll('.story-panel').forEach(panel => {
-                panel.classList.remove('active');
-            });
-            
-            // Show target panel
-            document.getElementById('panel' + panelNumber).classList.add('active');
-            currentPanel = panelNumber;
-            updateProgress();
+    document.querySelectorAll('.timeline-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const year = this.getAttribute('data-year');
+        document.getElementById('milestone-img').src = milestones[year].img;
+        document.getElementById('milestone-img').alt = "Milestone Tahun " + year;
+        document.getElementById('milestone-text').textContent = milestones[year].text;
+        updateInfografik(year);
+        document.querySelectorAll('.timeline-btn').forEach(b => b.classList.remove('bg-blue-600', 'text-white'));
+        this.classList.add('bg-blue-600', 'text-white');
+      });
+    });
 
-            // Smooth scroll to top
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function showChoice1() {
-            document.querySelectorAll('.story-panel').forEach(panel => {
-                panel.classList.remove('active');
-            });
-            
-            document.getElementById('choice1').classList.add('active');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function showChoice2() {
-            document.querySelectorAll('.story-panel').forEach(panel => {
-                panel.classList.remove('active');
-            });
-            
-            document.getElementById('choice2').classList.add('active');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function showEnding() {
-            document.querySelectorAll('.story-panel').forEach(panel => {
-                panel.classList.remove('active');
-            });
-            
-            document.getElementById('ending').classList.add('active');
-            document.getElementById('progressBar').style.width = '100%';
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function restartStory() {
-            document.querySelectorAll('.story-panel').forEach(panel => {
-                panel.classList.remove('active');
-            });
-            
-            document.getElementById('panel1').classList.add('active');
-            currentPanel = 1;
-            updateProgress();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        // Initialize progress bar
-        updateProgress();
-
-        // Add some interactive elements
-        document.addEventListener('DOMContentLoaded', function() {
-            // Add click sound effect simulation
-            document.querySelectorAll('.choice-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    this.style.transform = 'scale(0.95)';
-                    setTimeout(() => {
-                        this.style.transform = '';
-                    }, 150);
-                });
-            });
-
-            // Add hover effects for characters
-            document.querySelectorAll('.character').forEach(char => {
-                char.addEventListener('mouseenter', function() {
-                    this.style.transform = 'scale(1.1) rotate(5deg)';
-                });
-                
-                char.addEventListener('mouseleave', function() {
-                    this.style.transform = '';
-                });
-            });
-        });
-    </script>
-</body>
-</html>
+    // Set default SVG & active
+    updateInfografik("1");
+    document.querySelector('.timeline-btn[data-year="1"]').classList.add('bg-blue-600', 'text-white');
+  </script>
+</section>

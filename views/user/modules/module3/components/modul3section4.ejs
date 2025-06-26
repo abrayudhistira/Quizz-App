@@ -1,727 +1,93 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Budget Builder - Buat Budget Pribadi</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            overflow: hidden;
-        }
-
-        .header {
-            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
-            color: white;
-            padding: 30px;
-            text-align: center;
-        }
-
-        .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            font-weight: 700;
-        }
-
-        .header p {
-            font-size: 1.2em;
-            opacity: 0.9;
-        }
-
-        .main-content {
-            display: flex;
-            min-height: 70vh;
-        }
-
-        .left-panel {
-            flex: 1;
-            padding: 40px;
-            background: #f8f9fa;
-            border-right: 1px solid #e9ecef;
-        }
-
-        .right-panel {
-            flex: 1;
-            padding: 40px;
-            background: white;
-        }
-
-        .step {
-            display: none;
-            animation: fadeIn 0.5s ease-in;
-        }
-
-        .step.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .step-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 30px;
-        }
-
-        .step-number {
-            background: #3498db;
-            color: white;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            margin-right: 15px;
-        }
-
-        .step-title {
-            font-size: 1.8em;
-            color: #2c3e50;
-            font-weight: 600;
-        }
-
-        .form-group {
-            margin-bottom: 25px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #2c3e50;
-        }
-
-        input[type="number"], input[type="text"] {
-            width: 100%;
-            padding: 15px;
-            border: 2px solid #e9ecef;
-            border-radius: 10px;
-            font-size: 16px;
-            transition: all 0.3s ease;
-        }
-
-        input:focus {
-            outline: none;
-            border-color: #3498db;
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
-        }
-
-        .btn {
-            background: linear-gradient(135deg, #3498db, #2980b9);
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-right: 10px;
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(52, 152, 219, 0.3);
-        }
-
-        .btn-secondary {
-            background: #6c757d;
-        }
-
-        .btn-success {
-            background: linear-gradient(135deg, #27ae60, #2ecc71);
-        }
-
-        .flowchart {
-            background: #f8f9fa;
-            border-radius: 15px;
-            padding: 30px;
-            margin-top: 20px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .flowchart::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, #3498db, #2ecc71, #e74c3c, #f39c12);
-        }
-
-        .flow-item {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            position: relative;
-            border-left: 4px solid #3498db;
-        }
-
-        .flow-item.active {
-            border-left-color: #2ecc71;
-            background: linear-gradient(135deg, #d4edda, #c3e6cb);
-        }
-
-        .flow-item h4 {
-            color: #2c3e50;
-            margin-bottom: 10px;
-            font-size: 1.1em;
-        }
-
-        .flow-item p {
-            color: #6c757d;
-            font-size: 0.9em;
-        }
-
-        .progress-bar {
-            background: #e9ecef;
-            height: 8px;
-            border-radius: 4px;
-            margin: 20px 0;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            background: linear-gradient(90deg, #3498db, #2ecc71);
-            height: 100%;
-            transition: width 0.5s ease;
-            border-radius: 4px;
-        }
-
-        .summary-card {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            padding: 25px;
-            border-radius: 15px;
-            margin-bottom: 20px;
-        }
-
-        .summary-item {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 15px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid rgba(255,255,255,0.2);
-        }
-
-        .summary-item:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
-        }
-
-        .amount {
-            font-weight: bold;
-            font-size: 1.1em;
-        }
-
-        .expense-item {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .delete-btn {
-            background: #e74c3c;
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 12px;
-        }
-
-        .add-expense-btn {
-            background: #2ecc71;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            margin-bottom: 20px;
-        }
-
-        .navigation {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 30px;
-        }
-
-        .alert {
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-        }
-
-        .alert-success {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-
-        .alert-warning {
-            background: #fff3cd;
-            color: #856404;
-            border: 1px solid #ffeaa7;
-        }
-
-        .alert-danger {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-
-        @media (max-width: 768px) {
-            .main-content {
-                flex-direction: column;
-            }
-            
-            .header h1 {
-                font-size: 2em;
-            }
-            
-            .left-panel, .right-panel {
-                padding: 20px;
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>💰 Budget Builder</h1>
-            <p>Buat budget pribadi yang sesuai dengan kebutuhan Anda</p>
-        </div>
-
-        <div class="main-content">
-            <div class="left-panel">
-                <!-- Step 1: Pendapatan -->
-                <div class="step active" id="step1">
-                    <div class="step-header">
-                        <div class="step-number">1</div>
-                        <div class="step-title">Pendapatan Bulanan</div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="salary">Gaji Pokok (Rp)</label>
-                        <input type="number" id="salary" placeholder="Masukkan gaji pokok Anda">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="bonus">Bonus/Tunjangan (Rp)</label>
-                        <input type="number" id="bonus" placeholder="Bonus, tunjangan, dll">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="sideIncome">Penghasilan Sampingan (Rp)</label>
-                        <input type="number" id="sideIncome" placeholder="Freelance, bisnis, dll">
-                    </div>
-                    
-                    <div class="navigation">
-                        <div></div>
-                        <button class="btn" onclick="nextStep()">Lanjut</button>
-                    </div>
-                </div>
-
-                <!-- Step 2: Pengeluaran Tetap -->
-                <div class="step" id="step2">
-                    <div class="step-header">
-                        <div class="step-number">2</div>
-                        <div class="step-title">Pengeluaran Tetap</div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="rent">Sewa/KPR (Rp)</label>
-                        <input type="number" id="rent" placeholder="Biaya tempat tinggal">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="utilities">Listrik, Air, Internet (Rp)</label>
-                        <input type="number" id="utilities" placeholder="Utilitas bulanan">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="insurance">Asuransi (Rp)</label>
-                        <input type="number" id="insurance" placeholder="Asuransi kesehatan, jiwa, dll">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="debt">Cicilan Utang (Rp)</label>
-                        <input type="number" id="debt" placeholder="Cicilan kartu kredit, pinjaman">
-                    </div>
-                    
-                    <div class="navigation">
-                        <button class="btn btn-secondary" onclick="prevStep()">Kembali</button>
-                        <button class="btn" onclick="nextStep()">Lanjut</button>
-                    </div>
-                </div>
-
-                <!-- Step 3: Pengeluaran Variabel -->
-                <div class="step" id="step3">
-                    <div class="step-header">
-                        <div class="step-number">3</div>
-                        <div class="step-title">Pengeluaran Variabel</div>
-                    </div>
-                    
-                    <button class="add-expense-btn" onclick="addExpenseItem()">+ Tambah Pengeluaran</button>
-                    
-                    <div id="expenseList">
-                        <div class="expense-item">
-                            <div>
-                                <input type="text" placeholder="Nama pengeluaran" style="width: 200px; margin-right: 10px;">
-                                <input type="number" placeholder="Jumlah (Rp)" style="width: 150px;">
-                            </div>
-                            <button class="delete-btn" onclick="removeExpenseItem(this)">Hapus</button>
-                        </div>
-                    </div>
-                    
-                    <div class="navigation">
-                        <button class="btn btn-secondary" onclick="prevStep()">Kembali</button>
-                        <button class="btn" onclick="nextStep()">Lanjut</button>
-                    </div>
-                </div>
-
-                <!-- Step 4: Target Tabungan -->
-                <div class="step" id="step4">
-                    <div class="step-header">
-                        <div class="step-number">4</div>
-                        <div class="step-title">Target Tabungan</div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="emergencyFund">Dana Darurat (Rp)</label>
-                        <input type="number" id="emergencyFund" placeholder="Target dana darurat bulanan">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="savings">Tabungan Reguler (Rp)</label>
-                        <input type="number" id="savings" placeholder="Target tabungan bulanan">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="investment">Investasi (Rp)</label>
-                        <input type="number" id="investment" placeholder="Target investasi bulanan">
-                    </div>
-                    
-                    <div class="navigation">
-                        <button class="btn btn-secondary" onclick="prevStep()">Kembali</button>
-                        <button class="btn btn-success" onclick="generateBudget()">Buat Budget</button>
-                    </div>
-                </div>
-
-                <!-- Step 5: Hasil -->
-                <div class="step" id="step5">
-                    <div class="step-header">
-                        <div class="step-number">5</div>
-                        <div class="step-title">Budget Anda</div>
-                    </div>
-                    
-                    <div id="budgetResult"></div>
-                    
-                    <div class="navigation">
-                        <button class="btn btn-secondary" onclick="prevStep()">Edit</button>
-                        <button class="btn btn-success" onclick="downloadBudget()">Download PDF</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="right-panel">
-                <h3 style="color: #2c3e50; margin-bottom: 20px;">📊 Progres & Panduan</h3>
-                
-                <div class="progress-bar">
-                    <div class="progress-fill" id="progressFill" style="width: 20%;"></div>
-                </div>
-                
-                <div class="flowchart">
-                    <div class="flow-item active" id="flow1">
-                        <h4>💰 Hitung Total Pendapatan</h4>
-                        <p>Masukkan semua sumber penghasilan bulanan Anda</p>
-                    </div>
-                    
-                    <div class="flow-item" id="flow2">
-                        <h4>🏠 Tentukan Pengeluaran Tetap</h4>
-                        <p>Catat semua pengeluaran yang pasti setiap bulan</p>
-                    </div>
-                    
-                    <div class="flow-item" id="flow3">
-                        <h4>🛒 Hitung Pengeluaran Variabel</h4>
-                        <p>Estimasi pengeluaran yang berubah-ubah</p>
-                    </div>
-                    
-                    <div class="flow-item" id="flow4">
-                        <h4>🎯 Tetapkan Target Tabungan</h4>
-                        <p>Tentukan berapa yang ingin ditabung setiap bulan</p>
-                    </div>
-                    
-                    <div class="flow-item" id="flow5">
-                        <h4>📋 Analisis Budget</h4>
-                        <p>Lihat ringkasan dan rekomendasi budget Anda</p>
-                    </div>
-                </div>
-                
-                <div id="livePreview" style="margin-top: 30px;">
-                    <h4 style="color: #2c3e50; margin-bottom: 15px;">💡 Preview Real-time</h4>
-                    <div class="summary-card">
-                        <div class="summary-item">
-                            <span>Total Pendapatan:</span>
-                            <span class="amount" id="previewIncome">Rp 0</span>
-                        </div>
-                        <div class="summary-item">
-                            <span>Total Pengeluaran:</span>
-                            <span class="amount" id="previewExpense">Rp 0</span>
-                        </div>
-                        <div class="summary-item">
-                            <span>Sisa Budget:</span>
-                            <span class="amount" id="previewBalance">Rp 0</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+<section id="m3s4" class="w-full py-10 px-4 md:px-10 rounded-2xl">
+  <div class="bg-[var(--putih)] rounded-3xl px-6 py-10 max-w-screen-xl mx-auto">
+    <div class="text-center mb-10">
+      <h2 class="text-2xl md:text-4xl font-bold mb-4">Bikin Budget Sendiri</h2>
+      <p class="text-base md:text-lg text-gray-600 max-w-2xl mx-auto">
+        Yuk, coba bikin budget versimu sendiri! Ikuti langkah-langkah di bawah ini untuk membuat anggaran bulanan yang sesuai kebutuhanmu.
+      </p>
     </div>
 
-    <script>
-        let currentStep = 1;
-        const totalSteps = 5;
-        let budgetData = {
-            income: {},
-            fixedExpenses: {},
-            variableExpenses: [],
-            savings: {}
-        };
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
+      <div class="w-full aspect-square rounded-xl overflow-hidden shadow">
+        <img src="https://github.com/abdullahmaajid/imagefundzy/blob/main/m3s4.png?raw=true" alt="Flowchart Budget Builder" class="w-full h-full object-cover" />
+      </div>
 
-        function updateProgress() {
-            const progress = (currentStep / totalSteps) * 100;
-            document.getElementById('progressFill').style.width = progress + '%';
-        }
+      <div class="w-full aspect-square bg-gray-50 rounded-xl p-6 shadow text-left overflow-y-auto">
+        <form id="budgetBuilderForm" onsubmit="event.preventDefault(); buildBudget();">
+          <div class="mb-4">
+            <label for="income" class="block font-semibold mb-2">Total Pemasukan Bulanan (Rp)</label>
+            <input type="number" id="income" class="w-full border rounded px-3 py-2" min="1" placeholder="Contoh: 3000000" required>
+          </div>
+          <div class="mb-4">
+            <label class="block font-semibold mb-2">Alokasi Pengeluaran (%)</label>
+            <p class="text-xs text-gray-500 mb-2">Total alokasi harus 100%. Contoh: 50, 30, 20.</p>
+            <div class="grid grid-cols-3 gap-2 mb-2">
+              <input type="number" id="needs" class="w-full border rounded px-3 py-2 text-center" min="0" placeholder="Kebutuhan" required>
+              <input type="number" id="wants" class="w-full border rounded px-3 py-2 text-center" min="0" placeholder="Keinginan" required>
+              <input type="number" id="savings" class="w-full border rounded px-3 py-2 text-center" min="0" placeholder="Tabungan" required>
+            </div>
+          </div>
+          <button type="submit" class="w-full bg-blue-600 text-white font-bold py-2 rounded hover:bg-blue-700 transition">Buat Rencana Budget</button>
+        </form>
+        <div id="budgetResult" class="mt-6 hidden">
+          <div class="mb-2 font-semibold">Hasil Budget Bulanan:</div>
+          <div id="budgetWarning" class="text-red-600 mb-2 text-sm font-semibold"></div>
+          <div class="mb-2 text-sm text-gray-700" id="budgetBreakdown"></div>
+          <div class="w-full bg-gray-200 rounded-full h-4 mb-2 flex overflow-hidden text-white text-xs font-medium">
+            <div id="barNeeds" class="bg-blue-500 h-4 transition-all flex items-center justify-center"></div>
+            <div id="barWants" class="bg-yellow-500 h-4 transition-all flex items-center justify-center"></div>
+            <div id="barSavings" class="bg-green-500 h-4 transition-all flex items-center justify-center"></div>
+          </div>
+          <div class="text-xs mt-2 flex justify-between">
+            <span class="text-blue-600 font-semibold">Kebutuhan</span>
+            <span class="text-yellow-600 font-semibold">Keinginan</span>
+            <span class="text-green-600 font-semibold">Tabungan</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-        function nextStep() {
-            if (validateCurrentStep()) {
-                saveCurrentStepData();
-                if (currentStep < totalSteps) {
-                    document.getElementById(`step${currentStep}`).classList.remove('active');
-                    document.getElementById(`flow${currentStep}`).classList.remove('active');
-                    currentStep++;
-                    document.getElementById(`step${currentStep}`).classList.add('active');
-                    document.getElementById(`flow${currentStep}`).classList.add('active');
-                    updateProgress();
-                    updatePreview();
-                }
-            }
-        }
+  <script>
+    function buildBudget() {
+      const income = parseInt(document.getElementById('income').value) || 0;
+      const needs = parseInt(document.getElementById('needs').value) || 0;
+      const wants = parseInt(document.getElementById('wants').value) || 0;
+      const savings = parseInt(document.getElementById('savings').value) || 0;
+      const totalPercent = needs + wants + savings;
 
-        function prevStep() {
-            if (currentStep > 1) {
-                document.getElementById(`step${currentStep}`).classList.remove('active');
-                document.getElementById(`flow${currentStep}`).classList.remove('active');
-                currentStep--;
-                document.getElementById(`step${currentStep}`).classList.add('active');
-                document.getElementById(`flow${currentStep}`).classList.add('active');
-                updateProgress();
-            }
-        }
+      const warningDiv = document.getElementById('budgetWarning');
+      if (totalPercent !== 100) {
+        warningDiv.textContent = `Total persentase harus 100%. Saat ini: ${totalPercent}%`;
+        warningDiv.classList.remove('hidden');
+      } else {
+        warningDiv.classList.add('hidden');
+      }
 
-        function validateCurrentStep() {
-            if (currentStep === 1) {
-                const salary = parseFloat(document.getElementById('salary').value) || 0;
-                if (salary <= 0) {
-                    alert('Mohon masukkan gaji pokok yang valid');
-                    return false;
-                }
-            }
-            return true;
-        }
+      const needsNom = Math.round((needs / 100) * income);
+      const wantsNom = Math.round((wants / 100) * income);
+      const savingsNom = Math.round((savings / 100) * income);
 
-        function saveCurrentStepData() {
-            switch(currentStep) {
-                case 1:
-                    budgetData.income = {
-                        salary: parseFloat(document.getElementById('salary').value) || 0,
-                        bonus: parseFloat(document.getElementById('bonus').value) || 0,
-                        sideIncome: parseFloat(document.getElementById('sideIncome').value) || 0
-                    };
-                    break;
-                case 2:
-                    budgetData.fixedExpenses = {
-                        rent: parseFloat(document.getElementById('rent').value) || 0,
-                        utilities: parseFloat(document.getElementById('utilities').value) || 0,
-                        insurance: parseFloat(document.getElementById('insurance').value) || 0,
-                        debt: parseFloat(document.getElementById('debt').value) || 0
-                    };
-                    break;
-                case 3:
-                    budgetData.variableExpenses = [];
-                    const expenseItems = document.querySelectorAll('#expenseList .expense-item');
-                    expenseItems.forEach(item => {
-                        const name = item.querySelector('input[type="text"]').value;
-                        const amount = parseFloat(item.querySelector('input[type="number"]').value) || 0;
-                        if (name && amount > 0) {
-                            budgetData.variableExpenses.push({name, amount});
-                        }
-                    });
-                    break;
-                case 4:
-                    budgetData.savings = {
-                        emergencyFund: parseFloat(document.getElementById('emergencyFund').value) || 0,
-                        savings: parseFloat(document.getElementById('savings').value) || 0,
-                        investment: parseFloat(document.getElementById('investment').value) || 0
-                    };
-                    break;
-            }
-        }
+      document.getElementById('budgetBreakdown').innerHTML = `
+        <div class="p-3 bg-blue-100 rounded-md mb-2"><b>Kebutuhan:</b> Rp ${needsNom.toLocaleString('id-ID')}</div>
+        <div class="p-3 bg-yellow-100 rounded-md mb-2"><b>Keinginan:</b> Rp ${wantsNom.toLocaleString('id-ID')}</div>
+        <div class="p-3 bg-green-100 rounded-md"><b>Tabungan:</b> Rp ${savingsNom.toLocaleString('id-ID')}</div>
+      `;
+      
+      const barNeeds = document.getElementById('barNeeds');
+      const barWants = document.getElementById('barWants');
+      const barSavings = document.getElementById('barSavings');
 
-        function updatePreview() {
-            const totalIncome = Object.values(budgetData.income).reduce((sum, val) => sum + val, 0);
-            const totalFixedExpenses = Object.values(budgetData.fixedExpenses).reduce((sum, val) => sum + val, 0);
-            const totalVariableExpenses = budgetData.variableExpenses.reduce((sum, item) => sum + item.amount, 0);
-            const totalSavings = Object.values(budgetData.savings).reduce((sum, val) => sum + val, 0);
-            const totalExpenses = totalFixedExpenses + totalVariableExpenses + totalSavings;
-            const balance = totalIncome - totalExpenses;
+      barNeeds.style.width = needs + '%';
+      barNeeds.textContent = needs > 10 ? `${needs}%` : '';
 
-            document.getElementById('previewIncome').textContent = formatCurrency(totalIncome);
-            document.getElementById('previewExpense').textContent = formatCurrency(totalExpenses);
-            document.getElementById('previewBalance').textContent = formatCurrency(balance);
-        }
+      barWants.style.width = wants + '%';
+      barWants.textContent = wants > 10 ? `${wants}%` : '';
 
-        function addExpenseItem() {
-            const expenseList = document.getElementById('expenseList');
-            const newItem = document.createElement('div');
-            newItem.className = 'expense-item';
-            newItem.innerHTML = `
-                <div>
-                    <input type="text" placeholder="Nama pengeluaran" style="width: 200px; margin-right: 10px;">
-                    <input type="number" placeholder="Jumlah (Rp)" style="width: 150px;">
-                </div>
-                <button class="delete-btn" onclick="removeExpenseItem(this)">Hapus</button>
-            `;
-            expenseList.appendChild(newItem);
-        }
-
-        function removeExpenseItem(btn) {
-            btn.parentElement.remove();
-        }
-
-        function generateBudget() {
-            saveCurrentStepData();
-            
-            const totalIncome = Object.values(budgetData.income).reduce((sum, val) => sum + val, 0);
-            const totalFixedExpenses = Object.values(budgetData.fixedExpenses).reduce((sum, val) => sum + val, 0);
-            const totalVariableExpenses = budgetData.variableExpenses.reduce((sum, item) => sum + item.amount, 0);
-            const totalSavings = Object.values(budgetData.savings).reduce((sum, val) => sum + val, 0);
-            const totalExpenses = totalFixedExpenses + totalVariableExpenses + totalSavings;
-            const balance = totalIncome - totalExpenses;
-
-            let alertClass = 'alert-success';
-            let alertMessage = 'Selamat! Budget Anda seimbang dan sehat.';
-            
-            if (balance < 0) {
-                alertClass = 'alert-danger';
-                alertMessage = 'Perhatian! Pengeluaran Anda melebihi pendapatan. Pertimbangkan untuk mengurangi pengeluaran.';
-            } else if (balance < totalIncome * 0.1) {
-                alertClass = 'alert-warning';
-                alertMessage = 'Budget Anda cukup ketat. Pertimbangkan untuk meningkatkan tabungan atau mengurangi pengeluaran.';
-            }
-
-            const resultHTML = `
-                <div class="alert ${alertClass}">
-                    ${alertMessage}
-                </div>
-                
-                <div class="summary-card">
-                    <h3 style="margin-bottom: 20px;">💰 Ringkasan Budget Bulanan</h3>
-                    
-                    <div class="summary-item">
-                        <span><strong>Total Pendapatan:</strong></span>
-                        <span class="amount">${formatCurrency(totalIncome)}</span>
-                    </div>
-                    
-                    <div class="summary-item">
-                        <span><strong>Pengeluaran Tetap:</strong></span>
-                        <span class="amount">${formatCurrency(totalFixedExpenses)}</span>
-                    </div>
-                    
-                    <div class="summary-item">
-                        <span><strong>Pengeluaran Variabel:</strong></span>
-                        <span class="amount">${formatCurrency(totalVariableExpenses)}</span>
-                    </div>
-                    
-                    <div class="summary-item">
-                        <span><strong>Target Tabungan:</strong></span>
-                        <span class="amount">${formatCurrency(totalSavings)}</span>
-                    </div>
-                    
-                    <div class="summary-item" style="border-top: 2px solid rgba(255,255,255,0.5); padding-top: 15px;">
-                        <span><strong>Sisa Budget:</strong></span>
-                        <span class="amount" style="color: ${balance >= 0 ? '#2ecc71' : '#e74c3c'}">${formatCurrency(balance)}</span>
-                    </div>
-                </div>
-                
-                <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin-top: 20px;">
-                    <h4 style="color: #2c3e50; margin-bottom: 15px;">💡 Rekomendasi:</h4>
-                    <ul style="color: #6c757d; line-height: 1.6;">
-                        <li>Alokasikan 20% dari pendapatan untuk tabungan</li>
-                        <li>Dana darurat sebaiknya 6-12 bulan pengeluaran</li>
-                        <li>Pengeluaran tetap maksimal 50% dari pendapatan</li>
-                        <li>Review dan evaluasi budget setiap bulan</li>
-                    </ul>
-                </div>
-            `;
-
-            document.getElementById('budgetResult').innerHTML = resultHTML;
-            nextStep();
-        }
-
-        function formatCurrency(amount) {
-            return new Intl.NumberFormat('id-ID', {
-                style: 'currency',
-                currency: 'IDR',
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 0
-            }).format(amount);
-        }
-
-        function downloadBudget() {
-            alert('Fitur download PDF akan segera tersedia! Untuk saat ini, Anda bisa screenshot hasil budget Anda.');
-        }
-
-        // Initialize
-        updateProgress();
-        
-        // Add event listeners for real-time preview updates
-        document.addEventListener('input', function(e) {
-            if (e.target.type === 'number') {
-                setTimeout(updatePreview, 100);
-            }
-        });
-    </script>
-</body>
-</html>
+      barSavings.style.width = savings + '%';
+      barSavings.textContent = savings > 10 ? `${savings}%` : '';
+      
+      document.getElementById('budgetResult').classList.remove('hidden');
+    }
+  </script>
+</section>

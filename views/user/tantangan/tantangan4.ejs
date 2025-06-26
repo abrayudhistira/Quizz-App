@@ -3,411 +3,287 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🕵️ Detektif Pengeluaran</title>
+    <title>⚔️ Want vs Need Warrior</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --putih: #ffffff;
+            --kuning: #ffe44d;
+            --ungu: #6559ff;
+            --navy: #2D2C56ff;
+            --hitam: #0f0f0f;
         }
-
         body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--ungu);
             min-height: 100vh;
-            padding: 20px;
+            color: var(--hitam);
         }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            overflow: hidden;
+        .maincontainer {
+            background: var(--kuning);
         }
-
-        .header {
-            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
-            color: white;
-            padding: 30px;
-            text-align: center;
-            position: relative;
-        }
-
-        .header::before {
-            content: '🔍💰';
-            font-size: 4rem;
-            position: absolute;
-            top: 10px;
-            left: 30px;
-            opacity: 0.3;
-        }
-
-        .header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-
         .progress-bar {
-            background: rgba(255,255,255,0.2);
-            height: 10px;
-            border-radius: 5px;
-            margin-top: 20px;
+            background: #ffffff;
+            height: 12px;
+            border-radius: 9999px;
             overflow: hidden;
         }
-
         .progress-fill {
             height: 100%;
-            background: #4CAF50;
-            border-radius: 5px;
+            background: var(--kuning);
+            border-radius: 9999px;
             transition: width 0.3s ease;
             width: 0%;
         }
-
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            padding: 30px;
-            background: #f8f9fa;
+        .stats-card {
+            background: var(--putih);
+            color: var(--navy);
         }
-
-        .stat-card {
-            background: white;
-            padding: 20px;
-            border-radius: 15px;
-            text-align: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .stat-card .icon {
-            font-size: 2rem;
-            margin-bottom: 10px;
-        }
-
-        .stat-card .number {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #333;
-        }
-
-        .stat-card .label {
-            color: #666;
-            font-size: 0.9rem;
-        }
-
-        .main-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            padding: 30px;
-        }
-
         .form-section {
-            background: #f8f9fa;
-            padding: 25px;
-            border-radius: 15px;
+            background: var(--putih);
         }
-
-        .form-section h2 {
-            color: #333;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        .list-section {
+            background: var(--putih);
+            color: var(--navy);
         }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-            color: #555;
-        }
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #ddd;
-            border-radius: 10px;
-            font-size: 1rem;
-            transition: border-color 0.3s ease;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-
-        .btn-add {
-            background: linear-gradient(135deg, #4CAF50, #45a049);
-            color: white;
-            padding: 12px 25px;
-            border: none;
-            border-radius: 10px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-            width: 100%;
-        }
-
-        .btn-add:hover {
-            transform: translateY(-2px);
-        }
-
-        .expenses-list {
-            background: #f8f9fa;
-            padding: 25px;
-            border-radius: 15px;
-            max-height: 600px;
-            overflow-y: auto;
-        }
-
-        .expense-item {
-            background: white;
-            padding: 15px;
-            margin-bottom: 10px;
-            border-radius: 10px;
-            border-left: 4px solid #667eea;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .expense-info {
-            flex: 1;
-        }
-
-        .expense-amount {
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: #e74c3c;
-        }
-
-        .expense-category {
-            background: #667eea;
-            color: white;
-            padding: 4px 8px;
-            border-radius: 5px;
-            font-size: 0.8rem;
-            margin-right: 10px;
-        }
-
-        .delete-btn {
-            background: #e74c3c;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 0.8rem;
-        }
-
         .analysis-section {
-            grid-column: 1 / -1;
-            background: #f8f9fa;
-            padding: 25px;
-            border-radius: 15px;
-            margin-top: 20px;
+            background: var(--putih);
         }
-
-        .category-chart {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
+        .expense-item {
+            background: var(--navy);
+            color: var(--putih);
         }
-
-        .category-item {
-            background: white;
-            padding: 15px;
-            border-radius: 10px;
-            text-align: center;
+        .expense-item .category {
+            background: var(--kuning);
+            color: var(--navy);
         }
-
-        .category-bar {
-            height: 20px;
-            background: #ddd;
-            border-radius: 10px;
-            overflow: hidden;
-            margin: 10px 0;
+        .expense-item .amount {
+            color: var(--kuning);
         }
-
-        .category-fill {
-            height: 100%;
-            transition: width 0.5s ease;
+        .expense-item .desc {
+            color: var(--putih);
         }
-
         .achievement {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            color: white;
-            padding: 20px;
-            border-radius: 15px;
-            text-align: center;
-            margin-top: 20px;
-            display: none;
+            background: var(--kuning);
         }
-
-        .achievement.show {
-            display: block;
+        .modal-bg {
+            background: rgba(0,0,0,0.5);
+        }
+        .modal {
             animation: slideIn 0.5s ease;
         }
-
         @keyframes slideIn {
             from { transform: translateY(-20px); opacity: 0; }
             to { transform: translateY(0); opacity: 1; }
         }
-
-        @media (max-width: 768px) {
-            .main-content {
-                grid-template-columns: 1fr;
-            }
-            
-            .stats {
-                grid-template-columns: repeat(2, 1fr);
-            }
+        *:focus {
+            outline: none !important;
+            box-shadow: none !important;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>🕵️ Detektif Pengeluaran</h1>
-            <p>Lacak setiap rupiah yang "kabur" dari kantongmu!</p>
-            <div class="progress-bar">
+    <!-- Top Container Navigasi -->
+    <div class="top-container max-w-screen-xl mx-auto px-4 md:px-20 flex items-center justify-between mb-10 mt-14">
+        <div class="flex-1 text-left">
+            <button id="prev-challenge" onclick="window.location.href='http://localhost:3000/tantangan3'" class="bg-[var(--kuning)] text-[var(--navy)] font-bold py-2 px-6 rounded-full border-2 border-[var(--ungu)] transition hover:bg-[var(--navy)] hover:text-[var(--kuning)]">
+                &larr; Tantangan Sebelumnya
+            </button>
+        </div>
+        <div class="flex-1 flex justify-center px-4 middle-container text-[var(--navy)]">
+            <div class="w-full text-center">
+                <h1 class="text-xl md:text-2xl bg-[var(--kuning)] text-[var(--navy)] font-bold rounded-full px-8 py-3 shadow inline-block border-2">
+                    Tantangan 4: Want vs Need Warrior
+                </h1>
+            </div>
+        </div>
+        <div class="flex-1 text-right">
+            <button id="next-challenge" onclick="window.location.href='http://localhost:3000/tantangan5'" class="bg-[var(--kuning)] text-[var(--navy)] font-bold py-2 px-6 rounded-full border-2 border-[var(--ungu)] transition hover:bg-[var(--navy)] hover:text-[var(--kuning)]">
+                Tantangan Selanjutnya &rarr;
+            </button>
+        </div>
+    </div>
+
+    <!-- Garis horizontal custom -->
+    <div class="w-full flex justify-center">
+        <div class="h-1 bg-[var(--kuning)] rounded-full mt-2 mb-8" style="width: 100%; max-width: 1090px;"></div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="maincontainer max-w-screen-xl mx-auto px-4 py-8 rounded-3xl shadow-lg">
+        <!-- Header -->
+        <div class="rounded-3xl shadow-lg bg-[var(--navy)] text-[var(--kuning)] px-8 py-8 mb-8 relative overflow-hidden border-2 border-[var(--kuning)]">
+            <div class="absolute left-6 top-6 text-6xl opacity-20 select-none pointer-events-none">⚔️</div>
+            <h2 class="text-3xl md:text-4xl font-bold mb-2 inline-block bg-[var(--kuning)] text-[var(--navy)] px-6 py-2 rounded-full shadow border-2">
+                ⚔️ Want vs Need Warrior
+            </h2>
+            <p class="text-lg mt-4 mb-4 max-w-2xl text-center text-[var(--putih)]">
+                Bersiap untuk pertempuran epik antara keinginan dan kebutuhan! Kamu harus jadi hakim yang bijak untuk setiap pengeluaran. Siapa yang menang?
+            </p>
+            <ul class="bg-[var(--putih)] rounded-xl px-6 py-4 mb-4 text-base mx-auto text-[var(--navy)] border border-[var(--kuning)]">
+                <li><strong>📅 Tugas:</strong> Selama <b>5 hari</b>, setiap kali mau beli sesuatu, kamu harus pause dan kategorikan dulu: <b>"BUTUH BANGET"</b>, <b>"PENGEN AJA"</b>, atau <b>"GAPAPA SKIP"</b>. Minimal <b>10 keputusan pembelian</b>.</li>
+                <li><strong>✅ Selesai jika:</strong> Berhasil mengkategorikan minimal <b>10 keputusan pembelian</b> dalam 5 hari, dengan minimal <b>3 keputusan "SKIP" atau "tunda beli"</b>.</li>
+                <li><strong>❌ Tidak selesai jika:</strong> Kurang dari 10 keputusan yang dicatat, atau tidak ada satupun keputusan "SKIP".</li>
+                <li><strong>🎖️ Hadiah:</strong> Badge <b>"Priority Prince/Princess"</b> + <b>175 poin</b></li>
+            </ul>
+            <div class="progress-bar mb-2">
                 <div class="progress-fill" id="progressFill"></div>
             </div>
-            <p id="progressText" style="margin-top: 10px;">0/15 transaksi tercatat</p>
+            <p id="progressText" class="text-sm text-[var(--kuning)] font-semibold">0/10 keputusan tercatat</p>
         </div>
 
-        <div class="stats">
-            <div class="stat-card">
-                <div class="icon">📊</div>
-                <div class="number" id="totalTransactions">0</div>
-                <div class="label">Total Transaksi</div>
+        <!-- Stats -->
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
+            <div class="stats-card rounded-2xl shadow p-6 flex flex-col items-center">
+                <div class="text-3xl mb-2">📝</div>
+                <div class="text-2xl font-bold" id="totalDecisions">0</div>
+                <div class="text-gray-500">Total Keputusan</div>
             </div>
-            <div class="stat-card">
-                <div class="icon">💸</div>
-                <div class="number" id="totalSpent">Rp 0</div>
-                <div class="label">Total Pengeluaran</div>
+            <div class="stats-card rounded-2xl shadow p-6 flex flex-col items-center">
+                <div class="text-3xl mb-2">⏳</div>
+                <div class="text-2xl font-bold" id="daysTracked">0</div>
+                <div class="text-gray-500">Hari Dicatat</div>
             </div>
-            <div class="stat-card">
-                <div class="icon">📅</div>
-                <div class="number" id="daysTracked">0</div>
-                <div class="label">Hari Dilacak</div>
+            <div class="stats-card rounded-2xl shadow p-6 flex flex-col items-center">
+                <div class="text-3xl mb-2">✅</div>
+                <div class="text-2xl font-bold" id="needCount">0</div>
+                <div class="text-gray-500">Butuh Banget</div>
             </div>
-            <div class="stat-card">
-                <div class="icon">🎯</div>
-                <div class="number" id="avgPerDay">Rp 0</div>
-                <div class="label">Rata-rata/Hari</div>
+            <div class="stats-card rounded-2xl shadow p-6 flex flex-col items-center">
+                <div class="text-3xl mb-2">💭</div>
+                <div class="text-2xl font-bold" id="wantCount">0</div>
+                <div class="text-gray-500">Pengen Aja</div>
+            </div>
+            <div class="stats-card rounded-2xl shadow p-6 flex flex-col items-center">
+                <div class="text-3xl mb-2">🚫</div>
+                <div class="text-2xl font-bold" id="skipCount">0</div>
+                <div class="text-gray-500">Gapapa Skip</div>
             </div>
         </div>
 
-        <div class="main-content">
-            <div class="form-section">
-                <h2>📝 Catat Pengeluaran</h2>
-                <form id="expenseForm">
-                    <div class="form-group">
-                        <label for="date">Tanggal *</label>
-                        <input type="date" id="date" required>
+        <!-- Main Content -->
+        <div class="grid md:grid-cols-2 gap-8 mb-8">
+            <!-- Form Section -->
+            <div class="form-section rounded-2xl shadow p-8">
+                <h2 class="text-xl font-bold mb-6 flex items-center gap-2 text-[var(--navy)]">🛒 Catat Keputusan Pembelian</h2>
+                <form id="decisionForm">
+                    <div class="mb-4">
+                        <div class="bg-[#2D2C56] rounded-xl p-0 mb-4">
+                            <div class="font-bold text-[var(--putih)] px-6 pt-6 pb-2 text-base">Tanggal *</div>
+                            <div class="px-6 pb-6">
+                                <input type="date" id="date" required
+                                    class="w-full rounded-xl px-4 py-4 bg-[#2D2C56] text-[var(--putih)] placeholder:text-gray-300 border-0 focus:ring-2 focus:ring-[var(--kuning)] transition" />
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="amount">Jumlah (Rp) *</label>
-                        <input type="number" id="amount" min="0" step="500" placeholder="10000" required>
+                    <div class="mb-4">
+                        <div class="bg-[#2D2C56] rounded-xl p-0 mb-4">
+                            <div class="font-bold text-[var(--putih)] px-6 pt-6 pb-2 text-base">Barang/Jasa *</div>
+                            <div class="px-6 pb-6">
+                                <input type="text" id="item" placeholder="Contoh: Boba, Pulsa, Jajan, dll" required
+                                    class="w-full rounded-xl px-4 py-4 bg-[#2D2C56] text-[var(--putih)] placeholder:text-gray-300 border-0 focus:ring-2 focus:ring-[var(--kuning)] transition" />
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="category">Kategori *</label>
-                        <select id="category" required>
-                            <option value="">Pilih kategori...</option>
-                            <option value="Makanan & Minuman">🍔 Makanan & Minuman</option>
-                            <option value="Transportasi">🚗 Transportasi</option>
-                            <option value="Hiburan">🎮 Hiburan</option>
-                            <option value="Belanja">🛒 Belanja</option>
-                            <option value="Pendidikan">📚 Pendidikan</option>
-                            <option value="Kesehatan">⚕️ Kesehatan</option>
-                            <option value="Lainnya">📦 Lainnya</option>
-                        </select>
+                    <div class="mb-4">
+                        <div class="bg-[#2D2C56] rounded-xl p-0 mb-4">
+                            <div class="font-bold text-[var(--putih)] px-6 pt-6 pb-2 text-base">Keputusan *</div>
+                            <div class="px-6 pb-6">
+                                <select id="decision" required
+                                    class="w-full rounded-xl px-4 py-4 bg-[#2D2C56] text-[var(--putih)] border-0 focus:ring-2 focus:ring-[var(--kuning)] transition">
+                                    <option value="">Pilih keputusan...</option>
+                                    <option value="BUTUH BANGET">BUTUH BANGET</option>
+                                    <option value="PENGEN AJA">PENGEN AJA</option>
+                                    <option value="GAPAPA SKIP">GAPAPA SKIP</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="description">Keterangan *</label>
-                        <textarea id="description" rows="2" placeholder="Beli nasi gudeg di kantin..." required></textarea>
+                    <div class="mb-6">
+                        <div class="bg-[#2D2C56] rounded-xl p-0 mb-4">
+                            <div class="font-bold text-[var(--putih)] px-6 pt-6 pb-2 text-base">Alasan/Keterangan *</div>
+                            <div class="px-6 pb-6">
+                                <textarea id="reason" rows="2" placeholder="Kenapa kamu memilih keputusan ini?" required
+                                    class="w-full rounded-xl px-4 py-4 bg-[#2D2C56] text-[var(--putih)] placeholder:text-gray-300 border-0 focus:ring-2 focus:ring-[var(--kuning)] transition"></textarea>
+                            </div>
+                        </div>
                     </div>
-                    <button type="submit" class="btn-add">➕ Tambah Pengeluaran</button>
+                    <button type="submit"
+                        class="w-full bg-[var(--kuning)] text-[var(--navy)] font-bold py-3 rounded-xl shadow hover:bg-yellow-300 transition border-0">➕ Tambah Keputusan</button>
                 </form>
             </div>
-
-            <div class="expenses-list">
-                <h2>📋 Daftar Pengeluaran</h2>
-                <div id="expensesList">
-                    <p style="text-align: center; color: #999; margin-top: 50px;">
-                        Belum ada pengeluaran tercatat.<br>
-                        Mulai catat pengeluaranmu! 🔍
+            <!-- Decisions List -->
+            <div class="list-section rounded-2xl shadow p-8">
+                <h2 class="text-xl font-bold mb-6 text-[var(--navy)]">📋 Daftar Keputusan</h2>
+                <div id="decisionsList">
+                    <p class="text-center text-gray-400 mt-12">
+                        Belum ada keputusan tercatat.<br>
+                        Mulai catat setiap keputusan pembelianmu! ⚔️
                     </p>
                 </div>
             </div>
         </div>
 
-        <div class="analysis-section">
-            <h2>🔍 Analisis Detektif</h2>
+        <!-- Analysis Section -->
+        <div class="analysis-section rounded-2xl shadow p-8 mb-8">
+            <h2 class="text-xl font-bold mb-4 text-[var(--navy)]">📊 Analisis Keputusan</h2>
             <div id="analysisContent">
-                <p style="text-align: center; color: #999;">
-                    Catat minimal 15 transaksi dalam 3 hari untuk melihat analisis lengkap! 📊
+                <p class="text-center text-gray-400">
+                    Catat minimal 10 keputusan dalam 5 hari untuk melihat analisis lengkap! 🛡️
                 </p>
             </div>
         </div>
 
-        <div class="achievement" id="achievement">
-            <h2>🏆 Selamat! Badge "Money Detective" Berhasil Didapat!</h2>
-            <p>Kamu telah berhasil melacak pengeluaran selama 3 hari dengan minimal 15 transaksi!</p>
-            <p><strong>+100 Poin!</strong> 🎉</p>
+        <!-- Achievement -->
+        <div class="achievement text-[var(--navy)] font-bold p-8 rounded-2xl text-center mt-6 shadow" id="achievement" style="display:none;">
+            
+            <!-- Tombol Selesai -->
+            <button id="finishBtn" class="w-full mt-6 bg-[var(--ungu)] text-white font-bold py-3 rounded-xl shadow hover:bg-[var(--navy)] transition hidden">
+                Selesai
+            </button>
+        </div>
+
+        <!-- Modal Badge -->
+        <div id="badgeModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40" style="display:none;">
+            <div id="badgeCard" class="bg-[var(--putih)] rounded-3xl shadow-2xl p-8 max-w-xs w-full flex flex-col items-center relative scale-90 opacity-0 transition-all duration-500 modal">
+                <button onclick="closeBadgeModal()" class="absolute top-3 right-4 text-2xl text-[var(--navy)] hover:text-red-500 font-bold">&times;</button>
+                <img src="https://github.com/luthfibphoenix/apmul/blob/main/B4M4.png?raw=true" alt="Badge" class="w-24 h-24 mb-4" />
+                <h3 class="text-xl font-bold text-[var(--navy)] mb-2">Badge Unlocked!</h3>
+                <div class="bg-[var(--kuning)] text-[var(--navy)] font-bold rounded-full px-6 py-2 mb-2 shadow border-2 border-[var(--ungu)]">
+                    Priority Prince/Princess
+                </div>
+                <div class="text-lg text-[var(--navy)] mb-2">+175 Poin</div>
+                <p class="text-sm text-gray-500">Kamu berhasil menaklukkan keinginan dan jadi pejuang prioritas sejati! ⚔️</p>
+            </div>
         </div>
     </div>
-
     <script>
-        let expenses = [];
-        let currentDay = 1;
+        let decisions = [];
 
         // Set tanggal hari ini sebagai default
         document.getElementById('date').valueAsDate = new Date();
 
-        // Form submission
-        document.getElementById('expenseForm').addEventListener('submit', function(e) {
+        document.getElementById('decisionForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            
-            const date = document.getElementById('date').value;
-            const amount = parseInt(document.getElementById('amount').value);
-            const category = document.getElementById('category').value;
-            const description = document.getElementById('description').value;
 
-            if (!date || !amount || !category || !description) {
+            const date = document.getElementById('date').value;
+            const item = document.getElementById('item').value.trim();
+            const decision = document.getElementById('decision').value;
+            const reason = document.getElementById('reason').value.trim();
+
+            if (!date || !item || !decision || !reason) {
                 alert('Semua field wajib diisi! 📝');
                 return;
             }
 
-            const expense = {
+            decisions.push({
                 id: Date.now(),
-                date: date,
-                amount: amount,
-                category: category,
-                description: description
-            };
+                date,
+                item,
+                decision,
+                reason
+            });
 
-            expenses.push(expense);
             updateDisplay();
             this.reset();
             document.getElementById('date').valueAsDate = new Date();
@@ -415,136 +291,91 @@
 
         function updateDisplay() {
             updateStats();
-            updateExpensesList();
+            updateDecisionsList();
             updateProgress();
             updateAnalysis();
             checkAchievement();
         }
 
         function updateStats() {
-            const totalTransactions = expenses.length;
-            const totalSpent = expenses.reduce((sum, expense) => sum + expense.amount, 0);
-            const uniqueDates = [...new Set(expenses.map(expense => expense.date))].length;
-            const avgPerDay = uniqueDates > 0 ? Math.round(totalSpent / uniqueDates) : 0;
+            const totalDecisions = decisions.length;
+            const uniqueDates = [...new Set(decisions.map(d => d.date))].length;
+            const needCount = decisions.filter(d => d.decision === "BUTUH BANGET").length;
+            const wantCount = decisions.filter(d => d.decision === "PENGEN AJA").length;
+            const skipCount = decisions.filter(d => d.decision === "GAPAPA SKIP").length;
 
-            document.getElementById('totalTransactions').textContent = totalTransactions;
-            document.getElementById('totalSpent').textContent = `Rp ${totalSpent.toLocaleString('id-ID')}`;
+            document.getElementById('totalDecisions').textContent = totalDecisions;
             document.getElementById('daysTracked').textContent = uniqueDates;
-            document.getElementById('avgPerDay').textContent = `Rp ${avgPerDay.toLocaleString('id-ID')}`;
+            document.getElementById('needCount').textContent = needCount;
+            document.getElementById('wantCount').textContent = wantCount;
+            document.getElementById('skipCount').textContent = skipCount;
         }
 
-        function updateExpensesList() {
-            const expensesList = document.getElementById('expensesList');
-            
-            if (expenses.length === 0) {
-                expensesList.innerHTML = `
-                    <p style="text-align: center; color: #999; margin-top: 50px;">
-                        Belum ada pengeluaran tercatat.<br>
-                        Mulai catat pengeluaranmu! 🔍
+        function updateDecisionsList() {
+            const decisionsList = document.getElementById('decisionsList');
+            if (decisions.length === 0) {
+                decisionsList.innerHTML = `
+                    <p class="text-center text-gray-400 mt-12">
+                        Belum ada keputusan tercatat.<br>
+                        Mulai catat setiap keputusan pembelianmu! ⚔️
                     </p>
                 `;
                 return;
             }
 
-            const sortedExpenses = expenses.sort((a, b) => new Date(b.date) - new Date(a.date));
-            
-            expensesList.innerHTML = sortedExpenses.map(expense => `
-                <div class="expense-item">
-                    <div class="expense-info">
-                        <div>
-                            <span class="expense-category">${expense.category}</span>
-                            <span class="expense-amount">Rp ${expense.amount.toLocaleString('id-ID')}</span>
+            const sortedDecisions = decisions.sort((a, b) => new Date(b.date) - new Date(a.date));
+            decisionsList.innerHTML = sortedDecisions.map(d => `
+                <div class="expense-item rounded-lg p-4 mb-4 flex justify-between items-center">
+                    <div class="flex-1">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="category text-xs font-semibold rounded-full px-3 py-1 bg-[var(--kuning)] text-[var(--navy)]">${d.decision}</span>
+                            <span class="amount text-lg font-bold">${d.item}</span>
                         </div>
-                        <div style="font-size: 0.9rem; color: #666; margin-top: 5px;">
-                            📅 ${new Date(expense.date).toLocaleDateString('id-ID')} - ${expense.description}
+                        <div class="desc text-xs text-gray-400">
+                            📅 ${new Date(d.date).toLocaleDateString('id-ID')} - ${d.reason}
                         </div>
                     </div>
-                    <button class="delete-btn" onclick="deleteExpense(${expense.id})">🗑️</button>
+                    <button class="delete-btn bg-red-500 text-white rounded-full p-2" onclick="deleteDecision(${d.id})">🗑️</button>
                 </div>
             `).join('');
         }
 
-        function deleteExpense(id) {
-            expenses = expenses.filter(expense => expense.id !== id);
+        function deleteDecision(id) {
+            decisions = decisions.filter(d => d.id !== id);
             updateDisplay();
         }
 
         function updateProgress() {
-            const progress = Math.min((expenses.length / 15) * 100, 100);
+            const progress = Math.min((decisions.length / 10) * 100, 100);
             document.getElementById('progressFill').style.width = `${progress}%`;
-            document.getElementById('progressText').textContent = `${expenses.length}/15 transaksi tercatat`;
+            document.getElementById('progressText').textContent = `${decisions.length}/10 keputusan tercatat`;
         }
 
         function updateAnalysis() {
             const analysisContent = document.getElementById('analysisContent');
-            
-            if (expenses.length < 15) {
+            if (decisions.length < 10) {
                 analysisContent.innerHTML = `
-                    <p style="text-align: center; color: #999;">
-                        Catat minimal 15 transaksi dalam 3 hari untuk melihat analisis lengkap! 📊<br>
-                        <small>Progress: ${expenses.length}/15 transaksi</small>
+                    <p class="text-center text-gray-400">
+                        Catat minimal 10 keputusan dalam 5 hari untuk melihat analisis lengkap! 🛡️<br>
+                        <small>Progress: ${decisions.length}/10 keputusan</small>
                     </p>
                 `;
                 return;
             }
 
-            // Analisis kategori
-            const categoryTotals = {};
-            expenses.forEach(expense => {
-                categoryTotals[expense.category] = (categoryTotals[expense.category] || 0) + expense.amount;
-            });
-
-            const totalSpent = expenses.reduce((sum, expense) => sum + expense.amount, 0);
-            const sortedCategories = Object.entries(categoryTotals)
-                .sort((a, b) => b[1] - a[1]);
-
-            const colors = ['#e74c3c', '#3498db', '#2ecc71', '#f39c12', '#9b59b6', '#1abc9c', '#34495e'];
+            const needCount = decisions.filter(d => d.decision === "BUTUH BANGET").length;
+            const wantCount = decisions.filter(d => d.decision === "PENGEN AJA").length;
+            const skipCount = decisions.filter(d => d.decision === "GAPAPA SKIP").length;
 
             let analysisHTML = `
-                <h3>🔍 Hasil Investigasi Detektif</h3>
-                <p><strong>Tersangka Utama (Kategori Terboros):</strong> ${sortedCategories[0][0]} - Rp ${sortedCategories[0][1].toLocaleString('id-ID')} (${Math.round(sortedCategories[0][1]/totalSpent*100)}%)</p>
-                <div class="category-chart">
-            `;
-
-            sortedCategories.forEach(([category, amount], index) => {
-                const percentage = Math.round((amount / totalSpent) * 100);
-                analysisHTML += `
-                    <div class="category-item">
-                        <h4>${category}</h4>
-                        <div class="category-bar">
-                            <div class="category-fill" style="width: ${percentage}%; background: ${colors[index % colors.length]};"></div>
-                        </div>
-                        <p>Rp ${amount.toLocaleString('id-ID')} (${percentage}%)</p>
-                    </div>
-                `;
-            });
-
-            analysisHTML += '</div>';
-
-            // Tips berdasarkan kategori terbesar
-            const topCategory = sortedCategories[0][0];
-            let tip = '';
-            switch(topCategory) {
-                case 'Makanan & Minuman':
-                    tip = '🍔 Tip: Coba bawa bekal dari rumah atau cari warung dengan harga lebih ekonomis!';
-                    break;
-                case 'Transportasi':
-                    tip = '🚗 Tip: Pertimbangkan naik angkutan umum atau jalan kaki untuk jarak dekat!';
-                    break;
-                case 'Hiburan':
-                    tip = '🎮 Tip: Cari hiburan gratis seperti main di taman atau nonton film gratis!';
-                    break;
-                case 'Belanja':
-                    tip = '🛒 Tip: Buat daftar belanja dan tahan godaan untuk beli yang tidak perlu!';
-                    break;
-                default:
-                    tip = '💡 Tip: Pertimbangkan apakah pengeluaran ini benar-benar diperlukan sebelum beli!';
-            }
-
-            analysisHTML += `
-                <div style="background: #fff3cd; padding: 15px; border-radius: 10px; margin-top: 20px; border-left: 4px solid #ffc107;">
-                    <strong>💡 Rekomendasi Detektif:</strong><br>
-                    ${tip}
+                <h3 class="font-bold text-lg mb-2">📊 Hasil Battle Keputusan</h3>
+                <ul class="mb-4">
+                    <li>Butuh Banget: <b>${needCount}</b></li>
+                    <li>Pengen Aja: <b>${wantCount}</b></li>
+                    <li>Gapapa Skip: <b>${skipCount}</b></li>
+                </ul>
+                <div class="bg-yellow-100 p-4 rounded-lg mt-4 border-l-4 border-yellow-500 text-yellow-800">
+                    <strong>Tips:</strong> Semakin sering kamu memilih "SKIP", semakin banyak uang yang bisa kamu alokasikan untuk hal yang benar-benar penting!
                 </div>
             `;
 
@@ -552,12 +383,40 @@
         }
 
         function checkAchievement() {
-            const uniqueDates = [...new Set(expenses.map(expense => expense.date))].length;
-            
-            if (expenses.length >= 15 && uniqueDates >= 3) {
+            const uniqueDates = [...new Set(decisions.map(d => d.date))].length;
+            const skipCount = decisions.filter(d => d.decision === "GAPAPA SKIP").length;
+            if (decisions.length >= 10 && uniqueDates >= 5 && skipCount >= 3) {
+                document.getElementById('achievement').style.display = 'block';
                 document.getElementById('achievement').classList.add('show');
+                document.getElementById('finishBtn').classList.remove('hidden');
             }
         }
+
+        // Modal logic
+        function showBadgeModal() {
+            const modal = document.getElementById('badgeModal');
+            const card = document.getElementById('badgeCard');
+            modal.style.display = 'flex';
+            card.style.transform = 'scale(0.9)';
+            card.style.opacity = '0';
+            setTimeout(() => {
+                card.style.transform = 'scale(1)';
+                card.style.opacity = '1';
+            }, 50);
+        }
+        function closeBadgeModal() {
+            const card = document.getElementById('badgeCard');
+            card.style.transform = 'scale(0.9)';
+            card.style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('badgeModal').style.display = 'none';
+            }, 400);
+        }
+
+        // Event tombol selesai
+        document.getElementById('finishBtn').addEventListener('click', function() {
+            showBadgeModal();
+        });
 
         // Inisialisasi
         updateDisplay();

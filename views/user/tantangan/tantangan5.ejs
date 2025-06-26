@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🦸 Emergency Fund Hero</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --putih: #ffffff;
+            --kuning: #ffe44d;
+            --ungu: #6559ff;
+            --navy: #2D2C56ff;
+            --hitam: #0f0f0f;
+        }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--ungu);
+            min-height: 100vh;
+            color: var(--hitam);
+        }
+        .maincontainer {
+            background: var(--kuning);
+        }
+        .progress-bar {
+            background: #ffffff;
+            height: 12px;
+            border-radius: 9999px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: var(--kuning);
+            border-radius: 9999px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+        .stats-card {
+            background: var(--putih);
+            color: var(--navy);
+        }
+        .form-section {
+            background: var(--putih);
+        }
+        .list-section {
+            background: var(--putih);
+        }
+        .analysis-section {
+            background: var(--putih);
+        }
+        .expense-item {
+            background: var(--navy);
+            color: var(--putih);
+        }
+        .expense-item .category {
+            background: var(--kuning);
+            color: var(--navy);
+        }
+        .expense-item .amount {
+            color: var(--kuning);
+        }
+         .completed-day {
+        background-color: var(--navy) !important;
+        color: var(--kuning) !important;
+        }
+        .expense-item .desc {
+            color: var(--kuning);
+        }
+        .achievement {
+            background: var(--kuning);
+        }
+        *:focus {
+            outline: none !important;
+            box-shadow: none !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Container Navigasi -->
+    <div class="top-container max-w-screen-xl mx-auto px-4 md:px-20 flex items-center justify-between mb-10 mt-14">
+        <div class="flex-1 text-left">
+            <button id="prev-challenge" onclick="window.location.href='http://localhost:3000/tantangan4'" class="bg-[var(--kuning)] text-[var(--navy)] font-bold py-2 px-6 rounded-full border-2 border-[var(--ungu)] transition hover:bg-[var(--navy)] hover:text-[var(--kuning)]">
+                &larr; Tantangan Sebelumnya
+            </button>
+        </div>
+        <div class="flex-1 flex justify-center px-4 middle-container text-[var(--navy)]">
+            <div class="w-full text-center">
+                <h1 class="text-xl md:text-2xl bg-[var(--kuning)] text-[var(--navy)] font-bold rounded-full px-8 py-3 shadow inline-block border-2 border-[var(--ungu)]">
+                    Tantangan 5: Emergency Fund Hero
+                </h1>
+            </div>
+        </div>
+        <div class="flex-1 text-right">
+            <button id="next-challenge" onclick="window.location.href='http://localhost:3000/tantangan6'" class="bg-[var(--kuning)] text-[var(--navy)] font-bold py-2 px-6 rounded-full border-2 border-[var(--ungu)] transition hover:bg-[var(--navy)] hover:text-[var(--kuning)]">
+                Tantangan Selanjutnya &rarr;
+            </button>
+        </div>
+    </div>
+
+    <!-- Garis horizontal custom -->
+    <div class="w-full flex justify-center">
+        <div class="h-1 bg-[var(--kuning)] rounded-full mt-2 mb-8" style="width: 100%; max-width: 1090px;"></div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="maincontainer max-w-screen-xl mx-auto px-4 py-8 rounded-3xl shadow-lg">
+        <!-- Header -->
+        <div class="rounded-3xl shadow-lg bg-[var(--navy)] text-[var(--kuning)] px-8 py-8 mb-8 relative overflow-hidden">
+            <div class="absolute left-6 top-6 text-6xl opacity-20 select-none pointer-events-none">🦸</div>
+            <h2 class="text-3xl md:text-4xl font-bold mb-2 inline-block bg-[var(--kuning)] text-[var(--navy)] px-6 py-2 rounded-full shadow">
+                🦸 Emergency Fund Hero
+            </h2>
+            <p class="text-lg mt-4 mb-4 max-w-2xl text-[var(--putih)]">
+                Jadilah pahlawan untuk diri sendiri! Mulai bangun benteng pertahanan finansial dengan dana darurat. Setiap rupiah yang ditabung adalah investasi ketenangan pikiran.
+            </p>
+            <ul class="bg-[var(--putih)] rounded-xl px-6 py-4 mb-4 text-base  mx-auto text-[var(--navy)]">
+                <li><strong>🎯 Target:</strong> Sisihkan minimal Rp 5.000 per hari selama 10 hari khusus untuk dana darurat (terpisah dari tabungan biasa).</li>
+                <li class="mt-2"><strong>✅ Berhasil:</strong> Menyisihkan minimal Rp 5.000 setiap hari selama 10 hari penuh, total minimal Rp 50.000 untuk dana darurat.</li>
+                <li><strong>❌ Gagal:</strong> Ada hari yang terlewat, atau total dana darurat kurang dari Rp 50.000 dalam 10 hari.</li>
+                <li><strong>🏆 Reward:</strong> Badge <b>"Emergency Hero"</b> + <b>250 poin</b></li>
+            </ul>
+            <div class="progress-bar mb-2">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <p id="progressText" class="text-sm text-[var(--kuning)] font-semibold">0/10 hari tercatat</p>
+        </div>
+
+        <!-- Stats -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            <div class="stats-card rounded-2xl shadow p-6 flex flex-col items-center">
+                <div class="text-3xl mb-2">✅</div>
+                <div class="text-2xl font-bold" id="daysCompleted">0</div>
+                <div class="text-gray-500">Hari Selesai</div>
+            </div>
+            <div class="stats-card rounded-2xl shadow p-6 flex flex-col items-center">
+                <div class="text-3xl mb-2">🦸</div>
+                <div class="text-2xl font-bold" id="totalSaved">Rp 0</div>
+                <div class="text-gray-500">Total Dana Darurat</div>
+            </div>
+            <div class="stats-card rounded-2xl shadow p-6 flex flex-col items-center">
+                <div class="text-3xl mb-2">📈</div>
+                <div class="text-2xl font-bold" id="progressPercentage">0%</div>
+                <div class="text-gray-500">Progress</div>
+            </div>
+        </div>
+
+        <!-- Progress & Hari -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+            <!-- Hari & Progress -->
+            <div class="list-section rounded-2xl shadow p-8">
+                <h2 class="text-xl font-bold mb-6 text-[var(--navy)]">📅 Progress Dana Darurat</h2>
+                <div class="flex justify-between items-center mb-4">
+                    <div class="font-bold text-[var(--navy)]">Total Dana Darurat:</div>
+                    <div class="bg-[var(--kuning)] text-[var(--navy)] font-bold py-2 px-6 rounded-full shadow" id="totalSavedSmall">
+                        Total: Rp 0
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 sm:grid-cols-5 gap-4 mb-4" id="daysContainer">
+                    <!-- Hari akan di-render oleh JS -->
+                </div>
+            </div>
+            <!-- Input Dana Darurat -->
+            <div class="form-section rounded-2xl shadow p-8">
+                <h2 class="text-xl font-bold mb-6 flex items-center gap-2 text-[var(--navy)]">📝 Input Dana Darurat</h2>
+                 <form onsubmit="addSaving(); return false;">
+                    <div class="mb-4">
+                        <div class="bg-[#2D2C56] rounded-xl p-0 mb-4">
+                            <div class="font-bold text-[var(--putih)] px-6 pt-6 pb-2 text-base">Pilih Hari:</div>
+                            <div class="px-6 pb-6">
+                                <select id="daySelect" class="w-full border-0 rounded-xl px-4 py-4 bg-[#2D2C56] text-[var(--putih)] focus:ring-2 focus:ring-[var(--kuning)] transition">
+                                    <option value="1">Hari 1</option>
+                                    <option value="2">Hari 2</option>
+                                    <option value="3">Hari 3</option>
+                                    <option value="4">Hari 4</option>
+                                    <option value="5">Hari 5</option>
+                                    <option value="6">Hari 6</option>
+                                    <option value="7">Hari 7</option>
+                                    <option value="8">Hari 8</option>
+                                    <option value="9">Hari 9</option>
+                                    <option value="10">Hari 10</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <div class="bg-[#2D2C56] rounded-xl p-0 mb-4">
+                            <div class="font-bold text-[var(--putih)] px-6 pt-6 pb-2 text-base">Jumlah Dana Darurat (Rp):</div>
+                            <div class="px-6 pb-6">
+                                <input type="number" id="amountInput" placeholder="Minimal 5000" min="0" class="w-full border-0 rounded-xl px-4 py-4 bg-[#2D2C56] text-[var(--putih)] placeholder:text-gray-300 focus:ring-2 focus:ring-[var(--kuning)] transition" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex gap-4 mt-4">
+                        <button class="bg-[var(--kuning)] text-[var(--navy)] font-bold py-3 px-6 rounded-xl shadow hover:bg-yellow-300 transition border-0 w-full" type="submit">
+                            Tambah Dana Darurat
+                        </button>
+                        <button class="bg-[var(--navy)] text-white font-bold py-3 px-6 rounded-xl shadow hover:bg-[var(--ungu)] transition border-0 w-full" onclick="resetChallenge(); return false;" type="button">
+                            Reset Challenge
+                        </button>
+                        <button class="bg-[var(--ungu)] text-white font-bold py-3 px-6 rounded-xl shadow hover:bg-[var(--navy)] transition border-0 w-full" onclick="checkProgress(); return false;" type="button">
+                            Cek Progress
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Achievement -->
+        <div class="achievement text-[var(--navy)] font-bold p-8 rounded-2xl text-center mt-6 shadow" id="successMessage" style="display:none;">
+         
+            <!-- Tombol Selesai -->
+            <button id="finishBtn" class="w-full mt-6 bg-[var(--ungu)] text-white font-bold py-3 rounded-xl shadow hover:bg-[var(--navy)] transition hidden">
+                Selesai
+            </button>
+        </div>
+
+        <!-- Modal Badge -->
+        <div id="badgeModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40" style="display:none;">
+            <div id="badgeCard" class="bg-[var(--putih)] rounded-3xl shadow-2xl p-8 max-w-xs w-full flex flex-col items-center relative scale-90 opacity-0 transition-all duration-500"
+                style="transform: scale(0.9); opacity:0;">
+                <button onclick="closeBadgeModal()" class="absolute top-3 right-4 text-2xl text-[var(--navy)] hover:text-red-500 font-bold">&times;</button>
+                <img src="https://github.com/luthfibphoenix/apmul/blob/main/B5M5.png?raw=true" alt="Badge" class="w-24 h-24 mb-4" />
+                <h3 class="text-xl font-bold text-[var(--navy)] mb-2">Badge Unlocked!</h3>
+                <div class="bg-[var(--kuning)] text-[var(--navy)] font-bold rounded-full px-6 py-2 mb-2 shadow border-2 border-[var(--ungu)]">
+                    Emergency Hero
+                </div>
+                <div class="text-lg text-[var(--navy)] mb-2">+250 Poin</div>
+                <p class="text-sm text-gray-500">Dana daruratmu sudah terkumpul! Kamu pahlawan keuangan untuk dirimu sendiri! 🦸</p>
+            </div>
+        </div>
+    </div>
+    <script>
+        let challengeData = {
+            days: [
+                { day: 1, amount: 0, completed: false },
+                { day: 2, amount: 0, completed: false },
+                { day: 3, amount: 0, completed: false },
+                { day: 4, amount: 0, completed: false },
+                { day: 5, amount: 0, completed: false },
+                { day: 6, amount: 0, completed: false },
+                { day: 7, amount: 0, completed: false },
+                { day: 8, amount: 0, completed: false },
+                { day: 9, amount: 0, completed: false },
+                { day: 10, amount: 0, completed: false }
+            ],
+            totalSaved: 0,
+            challengeComplete: false
+        };
+
+        window.onload = function() {
+            renderDays();
+            updateStats();
+        };
+
+        function renderDays() {
+            const container = document.getElementById('daysContainer');
+            container.innerHTML = '';
+
+            challengeData.days.forEach(day => {
+                const dayCard = document.createElement('div');
+                dayCard.className = `expense-item rounded-xl p-4 text-center ${day.completed ? 'completed-day' : 'opacity-70'}`;
+                dayCard.innerHTML = `
+                    <div class="font-bold text-lg mb-2">Hari ${day.day}</div>
+                    <div class="text-base">
+                        ${day.amount > 0 ? `<span class="category px-3 py-1 rounded-full">${'Rp ' + day.amount.toLocaleString('id-ID')}</span>` : '<span class="text-gray-400">Belum nabung</span>'}
+                    </div>
+                `;
+                container.appendChild(dayCard);
+            });
+        }
+
+
+        function addSaving() {
+            const daySelect = document.getElementById('daySelect');
+            const amountInput = document.getElementById('amountInput');
+            
+            let selectedDay = parseInt(daySelect.value);
+            // Ambil nilai sebagai number langsung
+            const amount = amountInput.valueAsNumber;
+
+    if (isNaN(amount) || amount < 5000) {
+        alert('Minimal dana darurat Rp 5.000 per hari!');
+        return;
+    }
+
+            // Update the selected day
+            const dayIndex = selectedDay - 1;
+            challengeData.days[dayIndex].amount = amount;
+            challengeData.days[dayIndex].completed = true;
+
+            // Calculate total
+            challengeData.totalSaved = challengeData.days.reduce((total, day) => total + day.amount, 0);
+
+            // Clear input
+            amountInput.value = '';
+
+            // Otomatis pindah ke hari berikutnya jika masih ada hari yang belum diisi
+            let nextDay = selectedDay + 1;
+            while (nextDay <= 10 && challengeData.days[nextDay - 1].completed) {
+                nextDay++;
+            }
+            if (nextDay > 10) {
+                // Jika semua hari sudah terisi, tetap di hari terakhir
+                nextDay = 10;
+            }
+            daySelect.value = nextDay;
+
+            // Update display
+            renderDays();
+            updateStats();
+            checkChallengeCompletion();
+        }
+
+        function updateStats() {
+            const completedDays = challengeData.days.filter(day => day.completed).length;
+            const progressPercentage = Math.round((challengeData.totalSaved / 50000) * 100);
+
+            document.getElementById('daysCompleted').textContent = completedDays;
+            document.getElementById('totalSaved').textContent = `Rp ${challengeData.totalSaved.toLocaleString('id-ID')}`;
+            document.getElementById('totalSavedSmall').textContent = `Total: Rp ${challengeData.totalSaved.toLocaleString('id-ID')}`;
+            document.getElementById('progressPercentage').textContent = `${Math.min(progressPercentage, 100)}%`;
+
+            // Update progress bar
+            const progressFill = document.getElementById('progressFill');
+            progressFill.style.background = 'var(--kuning)';
+            progressFill.style.width = `${Math.min(progressPercentage, 100)}%`;
+
+            // Progress text
+            document.getElementById('progressText').textContent = `${completedDays}/10 hari tercatat`;
+        }
+
+        function checkChallengeCompletion() {
+            const allDaysCompleted = challengeData.days.every(day => day.completed);
+            const totalMeetsTarget = challengeData.totalSaved >= 50000;
+
+            if (allDaysCompleted && totalMeetsTarget && !challengeData.challengeComplete) {
+                challengeData.challengeComplete = true;
+                showSuccessMessage();
+            }
+        }
+
+        function showSuccessMessage() {
+            const successDiv = document.getElementById('successMessage');
+            successDiv.style.display = 'block';
+            successDiv.classList.add('show');
+            // Tampilkan tombol selesai
+            document.getElementById('finishBtn').classList.remove('hidden');
+        }
+
+        function checkProgress() {
+            const completedDays = challengeData.days.filter(day => day.completed).length;
+            const remainingDays = 10 - completedDays;
+            const targetRemaining = Math.max(50000 - challengeData.totalSaved, 0);
+
+            let message = `📊 Status Progress:\n\n`;
+            message += `✅ Hari selesai: ${completedDays}/10\n`;
+            message += `💰 Total terkumpul: Rp ${challengeData.totalSaved.toLocaleString('id-ID')}\n`;
+            message += `🎯 Target: Rp 50.000\n\n`;
+
+            if (completedDays === 10 && challengeData.totalSaved >= 50000) {
+                message += `🎉 CHALLENGE BERHASIL! Selamat!`;
+            } else if (remainingDays > 0) {
+                message += `📅 Sisa hari: ${remainingDays}\n`;
+                message += `💪 Butuh lagi: Rp ${targetRemaining.toLocaleString('id-ID')}`;
+            } else {
+                message += `❌ Challenge belum berhasil. Total masih kurang dari Rp 50.000`;
+            }
+
+            alert(message);
+        }
+
+        function resetChallenge() {
+            if (confirm('Yakin ingin reset challenge? Semua progress akan hilang!')) {
+                challengeData = {
+                    days: [
+                        { day: 1, amount: 0, completed: false },
+                        { day: 2, amount: 0, completed: false },
+                        { day: 3, amount: 0, completed: false },
+                        { day: 4, amount: 0, completed: false },
+                        { day: 5, amount: 0, completed: false },
+                        { day: 6, amount: 0, completed: false },
+                        { day: 7, amount: 0, completed: false },
+                        { day: 8, amount: 0, completed: false },
+                        { day: 9, amount: 0, completed: false },
+                        { day: 10, amount: 0, completed: false }
+                    ],
+                    totalSaved: 0,
+                    challengeComplete: false
+                };
+
+                document.getElementById('successMessage').style.display = 'none';
+                document.getElementById('finishBtn').classList.add('hidden');
+                renderDays();
+                updateStats();
+            }
+        }
+
+        
+
+        document.getElementById('amountInput').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/[^\d]/g, '');
+            if (value) {
+                e.target.value = value;
+            }
+        });
+
+        // Modal logic
+        function showBadgeModal() {
+            const modal = document.getElementById('badgeModal');
+            const card = document.getElementById('badgeCard');
+            modal.style.display = 'flex';
+            card.style.transform = 'scale(0.9)';
+            card.style.opacity = '0';
+            setTimeout(() => {
+                card.style.transform = 'scale(1)';
+                card.style.opacity = '1';
+            }, 50);
+        }
+        function closeBadgeModal() {
+            const card = document.getElementById('badgeCard');
+            card.style.transform = 'scale(0.9)';
+            card.style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('badgeModal').style.display = 'none';
+            }, 400);
+        }
+
+        // Event tombol selesai
+        document.getElementById('finishBtn').addEventListener('click', function() {
+            showBadgeModal();
+        });
+    </script>
+</body>
+</html>

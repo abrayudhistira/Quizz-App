@@ -59,6 +59,21 @@ app.get('/', (req, res) => {
   });
 });
 
+// Contoh di app.js
+app.get('/profile', (req, res) => {
+  // Ganti data di bawah sesuai kebutuhan dan struktur user kamu
+  res.render('Profile', {
+    bannerUrl: '/img/banner-default.jpg', // atau sesuai data user
+    avatarUrl: req.user ? req.user.photo : '/img/default-avatar.jpg',
+    name: req.user ? req.user.name : 'Guest',
+    points: req.user ? req.user.points : 0,
+    title: req.user ? req.user.title : 'Newbie',
+    progress: req.user ? req.user.progress : { module: '0%', quiz: '0%', challenge: '0%' },
+    badges: req.user ? req.user.badges : []
+  });
+});
+
+
 // --- Start App ---
 db.connectAndSync()
   .then(() => {

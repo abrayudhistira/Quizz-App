@@ -1,26 +1,63 @@
-<section id="section5" class="max-w-4xl mx-auto px-4 py-12">
-  <h2 class="text-3xl font-bold text-center mb-4">🧾 Penutup Modul 1</h2>
-  <p class="text-lg text-center text-gray-600 mb-8">
-    Terima kasih telah menyelesaikan Modul 1! 🎉
-  </p>
-
-  <div class="bg-white rounded-lg shadow p-6 space-y-4">
-    <p class="text-gray-700 leading-relaxed">
-      Dalam modul ini, kamu telah mempelajari dasar-dasar penting mengenai pengelolaan pengeluaran harian, termasuk cara mencatat transaksi, memahami kategori pengeluaran, dan membuat perencanaan keuangan sederhana.
+<section id="m1s5" class="w-full py-10 px-4 md:px-10 rounded-2xl">
+  <div class="rounded-3xl px-6 py-10 max-w-screen-xl mx-auto text-center bg-[var(--putih)] shadow-lg">
+    <h2 class="text-3xl font-bold mb-4">Penutup Modul 1</h2>
+    <p class="mb-6 text-gray-700 max-w-3xl mx-auto leading-relaxed">
+      Terima kasih telah mengikuti Modul 1 ini.<br>
+      Semoga kamu sudah memahami berbagai tipe pengeluaran boros, mampu merefleksikan pengeluaran mingguan, dan siap untuk mengelola keuangan dengan lebih bijak.<br>
+      Jangan lupa untuk mengerjakan quiz dan tantangan yang telah disediakan untuk menguji pemahamanmu sekaligus mengasah kemampuan praktis.
     </p>
-    <p class="text-gray-700 leading-relaxed">
-      Menyadari ke mana uang pergi setiap harinya adalah langkah awal yang krusial untuk membangun kebiasaan finansial yang sehat. Dengan alat sederhana seperti grafik dan pencatatan rutin, kamu bisa lebih bijak dalam mengatur keuanganmu sendiri.
-    </p>
-    <p class="text-gray-700 leading-relaxed">
-      Sebagai langkah berikutnya, yuk uji pemahamanmu dengan <span class="font-semibold text-blue-600">Quiz Modul 1</span> dan selesaikan <span class="font-semibold text-green-600">Tantangan Modul 1</span> untuk memperkuat keterampilan yang telah kamu pelajari!
-    </p>
-    <div class="flex flex-col sm:flex-row justify-center items-center gap-4 mt-6">
-      <a href="#quiz" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded text-center w-full sm:w-auto">
-        📝 Kerjakan Quiz Modul 1
-      </a>
-      <a href="#tantangan" class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded text-center w-full sm:w-auto">
-        🎯 Tantangan Modul 1
-      </a>
+    
+    <div class="flex flex-col md:flex-row justify-center gap-6 mt-8 max-w-md mx-auto">
+      <button id="btnSelesai" class="bg-[var(--kuning)] text-[var(--navy)] px-8 py-3 rounded-full font-semibold hover:bg-yellow-400 transition">
+        Selesai
+      </button>
+      <button id="btnQuiz" class="bg-[var(--navy)] text-[var(--putih)] px-8 py-3 rounded-full font-semibold hover:bg-blue-900 transition">
+        Quiz
+      </button>
+      <button id="btnTantangan" class="bg-[var(--navy)] text-[var(--putih)] px-8 py-3 rounded-full font-semibold hover:bg-blue-900 transition">
+        Tantangan
+      </button>
     </div>
   </div>
 </section>
+
+<!-- Modal -->
+<div id="modalSelesai" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+  <div class="bg-white rounded-2xl max-w-lg p-6 mx-4 text-center shadow-lg">
+    <h3 class="text-2xl font-bold mb-4">Terima Kasih!</h3>
+    <p class="mb-6 text-gray-700">
+      Kamu telah menyelesaikan Modul 1. Semoga materi yang dipelajari bermanfaat dan dapat membantu kamu mengelola keuangan dengan lebih bijak.
+    </p>
+    <button id="btnCloseModal" class="bg-[var(--kuning)] text-[var(--navy)] px-6 py-2 rounded-full font-semibold hover:bg-yellow-400 transition">
+      Tutup
+    </button>
+  </div>
+</div>
+
+<script>
+  const modal = document.getElementById('modalSelesai');
+  const btnSelesai = document.getElementById('btnSelesai');
+  const btnCloseModal = document.getElementById('btnCloseModal');
+  const btnQuiz = document.getElementById('btnQuiz');
+  const btnTantangan = document.getElementById('btnTantangan');
+
+  // Tampilkan modal saat tombol Selesai diklik
+  btnSelesai.addEventListener('click', () => {
+    modal.classList.remove('hidden');
+  });
+
+  // Tutup modal saat tombol Tutup diklik
+  btnCloseModal.addEventListener('click', () => {
+    modal.classList.add('hidden');
+  });
+
+  // Redirect ke /quiz1 saat tombol Quiz diklik
+  btnQuiz.addEventListener('click', () => {
+    window.location.href = '/quiz1';
+  });
+
+  // Redirect ke /tantangan1 saat tombol Tantangan diklik
+  btnTantangan.addEventListener('click', () => {
+    window.location.href = '/tantangan1';
+  });
+</script>
