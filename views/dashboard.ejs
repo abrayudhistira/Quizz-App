@@ -239,6 +239,29 @@
 
       <!-- Section 2: Progress -->
       <div class="progress-section">
+        <% modules.forEach(mod => {
+             // ambil status (default 'not_started')
+             const stat = statusMap[mod.id] || 'not_started';
+             const map = {
+               not_started: { pct: '0%',   w: '0%'   },
+               in_progress: { pct: '50%',  w: '50%'  },
+               completed:   { pct: '100%', w: '100%' }
+             };
+             const { pct, w } = map[stat];
+        %>
+          <div class="progress-row">
+            <div class="module-label"><%= mod.title %></div>
+            <div class="progress-bar-container">
+              <div class="progress-bar-fill" style="width: <%= w %>;"></div>
+            </div>
+            <div class="progress-percent"><%= pct %></div>
+          </div>
+        <% }) %>
+      </div>
+    </div>
+  </div>
+      <!-- Section 2: Progress -->
+      <!-- <div class="progress-section">
         <div class="progress-row">
           <div class="module-label">Uang Jajan Kok Cepet Habis?!</div>
           <div class="progress-bar-container">
@@ -281,7 +304,7 @@
           </div>
           <div class="progress-percent">0%</div>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </body>

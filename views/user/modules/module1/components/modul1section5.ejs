@@ -35,12 +35,27 @@
 </div>
 
 <script>
+  const moduleId = <%= module.id %>;
+
   const modal = document.getElementById('modalSelesai');
   const btnSelesai = document.getElementById('btnSelesai');
   const btnCloseModal = document.getElementById('btnCloseModal');
   const btnQuiz = document.getElementById('btnQuiz');
   const btnTantangan = document.getElementById('btnTantangan');
 
+  btnSelesai.addEventListener('click', async () => {
+      try {
+        const res = await fetch(`/module/${moduleId}/complete`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' }
+        });
+        if (!res.ok) throw new Error('Failed to update');
+        modal.classList.remove('hidden');
+      } catch (err) {
+        console.error(err);
+        alert('Gagal menandai selesai. Coba lagi.');
+      }
+    });
   // Tampilkan modal saat tombol Selesai diklik
   btnSelesai.addEventListener('click', () => {
     modal.classList.remove('hidden');
