@@ -159,48 +159,109 @@
     </div>
 
     <div class="module-grid">
-      <div class="module-card" onclick="window.location.href='/tantangan1'">
+  <div class="module-card" data-id="1">
+    <div class="left">
+      <img src="https://github.com/MuhammadAzmiAnshari/Apmul/blob/main/Sm1.png?raw=true" alt="Tantangan 1">
+    </div>
+    <div class="right">Uang Jajan Kok Cepet Habis?!</div>
+  </div>
+
+  <div class="module-card" data-id="2">
+    <div class="left">
+      <img src="https://github.com/MuhammadAzmiAnshari/Apmul/blob/main/Sm2.png?raw=true" alt="Tantangan 2">
+    </div>
+    <div class="right">Tabungan itu Gaya Hidup Bukan Paksaan</div>
+  </div>
+
+  <div class="module-card" data-id="3">
+    <div class="left">
+      <img src="https://github.com/MuhammadAzmiAnshari/Apmul/blob/main/Sm3.png?raw=true" alt="Tantangan 3">
+    </div>
+    <div class="right">Budgeting Gak Ribet, Asal Tahu Triknya</div>
+  </div>
+
+  <div class="module-card" data-id="4">
+    <div class="left">
+      <img src="https://github.com/MuhammadAzmiAnshari/Apmul/blob/main/Sm4.png?raw=true" alt="Tantangan 4">
+    </div>
+    <div class="right">Skala Prioritas - Mana yang Mau, Mana yang Butuh?</div>
+  </div>
+
+  <div class="module-card" data-id="5">
+    <div class="left">
+      <img src="https://github.com/MuhammadAzmiAnshari/Apmul/blob/main/Sm5.png?raw=true" alt="Tantangan 5">
+    </div>
+    <div class="right">Dana Darurat</div>
+  </div>
+
+  <div class="module-card" data-id="6">
+    <div class="left">
+      <img src="https://github.com/MuhammadAzmiAnshari/Apmul/blob/main/Sm6.png?raw=true" alt="Tantangan 6">
+    </div>
+    <div class="right">Masa Depanmu Gak Cuma Minggu Ini Doang</div>
+  </div>
+</div>
+
+    <!-- <div class="module-grid">
+      <div class="module-card" onclick="window.location.href='/tantangan/1'">
         <div class="left">
           <img src="https://github.com/MuhammadAzmiAnshari/Apmul/blob/main/Sm1.png?raw=true" alt="Tantangan 1">
         </div>
         <div class="right">Uang Jajan Kok Cepet Habis?!</div>
       </div>
 
-      <div class="module-card" onclick="window.location.href='/tantangan2'">
+      <div class="module-card" onclick="window.location.href='/tantangan/2'">
         <div class="left">
           <img src="https://github.com/MuhammadAzmiAnshari/Apmul/blob/main/Sm2.png?raw=true" alt="Tantangan 2">
         </div>
         <div class="right">Tabungan itu Gaya Hidup Bukan Paksaan</div>
       </div>
 
-      <div class="module-card" onclick="window.location.href='/tantangan3'">
+      <div class="module-card" onclick="window.location.href='/tantangan/3'">
         <div class="left">
           <img src="https://github.com/MuhammadAzmiAnshari/Apmul/blob/main/Sm3.png?raw=true" alt="Tantangan 3">
         </div>
         <div class="right">Budgeting Gak Ribet, Asal Tahu Triknya</div>
       </div>
 
-      <div class="module-card" onclick="window.location.href='/tantangan4'">
+      <div class="module-card" onclick="window.location.href='/tantangan/4'">
         <div class="left">
           <img src="https://github.com/MuhammadAzmiAnshari/Apmul/blob/main/Sm4.png?raw=true" alt="Tantangan 4">
         </div>
         <div class="right">Skala Prioritas - Mana yang Mau, Mana yang Butuh?</div>
       </div>
 
-      <div class="module-card" onclick="window.location.href='/tantangan5'">
+      <div class="module-card" onclick="window.location.href='/tantangan/5'">
         <div class="left">
           <img src="https://github.com/MuhammadAzmiAnshari/Apmul/blob/main/Sm5.png?raw=true" alt="Tantangan 5">
         </div>
         <div class="right">Dana Darurat</div>
       </div>
 
-      <div class="module-card" onclick="window.location.href='/tantangan6'">
+      <div class="module-card" onclick="window.location.href='/tantangan/6'">
         <div class="left">
           <img src="https://github.com/MuhammadAzmiAnshari/Apmul/blob/main/Sm6.png?raw=true" alt="Tantangan 6">
         </div>
         <div class="right">Masa Depanmu Gak Cuma Minggu Ini Doang</div>
       </div>
-    </div>
+    </div> -->
   </div>
+  <script>
+    document.querySelectorAll('.module-card').forEach(card => {
+      card.addEventListener('click', async () => {
+        const id = card.dataset.id;
+        try {
+          const res = await fetch(`/tantangan/${id}/start`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' }
+          });
+          if (!res.ok) throw new Error();
+          window.location.href = `/tantangan/${id}`;
+        } catch {
+          alert('Gagal memulai tantangan. Silakan coba lagi.');
+        }
+      });
+    });
+  </script>
 </body>
 </html>

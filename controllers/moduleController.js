@@ -1,16 +1,48 @@
 const db = require('../config/db');
 
 exports.showListModule = async (req, res) => {
-    try {
-        const modules = await db.modules.findAll({
-          attributes: ['id', 'title', 'description', 'image_video_url']
-        });
-    
-        res.render('user/modules/list-module', { modules });
-      } catch (error) {
-        console.error('Gagal mengambil data modul:', error);
-        res.status(500).send('Terjadi kesalahan saat mengambil data modul.');
-      }
+  try {
+    // ambil semua modul
+    const modules = await db.modules.findAll({
+      attributes: ['id', 'title', 'image_video_url'],
+      order: [['id', 'ASC']]
+    });
+    // ambil progress user
+    const progresses = await db.user_module_progress.findAll({
+      where: { user_id: req.user.id },
+      attributes: ['module_id', 'status']
+    });
+    const statusMap = {};
+    progresses.forEach(p => statusMap[p.module_id] = p.status);
+
+    res.render('user/modules/list-module', { modules, statusMap });
+  } catch (error) {
+    console.error('Gagal mengambil data modul:', error);
+    res.status(500).send('Terjadi kesalahan saat mengambil data modul.');
+  }
+};
+
+exports.startModule = async (req, res) => {
+  const userId   = req.user.id;
+  const moduleId = parseInt(req.params.id, 10);
+
+  try {
+    // findOrCreate lalu set status in_progress
+    const [prog, created] = await db.user_module_progress.findOrCreate({
+      where: { user_id: userId, module_id: moduleId },
+      defaults: { status: 'in_progress', completed_at: null }
+    });
+    if (!created && prog.status !== 'in_progress') {
+      prog.status = 'in_progress';
+      prog.completed_at = null;
+      await prog.save();
+    }
+    // balas tanpa body, JS akan redirect
+    res.sendStatus(200);
+  } catch (err) {
+    console.error('Gagal set in_progress:', err);
+    res.sendStatus(500);
+  }
 };
 // exports.showModule1 = async (req, res) => {
 //     try {

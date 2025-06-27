@@ -24,14 +24,14 @@ function initModels(sequelize) {
 
   tantangan.belongsTo(badge, { as: "badge", foreignKey: "badge_id"});
   badge.hasMany(tantangan, { as: "tantangans", foreignKey: "badge_id"});
+  user.belongsTo(badge, { as: "badge", foreignKey: "badge_id"});
+  badge.hasMany(user, { as: "users", foreignKey: "badge_id"});
   user_tantangan_relasi.belongsTo(badge, { as: "badge", foreignKey: "badge_id"});
   badge.hasMany(user_tantangan_relasi, { as: "user_tantangan_relasis", foreignKey: "badge_id"});
   quiz.belongsTo(modules, { as: "module", foreignKey: "module_id"});
   modules.hasOne(quiz, { as: "quiz", foreignKey: "module_id"});
   subbab.belongsTo(modules, { as: "modul", foreignKey: "modul_id"});
   modules.hasMany(subbab, { as: "subbabs", foreignKey: "modul_id"});
-  tantangan.belongsTo(modules, { as: "modul", foreignKey: "modul_id"});
-  modules.hasMany(tantangan, { as: "tantangans", foreignKey: "modul_id"});
   user_module_progress.belongsTo(modules, { as: "module", foreignKey: "module_id"});
   modules.hasMany(user_module_progress, { as: "user_module_progresses", foreignKey: "module_id"});
   quiz_question.belongsTo(quiz, { as: "quiz", foreignKey: "quiz_id"});

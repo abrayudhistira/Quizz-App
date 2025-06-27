@@ -1,7 +1,5 @@
-// models/quiz_question.js
-const { Sequelize, DataTypes } = require('sequelize');
-
-module.exports = function(sequelize) {
+const Sequelize = require('sequelize');
+module.exports = function(sequelize, DataTypes) {
   return sequelize.define('quiz_question', {
     id: {
       autoIncrement: true,
@@ -21,25 +19,29 @@ module.exports = function(sequelize) {
       type: DataTypes.TEXT,
       allowNull: false
     },
-    options: {
-      type: DataTypes.TEXT,
-      allowNull: false
-    },
     correct_answer: {
       type: DataTypes.STRING(10),
       allowNull: false
     },
-
-    // override timestamps agar default CURRENT_TIMESTAMP
-    createdAt: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+    option_a: {
+      type: DataTypes.TEXT,
+      allowNull: true
     },
-    updatedAt: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+    option_b: {
+      type: DataTypes.TEXT,
+      allowNull: true
+    },
+    option_c: {
+      type: DataTypes.TEXT,
+      allowNull: true
+    },
+    option_d: {
+      type: DataTypes.TEXT,
+      allowNull: true
+    },
+    option_e: {
+      type: DataTypes.TEXT,
+      allowNull: true
     }
   }, {
     sequelize,
@@ -50,12 +52,16 @@ module.exports = function(sequelize) {
         name: "PRIMARY",
         unique: true,
         using: "BTREE",
-        fields: [{ name: "id" }]
+        fields: [
+          { name: "id" },
+        ]
       },
       {
         name: "quiz_id",
         using: "BTREE",
-        fields: [{ name: "quiz_id" }]
+        fields: [
+          { name: "quiz_id" },
+        ]
       },
     ]
   });

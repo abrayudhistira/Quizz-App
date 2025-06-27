@@ -1,7 +1,5 @@
-// models/subbab.js
-const { Sequelize, DataTypes } = require('sequelize');
-
-module.exports = function(sequelize) {
+const Sequelize = require('sequelize');
+module.exports = function(sequelize, DataTypes) {
   return sequelize.define('subbab', {
     id: {
       autoIncrement: true,
@@ -32,18 +30,6 @@ module.exports = function(sequelize) {
     image_video_url: {
       type: DataTypes.TEXT,
       allowNull: true
-    },
-
-    // override timestamps
-    createdAt: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
-    },
-    updatedAt: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
     }
   }, {
     sequelize,
@@ -54,12 +40,16 @@ module.exports = function(sequelize) {
         name: "PRIMARY",
         unique: true,
         using: "BTREE",
-        fields: [{ name: "id" }]
+        fields: [
+          { name: "id" },
+        ]
       },
       {
         name: "modul_id",
         using: "BTREE",
-        fields: [{ name: "modul_id" }]
+        fields: [
+          { name: "modul_id" },
+        ]
       },
     ]
   });

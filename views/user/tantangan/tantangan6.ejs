@@ -241,7 +241,7 @@
     <script>
         let planData = null;
 
-        document.getElementById('planForm').addEventListener('submit', function(e) {
+        document.getElementById('planForm').addEventListener('submit', async function(e) {
             e.preventDefault();
 
             // Ambil data goals
@@ -277,14 +277,27 @@
 
             updateDisplay();
 
-            // Tampilkan modal jika achievement berhasil
+            // Jika semua syarat achievement terpenuhi, POST ke backend
             if (
                 planData.goals.length === 3 &&
                 planData.months.length === 12 &&
                 planData.actionPlan &&
                 planData.week1Exec === 'done'
             ) {
-                showBadgeModal();
+                try {
+                    const res = await fetch('/tantangan/6/finish', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' }
+                    });
+                    const data = await res.json();
+                    if (data.success) {
+                        showBadgeModal();
+                    } else {
+                        alert('Gagal menyimpan progres tantangan!');
+                    }
+                } catch (err) {
+                    alert('Terjadi kesalahan koneksi!');
+                }
             }
         });
 

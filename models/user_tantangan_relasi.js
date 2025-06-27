@@ -29,9 +29,13 @@ module.exports = function(sequelize, DataTypes) {
       defaultValue: 0
     },
     status: {
-      type: DataTypes.ENUM('not_started','in_progress','completed'),
-      allowNull: true,
+      type: DataTypes.ENUM('not_started','in_progress','completed','failed'),
+      allowNull: false,
       defaultValue: "not_started"
+    },
+    completed_at: {
+      type: DataTypes.DATE,
+      allowNull: true
     },
     badge_id: {
       type: DataTypes.INTEGER,
@@ -40,10 +44,6 @@ module.exports = function(sequelize, DataTypes) {
         model: 'badge',
         key: 'id'
       }
-    },
-    completed_at: {
-      type: DataTypes.DATE,
-      allowNull: true
     }
   }, {
     sequelize,

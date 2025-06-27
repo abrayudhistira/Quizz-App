@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dashboard</title>
   <link rel="stylesheet" href="/css/globals.css" />
-  <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/3.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css" />
+  <link rel="stylesheet"
+    href="https://cdn-uicons.flaticon.com/3.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css" />
   <style>
     :root {
       --putih: #fff;
@@ -194,11 +196,12 @@
     }
   </style>
 </head>
+
 <body>
   <div class="dashboard-wrapper">
     <!-- Header -->
     <div class="header">
-      <h1>Welcome, <%= user.name %>!</h1>
+      <h1>Welcome, <%= user.username %>!</h1>
       <div class="user-info">
         <div class="icon-group">
           <i class="fi fi-rr-diamond"></i> <span>2000</span>
@@ -218,97 +221,42 @@
       <!-- Section 1: Navigation -->
       <div class="section-atas">
         <div class="navigation">
-          <div class="nav-item">
-            <i class="fi fi-rr-book"></i>
-            <span>Modul</span>
-          </div>
-          <div class="nav-item">
-            <i class="fi fi-rr-question-square"></i>
-            <span>Quiz</span>
-          </div>
-          <div class="nav-item">
-            <i class="fi fi-rr-tasks"></i>
-            <span>Tantangan</span>
-          </div>
-          <div class="nav-item">
-            <i class="fi fi-rr-user-gear"></i>
-            <span>Simulasi</span>
-          </div>
+          <div class="nav-item"><i class="fi fi-rr-book"></i><span>Modul</span></div>
+          <div class="nav-item"><i class="fi fi-rr-question-square"></i><span>Quiz</span></div>
+          <div class="nav-item"><i class="fi fi-rr-tasks"></i><span>Tantangan</span></div>
+          <div class="nav-item"><i class="fi fi-rr-user-gear"></i><span>Simulasi</span></div>
         </div>
       </div>
 
       <!-- Section 2: Progress -->
       <div class="progress-section">
-        <% modules.forEach(mod => {
-             // ambil status (default 'not_started')
-             const stat = statusMap[mod.id] || 'not_started';
-             const map = {
-               not_started: { pct: '0%',   w: '0%'   },
-               in_progress: { pct: '50%',  w: '50%'  },
-               completed:   { pct: '100%', w: '100%' }
-             };
-             const { pct, w } = map[stat];
-        %>
+        <% modules.forEach(mod=> {
+          const status = statusMap[mod.id] || 'not_started';
+          const map = {
+          not_started: { pct: '0%', w: '0%' },
+          in_progress: { pct: '50%', w: '50%' },
+          completed: { pct: '100%', w: '100%' }
+          };
+          const { pct, w } = map[status];
+          %>
           <div class="progress-row">
-            <div class="module-label"><%= mod.title %></div>
+            <div class="module-label">
+              <%= mod.title %>
+            </div>
             <div class="progress-bar-container">
               <div class="progress-bar-fill" style="width: <%= w %>;"></div>
             </div>
-            <div class="progress-percent"><%= pct %></div>
+            <div class="progress-percent">
+              <%= pct %>
+            </div>
           </div>
-        <% }) %>
+          <% }) %>
+
       </div>
     </div>
   </div>
-      <!-- Section 2: Progress -->
-      <!-- <div class="progress-section">
-        <div class="progress-row">
-          <div class="module-label">Uang Jajan Kok Cepet Habis?!</div>
-          <div class="progress-bar-container">
-            <div class="progress-bar-fill" style="width: 100%;"></div>
-          </div>
-          <div class="progress-percent">100%</div>
-        </div>
-        <div class="progress-row">
-          <div class="module-label">Tabungan itu Gaya Hidup Bukan Paksaan</div>
-          <div class="progress-bar-container">
-            <div class="progress-bar-fill" style="width: 100%;"></div>
-          </div>
-          <div class="progress-percent">100%</div>
-        </div>
-        <div class="progress-row">
-          <div class="module-label">Budgeting Gak Ribet, Asal Tahu Triknya</div>
-          <div class="progress-bar-container">
-            <div class="progress-bar-fill" style="width: 50%;"></div>
-          </div>
-          <div class="progress-percent">50%</div>
-        </div>
-        <div class="progress-row">
-          <div class="module-label">Skala Prioritas - Mana yang Mau, Mana yang Butuh?</div>
-          <div class="progress-bar-container">
-            <div class="progress-bar-fill" style="width: 50%;"></div>
-          </div>
-          <div class="progress-percent">50%</div>
-        </div>
-        <div class="progress-row">
-          <div class="module-label">Dana Darurat</div>
-          <div class="progress-bar-container">
-            <div class="progress-bar-fill" style="width: 0%;"></div>
-          </div>
-          <div class="progress-percent">0%</div>
-        </div>
-        <div class="progress-row">
-          <div class="module-label">Masa Depanmu Gak Cuma Minggu Ini Doang</div>
-          <div class="progress-bar-container">
-            <div class="progress-bar-fill" style="width: 0%;"></div>
-          </div>
-          <div class="progress-percent">0%</div>
-        </div>
-      </div> -->
-    </div>
-  </div>
-</body>
-<script>
+
+  <script>
     document.addEventListener("DOMContentLoaded", function () {
       const navItems = document.querySelectorAll(".nav-item");
       const profilePhoto = document.getElementById("profile-photo");
@@ -316,27 +264,15 @@
       navItems.forEach((item) => {
         item.addEventListener("click", () => {
           const label = item.innerText.trim().toLowerCase();
-
           switch (label) {
-            case "modul":
-              window.location.href = "/list-module";
-              break;
-            case "quiz":
-              window.location.href = "/list-quiz";
-              break;
-            case "tantangan":
-              window.location.href = "/list-tantangan";
-              break;
-            case "simulasi":
-              window.location.href = "/simulasi";
-              break;
-            default:
-              break;
+            case "modul": window.location.href = "/list-module"; break;
+            case "quiz": window.location.href = "/list-quiz"; break;
+            case "tantangan": window.location.href = "/list-tantangan"; break;
+            case "simulasi": window.location.href = "/simulasi"; break;
           }
         });
       });
 
-      // Tambahkan event untuk foto profil
       if (profilePhoto) {
         profilePhoto.addEventListener("click", function () {
           window.location.href = "/profile";
@@ -344,5 +280,6 @@
       }
     });
   </script>
-  
+</body>
+
 </html>

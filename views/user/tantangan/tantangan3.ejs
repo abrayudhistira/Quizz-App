@@ -412,6 +412,26 @@
             showModal();
         });
 
+        document.getElementById('finishBtn').addEventListener('click', async function() {
+    try {
+        const res = await fetch('/tantangan/3/finish', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' }
+        });
+        const text = await res.text();
+        console.log('Raw response:', text);
+        const data = JSON.parse(text);
+        if (data.success) {
+            showModal();
+        } else {
+            alert('Gagal menyimpan progres tantangan!');
+        }
+    } catch (err) {
+        console.error('Error:', err);
+        alert('Terjadi kesalahan koneksi!');
+    }
+});
+
         // Inisialisasi
         updateDisplay();
     </script>

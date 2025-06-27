@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>List Quiz</title>
   <link rel="stylesheet" href="/css/globals.css" />
   <style>
@@ -17,7 +18,8 @@
       box-sizing: border-box;
     }
 
-    html, body {
+    html,
+    body {
       margin: 0;
       padding: 0;
       height: 100%;
@@ -88,12 +90,14 @@
       padding: 8px;
       align-items: center;
       gap: 12px;
-      cursor: pointer; /* Menandakan elemen dapat diklik */
+      cursor: pointer;
+      /* Menandakan elemen dapat diklik */
       transition: transform 0.2s ease-in-out;
     }
-    
+
     .module-card:hover {
-        transform: scale(1.02); /* Efek hover kecil */
+      transform: scale(1.02);
+      /* Efek hover kecil */
     }
 
     .module-card .left {
@@ -120,7 +124,9 @@
 
     /* RESPONSIVE */
     @media (max-width: 768px) {
-      html, body {
+
+      html,
+      body {
         align-items: flex-start;
       }
 
@@ -153,57 +159,29 @@
     }
   </style>
 </head>
+
 <body>
   <div class="main-container">
     <div class="top-header">
-      <button class="top-btn" onclick="window.location.href='/dashboard'">Back</button>
+      <button class="top-btn" onclick="location.href='/dashboard'">Back</button>
       <div class="top-title">List Quiz</div>
-      <button class="top-btn" onclick="window.location.href='/list-tantangan'">Next</button>
+      <button class="top-btn" onclick="location.href='/list-tantangan'">Next</button>
     </div>
 
     <div class="module-grid">
-      <div class="module-card" onclick="window.location.href='/quiz1'">
-        <div class="left">
-          <img src="https://github.com/MuhammadAzmiAnshari/Apmul/blob/main/Sm1.png?raw=true" alt="Quiz 1">
+      <% quizzes.forEach(quiz=> { %>
+        <div class="module-card" onclick="location.href='/quiz/<%= quiz.id %>'">
+          <div class="left">
+            <img src="<%= quiz.module.image_video_url || 'https://via.placeholder.com/150' %>"
+              alt="Quiz <%= quiz.id %>" />
+          </div>
+          <div class="right">
+            <%= quiz.module.title %>
+          </div>
         </div>
-        <div class="right">Uang Jajan Kok Cepet Habis?!</div>
-      </div>
-      
-      <div class="module-card" onclick="window.location.href='/quiz2'">
-        <div class="left">
-          <img src="https://github.com/MuhammadAzmiAnshari/Apmul/blob/main/Sm2.png?raw=true" alt="Quiz 2">
-        </div>
-        <div class="right">Tabungan itu Gaya Hidup Bukan Paksaan</div>
-      </div>
-
-      <div class="module-card" onclick="window.location.href='/quiz3'">
-        <div class="left">
-          <img src="https://github.com/MuhammadAzmiAnshari/Apmul/blob/main/Sm3.png?raw=true" alt="Quiz 3">
-        </div>
-        <div class="right">Budgeting Gak Ribet, Asal Tahu Triknya</div>
-      </div>
-
-      <div class="module-card" onclick="window.location.href='/quiz4'">
-        <div class="left">
-          <img src="https://github.com/MuhammadAzmiAnshari/Apmul/blob/main/Sm4.png?raw=true" alt="Quiz 4">
-        </div>
-        <div class="right">Skala Prioritas - Mana yang Mau, Mana yang Butuh?</div>
-      </div>
-
-      <div class="module-card" onclick="window.location.href='/quiz5'">
-        <div class="left">
-          <img src="https://github.com/MuhammadAzmiAnshari/Apmul/blob/main/Sm5.png?raw=true" alt="Quiz 5">
-        </div>
-        <div class="right">Dana Darurat</div>
-      </div>
-
-      <div class="module-card" onclick="window.location.href='/quiz6'">
-        <div class="left">
-          <img src="https://github.com/MuhammadAzmiAnshari/Apmul/blob/main/Sm6.png?raw=true" alt="Quiz 6">
-        </div>
-        <div class="right">Masa Depanmu Gak Cuma Minggu Ini Doang</div>
-      </div>
+        <% }) %>
     </div>
   </div>
 </body>
+
 </html>

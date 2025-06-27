@@ -2,91 +2,63 @@ const db = require('../config/db');
 
 exports.showListQuiz = async (req, res) => {
     try {
-        const quiz = await db.quiz.findAll({
-            attributes: ['id', 'module_id']
+        const quizzes = await db.quiz.findAll({
+            attributes: ['id'],
+            include: [{
+                model: db.modules,
+                as: 'module',              // ⚠️ alias "module"
+                attributes: ['title', 'image_video_url']
+            }],
+            order: [['id', 'ASC']]
         });
-
-        res.render('user/quiz/list-quiz', { quiz });
-    } catch (error) {
-        console.error('Gagal mengambil data quiz: ', error);
-        res.status(500).send('Terjadi Kesalahan saat mengambil data quiz.');
+        res.render('user/quiz/list-quiz', { quizzes });
+    } catch (err) {
+        console.error('Gagal mengambil data quiz:', err);
+        res.status(500).send('Error mengambil daftar quiz.');
     }
 };
 
-exports.showQuiz1 = async (req, res) => {
-    try {
-        const quiz = await db.quiz.findAll({
-            attributes: ['id', 'module_id']
-        });
+exports.showQuiz = async (req, res) => {
+    const userId = req.user.id;
+    const quizId = parseInt(req.params.id, 10);
 
-        res.render('user/quiz/quiz1', { quiz });
-    } catch (error) {
-        console.error('Gagal mengambil data quiz: ', error);
-        res.status(500).send('Terjadi Kesalahan saat mengambil data quiz.');
+    try {
+        // 1) Tandai sebagai in_progress jika baru pertama kali atau sebelumnya not_started
+        const [rel, created] = await db.user_quiz_relasi.findOrCreate({
+            where: { user_id: userId, quiz_id: quizId },
+            defaults: { status: 'in_progress' }
+        });
+        if (!created && rel.status === 'not_started') {
+            rel.status = 'in_progress';
+            await rel.save();
+        }
+
+        // 2) Render halaman quiz (EJS terpisah per-ID)
+        const viewName = `user/quiz/quiz${quizId}`;
+        return res.render(viewName);
+    } catch (err) {
+        console.error('Gagal load quiz:', err);
+        return res.status(500).send('Error memulai quiz.');
     }
 };
 
-exports.showQuiz2 = async (req, res) => {
+exports.completeQuiz = async (req, res) => {
+    const userId = req.user.id;
+    const quizId = parseInt(req.params.id, 10);
+
     try {
-        const quiz = await db.quiz.findAll({
-            attributes: ['id', 'module_id']
+        const [rel, created] = await db.user_quiz_relasi.findOrCreate({
+            where: { user_id: userId, quiz_id: quizId },
+            defaults: { status: 'completed', completed_at: new Date() }
         });
-
-        res.render('user/quiz/quiz2', { quiz });
-    } catch (error) {
-        console.error('Gagal mengambil data quiz: ', error);
-        res.status(500).send('Terjadi Kesalahan saat mengambil data quiz.');
-    }
-};
-
-exports.showQuiz3 = async (req, res) => {
-    try {
-        const quiz = await db.quiz.findAll({
-            attributes: ['id', 'module_id']
-        });
-
-        res.render('user/quiz/quiz3', { quiz });
-    } catch (error) {
-        console.error('Gagal mengambil data quiz: ', error);
-        res.status(500).send('Terjadi Kesalahan saat mengambil data quiz.');
-    }
-};
-
-exports.showQuiz4 = async (req, res) => {
-    try {
-        const quiz = await db.quiz.findAll({
-            attributes: ['id', 'module_id']
-        });
-
-        res.render('user/quiz/quiz4', { quiz });
-    } catch (error) {
-        console.error('Gagal mengambil data quiz: ', error);
-        res.status(500).send('Terjadi Kesalahan saat mengambil data quiz.');
-    }
-};
-
-exports.showQuiz5 = async (req, res) => {
-    try {
-        const quiz = await db.quiz.findAll({
-            attributes: ['id', 'module_id']
-        });
-
-        res.render('user/quiz/quiz5', { quiz });
-    } catch (error) {
-        console.error('Gagal mengambil data quiz: ', error);
-        res.status(500).send('Terjadi Kesalahan saat mengambil data quiz.');
-    }
-};
-
-exports.showQuiz6 = async (req, res) => {
-    try {
-        const quiz = await db.quiz.findAll({
-            attributes: ['id', 'module_id']
-        });
-
-        res.render('user/quiz/quiz6', { quiz });
-    } catch (error) {
-        console.error('Gagal mengambil data quiz: ', error);
-        res.status(500).send('Terjadi Kesalahan saat mengambil data quiz.');
+        if (!created) {
+            rel.status = 'completed';
+            rel.completed_at = new Date();
+            await rel.save();
+        }
+        return res.redirect(`/quiz/${quizId}`);
+    } catch (err) {
+        console.error('Gagal menyimpan progress:', err);
+        return res.status(500).send('Error menyimpan progress.');
     }
 };

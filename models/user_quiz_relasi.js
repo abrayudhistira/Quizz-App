@@ -1,7 +1,5 @@
-// models/user_quiz_relasi.js
-const { Sequelize, DataTypes } = require('sequelize');
-
-module.exports = function(sequelize) {
+const Sequelize = require('sequelize');
+module.exports = function(sequelize, DataTypes) {
   return sequelize.define('user_quiz_relasi', {
     id: {
       autoIncrement: true,
@@ -29,18 +27,6 @@ module.exports = function(sequelize) {
       type: DataTypes.ENUM('not_started','in_progress','completed'),
       allowNull: true,
       defaultValue: "not_started"
-    },
-
-    // override timestamps supaya default CURRENT_TIMESTAMP
-    createdAt: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
-    },
-    updatedAt: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
     }
   }, {
     sequelize,
@@ -51,17 +37,23 @@ module.exports = function(sequelize) {
         name: "PRIMARY",
         unique: true,
         using: "BTREE",
-        fields: [{ name: "id" }]
+        fields: [
+          { name: "id" },
+        ]
       },
       {
         name: "user_id",
         using: "BTREE",
-        fields: [{ name: "user_id" }]
+        fields: [
+          { name: "user_id" },
+        ]
       },
       {
         name: "quiz_id",
         using: "BTREE",
-        fields: [{ name: "quiz_id" }]
+        fields: [
+          { name: "quiz_id" },
+        ]
       },
     ]
   });

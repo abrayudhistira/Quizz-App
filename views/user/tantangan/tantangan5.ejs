@@ -426,9 +426,25 @@
         }
 
         // Event tombol selesai
-        document.getElementById('finishBtn').addEventListener('click', function() {
-            showBadgeModal();
-        });
+        // document.getElementById('finishBtn').addEventListener('click', function() {
+        //     showBadgeModal();
+        // });
+        document.getElementById('finishBtn').addEventListener('click', async function() {
+        try {
+            const res = await fetch('/tantangan/5/finish', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' }
+            });
+            const data = await res.json();
+            if (data.success) {
+                showBadgeModal();
+            } else {
+                alert('Gagal menyimpan progres tantangan!');
+            }
+        } catch (err) {
+            alert('Terjadi kesalahan koneksi!');
+        }
+    });
     </script>
 </body>
 </html>

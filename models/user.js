@@ -1,7 +1,5 @@
-// models/user.js
-const { Sequelize, DataTypes } = require('sequelize');
-
-module.exports = function(sequelize) {
+const Sequelize = require('sequelize');
+module.exports = function(sequelize, DataTypes) {
   return sequelize.define('user', {
     id: {
       autoIncrement: true,
@@ -28,19 +26,26 @@ module.exports = function(sequelize) {
       defaultValue: "user"
     },
     photo: {
-      type: DataTypes.STRING,
-      defaultValue: 'uploads/profile-pictures/avatar.png'
+      type: DataTypes.TEXT,
+      allowNull: true
     },
-    // override timestamps
-    createdAt: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+    total_point: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      defaultValue: 0
     },
-    updatedAt: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+    user_banner_url: {
+      type: DataTypes.TEXT,
+      allowNull: true
+    },
+    badge_id: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      defaultValue: 1,
+      references: {
+        model: 'badge',
+        key: 'id'
+      }
     }
   }, {
     sequelize,
@@ -51,13 +56,24 @@ module.exports = function(sequelize) {
         name: "PRIMARY",
         unique: true,
         using: "BTREE",
-        fields: [{ name: "id" }]
+        fields: [
+          { name: "id" },
+        ]
       },
       {
         name: "email",
         unique: true,
         using: "BTREE",
-        fields: [{ name: "email" }]
+        fields: [
+          { name: "email" },
+        ]
+      },
+      {
+        name: "badge_id",
+        using: "BTREE",
+        fields: [
+          { name: "badge_id" },
+        ]
       },
     ]
   });

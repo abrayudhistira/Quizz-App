@@ -7,14 +7,6 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       primaryKey: true
     },
-    modul_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: 'modules',
-        key: 'id'
-      }
-    },
     title: {
       type: DataTypes.STRING(255),
       allowNull: false
@@ -23,7 +15,15 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.TEXT,
       allowNull: true
     },
-    criteria: {
+    task: {
+      type: DataTypes.TEXT,
+      allowNull: true
+    },
+    pass_condition: {
+      type: DataTypes.TEXT,
+      allowNull: true
+    },
+    fail_condition: {
       type: DataTypes.TEXT,
       allowNull: true
     },
@@ -39,10 +39,6 @@ module.exports = function(sequelize, DataTypes) {
         model: 'badge',
         key: 'id'
       }
-    },
-    photo: {
-      type: DataTypes.TEXT,
-      allowNull: true
     }
   }, {
     sequelize,
@@ -55,13 +51,6 @@ module.exports = function(sequelize, DataTypes) {
         using: "BTREE",
         fields: [
           { name: "id" },
-        ]
-      },
-      {
-        name: "modul_id",
-        using: "BTREE",
-        fields: [
-          { name: "modul_id" },
         ]
       },
       {

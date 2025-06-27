@@ -18,6 +18,10 @@ module.exports = function(sequelize, DataTypes) {
     min_point: {
       type: DataTypes.INTEGER,
       allowNull: false
+    },
+    image_url: {
+      type: DataTypes.TEXT,
+      allowNull: true
     }
   }, {
     sequelize,
