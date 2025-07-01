@@ -285,7 +285,7 @@
       <div class="score-point" id="score-point"></div>
       <div class="score-detail" id="score-detail"></div>
       <div class="result-btn-group">
-        <button class="result-btn" onclick="location.href='/module1'">Back to Modul</button>
+        <button class="result-btn" onclick="location.href='/module/1'">Back to Modul</button>
         <button class="result-btn" onclick="location.reload()">Ulangi Kuis</button>
         <button class="result-btn result-btn-tantangan" onclick="openTantanganModal()">Next to Tantangan</button>
       </div>
@@ -296,7 +296,7 @@
     <div class="modal-card">
       <h2>Tantangan Selanjutnya!</h2>
       <p>Siap untuk tantangan berikutnya?<br>Klik lanjut untuk mulai tantangan!</p>
-      <button class="modal-btn" onclick="window.location.href='/tantangan1'">Lanjut ke Tantangan</button>
+      <button class="modal-btn" onclick="window.location.href='/tantangan/1'">Lanjut ke Tantangan</button>
       <button class="modal-cancel" onclick="closeTantanganModal()">Batal</button>
     </div>
   </div>
@@ -422,6 +422,23 @@
       let poin = benar * 20;
       scorePoint.textContent = poin + " Poin";
       scoreDetail.textContent = `${benar} dari ${questions.length} jawaban benar.`;
+
+      // Kirim POST ke backend
+      fetch('/quiz/1/complete', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          score: poin,
+          correct: benar,
+          total: questions.length,
+          answers: userAnswers
+        })
+      }).catch(err => {
+        // Optional: tampilkan error jika perlu
+        console.error('Gagal mengirim hasil:', err);
+      });
     }
 
     function openTantanganModal() {

@@ -13,149 +13,89 @@
       --ungu: #6559ff;
       --hitam: #0f0f0f;
     }
-
     * {
       box-sizing: border-box;
     }
-
-    html,
-    body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
+    /* LOCKED STATE */
+    .locked {
+      cursor: not-allowed;
+      opacity: 0.6;
+      pointer-events: none;
+    }
+    html, body {
+      margin: 0; padding: 0; height: 100%;
       font-family: 'Arial', sans-serif;
       background-color: var(--ungu);
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      display: flex; justify-content: center; align-items: center;
     }
-
     .main-container {
-      width: 100%;
-      max-width: 1200px;
+      width: 100%; max-width: 1200px;
       padding: 40px 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 32px;
+      display: flex; flex-direction: column;
+      align-items: center; gap: 32px;
     }
-
-    /* TOP NAVIGATION */
     .top-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      width: 100%;
-      gap: 12px;
+      display: flex; justify-content: space-between;
+      align-items: center; width: 100%; gap: 12px;
     }
-
     .top-btn {
       background-color: var(--kuning);
-      border: none;
-      border-radius: 999px;
-      padding: 8px 20px;
-      font-weight: bold;
-      color: var(--hitam);
-      font-size: 1rem;
-      cursor: pointer;
-      min-width: 100px;
+      border: none; border-radius: 999px;
+      padding: 8px 20px; font-weight: bold;
+      color: var(--hitam); font-size: 1rem;
+      cursor: pointer; min-width: 100px;
       text-align: center;
     }
-
     .top-title {
       background-color: var(--kuning);
       border-radius: 999px;
       padding: 12px 36px;
-      font-size: 1.5rem;
-      font-weight: bold;
-      color: var(--hitam);
-      text-align: center;
+      font-size: 1.5rem; font-weight: bold;
+      color: var(--hitam); text-align: center;
     }
-
-    /* QUIZ GRID */
     .module-grid {
       background-color: var(--kuning);
-      border-radius: 40px;
-      padding: 32px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 24px;
-      width: 100%;
+      border-radius: 40px; padding: 32px;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 24px; width: 100%;
     }
-
     .module-card {
       background-color: var(--putih);
       border-radius: 24px;
-      display: flex;
-      padding: 8px;
-      align-items: center;
-      gap: 12px;
+      display: flex; padding: 8px;
+      align-items: center; gap: 12px;
       cursor: pointer;
-      /* Menandakan elemen dapat diklik */
       transition: transform 0.2s ease-in-out;
+      text-decoration: none;
+      color: inherit;
     }
-
     .module-card:hover {
       transform: scale(1.02);
-      /* Efek hover kecil */
     }
-
     .module-card .left {
       flex: 0 0 150px;
       aspect-ratio: 1 / 1;
-      border-radius: 16px;
-      overflow: hidden;
+      border-radius: 16px; overflow: hidden;
     }
-
     .module-card .left img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
+      width: 100%; height: 100%;
+      object-fit: cover; display: block;
     }
-
     .module-card .right {
-      flex: 1;
-      padding: 4px;
+      flex: 1; padding: 4px;
       color: var(--hitam);
-      font-weight: bold;
-      font-size: 1rem;
+      font-weight: bold; font-size: 1rem;
     }
-
-    /* RESPONSIVE */
     @media (max-width: 768px) {
-
-      html,
-      body {
-        align-items: flex-start;
-      }
-
-      .main-container {
-        padding-top: 40px;
-      }
-
-      .top-header {
-        flex-direction: column;
-      }
-
-      .module-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .module-card {
-        flex-direction: column;
-        text-align: center;
-      }
-
+      html, body { align-items: flex-start; }
+      .main-container { padding-top: 40px; }
+      .top-header { flex-direction: column; }
+      .module-grid { grid-template-columns: 1fr; }
+      .module-card { flex-direction: column; text-align: center; }
       .module-card .left {
-        width: 100%;
-        max-width: 200px;
-        margin: 0 auto;
+        width: 100%; max-width: 200px; margin: 0 auto;
       }
-
-      .module-card .right {
-        padding-top: 8px;
-      }
+      .module-card .right { padding-top: 8px; }
     }
   </style>
 </head>
@@ -169,17 +109,39 @@
     </div>
 
     <div class="module-grid">
-      <% quizzes.forEach(quiz=> { %>
-        <div class="module-card" onclick="location.href='/quiz/<%= quiz.id %>'">
-          <div class="left">
-            <img src="<%= quiz.module.image_video_url || 'https://via.placeholder.com/150' %>"
-              alt="Quiz <%= quiz.id %>" />
+      <% quizzes.forEach(function(quiz) { %>
+        <% 
+          const moduleStatus = moduleStatusMap[quiz.module.id];
+          const isUnlocked = moduleStatus === "completed";
+        %>
+
+        <% if (isUnlocked) { %>
+          <a class="module-card" href="/quiz/<%= quiz.id %>">
+        <% } else { %>
+          <div class="module-card locked">
+        <% } %>
+
+            <div class="left">
+              <img
+                src="<%= quiz.module.image_video_url || 'https://via.placeholder.com/150' %>"
+                alt="Quiz <%= quiz.id %>"
+              />
+            </div>
+            <div class="right">
+              <%= quiz.module.title %>
+              <% if (!isUnlocked) { %>
+                <div style="font-size: 0.875rem; color: red; font-weight: normal; margin-top: 4px;">
+                  🔒 Terkunci – Selesaikan modul dulu
+                </div>
+              <% } %>
+            </div>
+
+        <% if (isUnlocked) { %>
+          </a>
+        <% } else { %>
           </div>
-          <div class="right">
-            <%= quiz.module.title %>
-          </div>
-        </div>
-        <% }) %>
+        <% } %>
+      <% }); %>
     </div>
   </div>
 </body>

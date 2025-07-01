@@ -16,7 +16,11 @@ const upload = multer({ storage });
 const profileController = require('../controllers/userController');
 
 router.get('/profile/edit', authMiddleware, profileController.editProfileForm);
-router.post('/profile/update', authMiddleware, upload.single('photo'), profileController.updateProfile);
+//router.post('/profile/update', authMiddleware, upload.single('photo'), profileController.updateProfile);
+router.post('/profile/update', authMiddleware, upload.fields([
+  { name: 'photo', maxCount: 1 },
+  { name: 'banner_url', maxCount: 1 }
+]), profileController.updateProfile);
 
 // Route profile
 router.get('/profile', authMiddleware, profileController.showProfile);

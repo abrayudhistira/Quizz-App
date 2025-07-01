@@ -63,6 +63,12 @@ exports.login = async (req, res) => {
         return res.redirect('/?error=' + encodeURIComponent('Kredensial tidak valid'));
       }
 
+      let badgeTitle = null;
+      if (user.badge_id) {
+        const badge = await db.badge.findByPk(user.badge_id);
+        badgeTitle = badge ? badge.title : null;
+      }
+
       const userModule = await db.user_module_progress.findOne({ where: { user_id: user.id } });
         const userTantangan = await db.user_tantangan_relasi.findOne({ where: { user_id: user.id } });
         const userQuiz = await db.user_quiz_relasi.findOne({ where: { user_id: user.id } });
@@ -73,6 +79,9 @@ exports.login = async (req, res) => {
       req.session.statusModule = userModule?.status || 'not_started';
       req.session.statusTantangan = userTantangan?.status || 'not_started';
       req.session.statusQuiz = userQuiz?.status || 'not_started';
+      req.session.badgeId = user.badge_id || null;
+      req.session.badgeTitle = badgeTitle;
+      req.session.totalPoint = user.total_point || 0;
       console.log(`→ Session set: userId = ${user.id}, role = ${user.role}`);
       console.log(`← Response: [302] POST /login — Access Granted redirect /dashboard for user ID ${user.id}`);
       console.log(`${req.session.statusModule}, ${req.session.statusTantangan}, ${req.session.statusQuiz}`);

@@ -422,7 +422,7 @@
       <div class="score-point" id="score-point"></div>
       <div class="score-detail" id="score-detail"></div>
       <div class="result-btn-group">
-        <button class="result-btn" onclick="window.location.href='/module5'">Back to Modul</button>
+        <button class="result-btn" onclick="window.location.href='/module/5'">Back to Modul</button>
         <button class="result-btn" onclick="location.reload()">Ulangi Kuis</button>
         <button class="result-btn result-btn-tantangan" onclick="openTantanganModal()">Next to Tantangan</button>
       </div>
@@ -433,7 +433,7 @@
     <div class="modal-card">
       <h2>Tantangan Selanjutnya!</h2>
       <p>Siap untuk tantangan berikutnya?<br>Klik lanjut untuk mulai tantangan!</p>
-      <button class="modal-btn" onclick="window.location.href='/tantangan5'">Lanjut ke Tantangan</button>
+      <button class="modal-btn" onclick="window.location.href='/tantangan/5'">Lanjut ke Tantangan</button>
       <button class="modal-cancel" onclick="closeTantanganModal()">Batal</button>
     </div>
   </div>
@@ -542,15 +542,6 @@
       }
     });
 
-    nextBtn.addEventListener('click', () => {
-      if (currentQuestion < questions.length - 1) {
-        currentQuestion++;
-        renderQuestion(currentQuestion);
-      } else {
-        showResult();
-      }
-    });
-
     function showResult() {
       quizContainer.style.display = "none";
       resultScreen.style.display = "flex";
@@ -561,7 +552,45 @@
       let poin = benar * 20;
       scorePoint.textContent = poin + " Poin";
       scoreDetail.textContent = `${benar} dari ${questions.length} jawaban benar.`;
+
+      // Kirim POST ke backend
+      fetch('/quiz/5/complete', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          score: poin,
+          correct: benar,
+          total: questions.length,
+          answers: userAnswers
+        })
+      }).catch(err => {
+        // Optional: tampilkan error jika perlu
+        console.error('Gagal mengirim hasil:', err);
+      });
     }
+
+    nextBtn.addEventListener('click', () => {
+      if (currentQuestion < questions.length - 1) {
+        currentQuestion++;
+        renderQuestion(currentQuestion);
+      } else {
+        showResult();
+      }
+    });
+
+    // function showResult() {
+    //   quizContainer.style.display = "none";
+    //   resultScreen.style.display = "flex";
+    //   let benar = 0;
+    //   userAnswers.forEach((ans, i) => {
+    //     if (ans === questions[i].answer) benar++;
+    //   });
+    //   let poin = benar * 20;
+    //   scorePoint.textContent = poin + " Poin";
+    //   scoreDetail.textContent = `${benar} dari ${questions.length} jawaban benar.`;
+    // }
 
     // Modal Tantangan
     function openTantanganModal() {

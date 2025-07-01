@@ -83,10 +83,9 @@
     </style>
 </head>
 <body>
-    <!-- Top Container Navigasi -->
     <div class="top-container max-w-screen-xl mx-auto px-4 md:px-20 flex items-center justify-between mb-10 mt-14">
         <div class="flex-1 text-left">
-            <button id="prev-challenge" onclick="window.location.href='http://localhost:3000/tantangan3'" class="bg-[var(--kuning)] text-[var(--navy)] font-bold py-2 px-6 rounded-full border-2 border-[var(--ungu)] transition hover:bg-[var(--navy)] hover:text-[var(--kuning)]">
+            <button id="prev-challenge" onclick="window.location.href='http://localhost:3000/tantangan/3'" class="bg-[var(--kuning)] text-[var(--navy)] font-bold py-2 px-6 rounded-full border-2 border-[var(--ungu)] transition hover:bg-[var(--navy)] hover:text-[var(--kuning)]">
                 &larr; Tantangan Sebelumnya
             </button>
         </div>
@@ -98,20 +97,17 @@
             </div>
         </div>
         <div class="flex-1 text-right">
-            <button id="next-challenge" onclick="window.location.href='http://localhost:3000/tantangan5'" class="bg-[var(--kuning)] text-[var(--navy)] font-bold py-2 px-6 rounded-full border-2 border-[var(--ungu)] transition hover:bg-[var(--navy)] hover:text-[var(--kuning)]">
+            <button id="next-challenge" onclick="window.location.href='http://localhost:3000/tantangan/5'" class="bg-[var(--kuning)] text-[var(--navy)] font-bold py-2 px-6 rounded-full border-2 border-[var(--ungu)] transition hover:bg-[var(--navy)] hover:text-[var(--kuning)]">
                 Tantangan Selanjutnya &rarr;
             </button>
         </div>
     </div>
 
-    <!-- Garis horizontal custom -->
     <div class="w-full flex justify-center">
         <div class="h-1 bg-[var(--kuning)] rounded-full mt-2 mb-8" style="width: 100%; max-width: 1090px;"></div>
     </div>
 
-    <!-- Main Container -->
     <div class="maincontainer max-w-screen-xl mx-auto px-4 py-8 rounded-3xl shadow-lg">
-        <!-- Header -->
         <div class="rounded-3xl shadow-lg bg-[var(--navy)] text-[var(--kuning)] px-8 py-8 mb-8 relative overflow-hidden border-2 border-[var(--kuning)]">
             <div class="absolute left-6 top-6 text-6xl opacity-20 select-none pointer-events-none">⚔️</div>
             <h2 class="text-3xl md:text-4xl font-bold mb-2 inline-block bg-[var(--kuning)] text-[var(--navy)] px-6 py-2 rounded-full shadow border-2">
@@ -132,7 +128,6 @@
             <p id="progressText" class="text-sm text-[var(--kuning)] font-semibold">0/10 keputusan tercatat</p>
         </div>
 
-        <!-- Stats -->
         <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
             <div class="stats-card rounded-2xl shadow p-6 flex flex-col items-center">
                 <div class="text-3xl mb-2">📝</div>
@@ -161,9 +156,7 @@
             </div>
         </div>
 
-        <!-- Main Content -->
         <div class="grid md:grid-cols-2 gap-8 mb-8">
-            <!-- Form Section -->
             <div class="form-section rounded-2xl shadow p-8">
                 <h2 class="text-xl font-bold mb-6 flex items-center gap-2 text-[var(--navy)]">🛒 Catat Keputusan Pembelian</h2>
                 <form id="decisionForm">
@@ -211,8 +204,12 @@
                     <button type="submit"
                         class="w-full bg-[var(--kuning)] text-[var(--navy)] font-bold py-3 rounded-xl shadow hover:bg-yellow-300 transition border-0">➕ Tambah Keputusan</button>
                 </form>
+
+                <button id="finishBtn" class="w-full mt-4 bg-[var(--ungu)] text-white font-bold py-3 rounded-xl shadow hover:bg-[var(--navy)] transition hidden">
+                    Klaim Hadiah & Selesaikan
+                </button>
             </div>
-            <!-- Decisions List -->
+            
             <div class="list-section rounded-2xl shadow p-8">
                 <h2 class="text-xl font-bold mb-6 text-[var(--navy)]">📋 Daftar Keputusan</h2>
                 <div id="decisionsList">
@@ -224,26 +221,19 @@
             </div>
         </div>
 
-        <!-- Analysis Section -->
         <div class="analysis-section rounded-2xl shadow p-8 mb-8">
             <h2 class="text-xl font-bold mb-4 text-[var(--navy)]">📊 Analisis Keputusan</h2>
             <div id="analysisContent">
                 <p class="text-center text-gray-400">
-                    Catat minimal 10 keputusan dalam 5 hari untuk melihat analisis lengkap! 🛡️
+                    Catat minimal 10 keputusan untuk melihat analisis lengkap! 🛡️
                 </p>
             </div>
         </div>
 
-        <!-- Achievement -->
         <div class="achievement text-[var(--navy)] font-bold p-8 rounded-2xl text-center mt-6 shadow" id="achievement" style="display:none;">
-            
-            <!-- Tombol Selesai -->
-            <button id="finishBtn" class="w-full mt-6 bg-[var(--ungu)] text-white font-bold py-3 rounded-xl shadow hover:bg-[var(--navy)] transition hidden">
-                Selesai
-            </button>
+            <div id="achievementText"></div>
         </div>
 
-        <!-- Modal Badge -->
         <div id="badgeModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40" style="display:none;">
             <div id="badgeCard" class="bg-[var(--putih)] rounded-3xl shadow-2xl p-8 max-w-xs w-full flex flex-col items-center relative scale-90 opacity-0 transition-all duration-500 modal">
                 <button onclick="closeBadgeModal()" class="absolute top-3 right-4 text-2xl text-[var(--navy)] hover:text-red-500 font-bold">&times;</button>
@@ -323,23 +313,24 @@
                 return;
             }
 
-            const sortedDecisions = decisions.sort((a, b) => new Date(b.date) - new Date(a.date));
+            const sortedDecisions = [...decisions].sort((a, b) => new Date(b.date) - new Date(a.date) || b.id - a.id);
             decisionsList.innerHTML = sortedDecisions.map(d => `
-                <div class="expense-item rounded-lg p-4 mb-4 flex justify-between items-center">
-                    <div class="flex-1">
-                        <div class="flex justify-between items-center mb-1">
-                            <span class="category text-xs font-semibold rounded-full px-3 py-1 bg-[var(--kuning)] text-[var(--navy)]">${d.decision}</span>
-                            <span class="amount text-lg font-bold">${d.item}</span>
+                <div class="expense-item rounded-xl p-4 mb-3 flex justify-between items-start">
+                    <div class="flex-1 mr-4">
+                        <div class="flex flex-wrap items-center justify-between mb-2 gap-2">
+                             <span class="category text-xs font-bold rounded-full px-3 py-1">${d.decision}</span>
+                             <span class="amount text-lg font-bold text-right">${d.item}</span>
                         </div>
-                        <div class="desc text-xs text-gray-400">
-                            📅 ${new Date(d.date).toLocaleDateString('id-ID')} - ${d.reason}
+                        <div class="desc text-sm text-gray-300">
+                            <span>📅 ${new Date(d.date).toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric'})}</span><br>
+                            <span class="italic">"${d.reason}"</span>
                         </div>
                     </div>
-                    <button class="delete-btn bg-red-500 text-white rounded-full p-2" onclick="deleteDecision(${d.id})">🗑️</button>
+                    <button class="delete-btn bg-red-600 text-white rounded-full h-8 w-8 flex items-center justify-center font-bold text-xs flex-shrink-0 hover:bg-red-700 transition" onclick="deleteDecision(${d.id})">🗑️</button>
                 </div>
             `).join('');
         }
-
+        
         function deleteDecision(id) {
             decisions = decisions.filter(d => d.id !== id);
             updateDisplay();
@@ -356,7 +347,7 @@
             if (decisions.length < 10) {
                 analysisContent.innerHTML = `
                     <p class="text-center text-gray-400">
-                        Catat minimal 10 keputusan dalam 5 hari untuk melihat analisis lengkap! 🛡️<br>
+                        Catat minimal 10 keputusan untuk melihat analisis lengkap! 🛡️<br>
                         <small>Progress: ${decisions.length}/10 keputusan</small>
                     </p>
                 `;
@@ -367,28 +358,42 @@
             const wantCount = decisions.filter(d => d.decision === "PENGEN AJA").length;
             const skipCount = decisions.filter(d => d.decision === "GAPAPA SKIP").length;
 
-            let analysisHTML = `
-                <h3 class="font-bold text-lg mb-2">📊 Hasil Battle Keputusan</h3>
-                <ul class="mb-4">
-                    <li>Butuh Banget: <b>${needCount}</b></li>
-                    <li>Pengen Aja: <b>${wantCount}</b></li>
-                    <li>Gapapa Skip: <b>${skipCount}</b></li>
-                </ul>
-                <div class="bg-yellow-100 p-4 rounded-lg mt-4 border-l-4 border-yellow-500 text-yellow-800">
-                    <strong>Tips:</strong> Semakin sering kamu memilih "SKIP", semakin banyak uang yang bisa kamu alokasikan untuk hal yang benar-benar penting!
+            analysisContent.innerHTML = `
+                <h3 class="font-bold text-lg mb-2 text-center">⚔️ Hasil Pertempuran Keputusanmu ⚔️</h3>
+                <div class="flex justify-around text-center mt-4">
+                    <div><div class="text-3xl">✅</div><div class="font-bold text-2xl">${needCount}</div><div>Butuh</div></div>
+                    <div><div class="text-3xl">💭</div><div class="font-bold text-2xl">${wantCount}</div><div>Pengen</div></div>
+                    <div><div class="text-3xl">🚫</div><div class="font-bold text-2xl">${skipCount}</div><div>Skip</div></div>
+                </div>
+                <div class="bg-yellow-100 p-4 rounded-lg mt-6 border-l-4 border-yellow-500 text-yellow-800">
+                    <strong>Tips Pejuang:</strong> Setiap keputusan "SKIP" adalah kemenangan! Itu adalah uang yang bisa kamu gunakan untuk tujuan yang lebih besar. Kamu hebat!
                 </div>
             `;
-
-            analysisContent.innerHTML = analysisHTML;
         }
 
         function checkAchievement() {
+            const totalDecisions = decisions.length;
             const uniqueDates = [...new Set(decisions.map(d => d.date))].length;
             const skipCount = decisions.filter(d => d.decision === "GAPAPA SKIP").length;
-            if (decisions.length >= 10 && uniqueDates >= 5 && skipCount >= 3) {
-                document.getElementById('achievement').style.display = 'block';
-                document.getElementById('achievement').classList.add('show');
-                document.getElementById('finishBtn').classList.remove('hidden');
+            
+            const achievementDiv = document.getElementById('achievement');
+            const achievementText = document.getElementById('achievementText');
+            const finishBtn = document.getElementById('finishBtn');
+            
+            // Inilah kondisi untuk menyelesaikan tantangan
+            const isComplete = totalDecisions >= 10 && uniqueDates >= 5 && skipCount >= 3;
+            
+            if (isComplete) {
+                achievementText.innerHTML = `
+                    <h3 class="text-2xl font-bold mb-2">🎉 Selamat, Tantangan Selesai! 🎉</h3>
+                    <p>Kamu berhasil mencatat <b>${totalDecisions}</b> keputusan dalam <b>${uniqueDates}</b> hari, dan menahan diri sebanyak <b>${skipCount}</b> kali. Hebat!</p>
+                `;
+                achievementDiv.style.display = 'block'; // Menampilkan kotak teks selamat
+                finishBtn.classList.remove('hidden');   // Menampilkan tombol selesai
+            } else {
+                // Jika kondisi tidak terpenuhi, sembunyikan kembali
+                achievementDiv.style.display = 'none';
+                finishBtn.classList.add('hidden');
             }
         }
 
@@ -397,13 +402,12 @@
             const modal = document.getElementById('badgeModal');
             const card = document.getElementById('badgeCard');
             modal.style.display = 'flex';
-            card.style.transform = 'scale(0.9)';
-            card.style.opacity = '0';
             setTimeout(() => {
                 card.style.transform = 'scale(1)';
                 card.style.opacity = '1';
             }, 50);
         }
+
         function closeBadgeModal() {
             const card = document.getElementById('badgeCard');
             card.style.transform = 'scale(0.9)';
@@ -412,30 +416,41 @@
                 document.getElementById('badgeModal').style.display = 'none';
             }, 400);
         }
+        
+        // Gabungkan event listener untuk tombol selesai menjadi satu fungsi
+        async function handleFinish() {
+             // Tampilkan modal hadiah terlebih dahulu untuk pengalaman pengguna yang lancar
+            showBadgeModal();
+            
+            // Coba kirim data ke server di latar belakang
+            try {
+                const res = await fetch('/tantangan/4/finish', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    // Jika perlu mengirim data, tambahkan body: JSON.stringify({ decisions })
+                });
 
-        // Event tombol selesai
-        // document.getElementById('finishBtn').addEventListener('click', function() {
-        //     showBadgeModal();
-        // });
-
-        document.getElementById('finishBtn').addEventListener('click', async function() {
-        try {
-            const res = await fetch('/tantangan/4/finish', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' }
-            });
-            const data = await res.json();
-            if (data.success) {
-                showBadgeModal();
-            } else {
-                alert('Gagal menyimpan progres tantangan!');
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data.success) {
+                        console.log("Progres berhasil disimpan di server!");
+                    } else {
+                        console.error("Server merespon, tapi progres gagal disimpan.", data.message);
+                    }
+                } else {
+                    // Ini akan terjadi jika server mengembalikan error seperti 404 atau 500
+                    console.error("Gagal menghubungi server. Status:", res.status);
+                }
+            } catch (err) {
+                // Ini akan terjadi jika ada masalah jaringan atau file dibuka secara lokal
+                console.warn("Terjadi kesalahan koneksi. Tidak dapat menyimpan progres ke server. Error:", err.message);
             }
-        } catch (err) {
-            alert('Terjadi kesalahan koneksi!');
         }
-    });
 
-        // Inisialisasi
+        // Pasang event listener ke tombol "Selesai"
+        document.getElementById('finishBtn').addEventListener('click', handleFinish);
+
+        // Inisialisasi tampilan saat halaman dimuat
         updateDisplay();
     </script>
 </body>

@@ -1,208 +1,240 @@
 <!DOCTYPE html>
 <html lang="id">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>List Tantangan</title>
-  <link rel="stylesheet" href="/css/globals.css" />
-  <style>
-    :root {
-      --putih: #ffffff;
-      --kuning: #ffe44d;
-      --ungu: #6559ff;
-      --hitam: #0f0f0f;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>List Tantangan</title>
+    <link rel="stylesheet" href="/css/globals.css" />
+    <style>
+      :root {
+        --putih: #ffffff;
+        --kuning: #ffe44d;
+        --ungu: #6559ff;
+        --hitam: #0f0f0f;
+      }
 
-    * {
-      box-sizing: border-box;
-    }
+      * {
+        box-sizing: border-box;
+      }
 
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      font-family: 'Arial', sans-serif;
-      background-color: var(--ungu);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .main-container {
-      width: 100%;
-      max-width: 1200px;
-      padding: 40px 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 32px;
-    }
-
-    .top-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      width: 100%;
-      gap: 12px;
-    }
-
-    .top-btn {
-      background-color: var(--kuning);
-      border: none;
-      border-radius: 999px;
-      padding: 8px 20px;
-      font-weight: bold;
-      color: var(--hitam);
-      font-size: 1rem;
-      cursor: pointer;
-      min-width: 100px;
-      text-align: center;
-    }
-
-    .top-title {
-      background-color: var(--kuning);
-      border-radius: 999px;
-      padding: 12px 36px;
-      font-size: 1.5rem;
-      font-weight: bold;
-      color: var(--hitam);
-      text-align: center;
-    }
-
-    .module-grid {
-      background-color: var(--kuning);
-      border-radius: 40px;
-      padding: 32px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 24px;
-      width: 100%;
-    }
-
-    .module-card {
-      background-color: var(--putih);
-      border-radius: 24px;
-      display: flex;
-      padding: 8px;
-      align-items: center;
-      gap: 12px;
-      cursor: pointer;
-      transition: box-shadow 0.3s ease;
-    }
-
-    .module-card:hover {
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    }
-
-    .module-card .left {
-      flex: 0 0 150px;
-      aspect-ratio: 1 / 1;
-      border-radius: 16px;
-      overflow: hidden;
-    }
-
-    .module-card .left img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
-    .module-card .right {
-      flex: 1;
-      padding: 4px;
-      color: var(--hitam);
-      font-weight: bold;
-      font-size: 1rem;
-    }
-
-    @media (max-width: 768px) {
-      html, body {
-        align-items: flex-start;
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        font-family: "Arial", sans-serif;
+        background-color: var(--ungu);
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
 
       .main-container {
-        padding-top: 40px;
+        width: 100%;
+        max-width: 1200px;
+        padding: 40px 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 32px;
       }
 
       .top-header {
-        flex-direction: column;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        gap: 12px;
       }
 
-      .module-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .module-card {
-        flex-direction: column;
+      .top-btn {
+        background-color: var(--kuning);
+        border: none;
+        border-radius: 999px;
+        padding: 8px 20px;
+        font-weight: bold;
+        color: var(--hitam);
+        font-size: 1rem;
+        cursor: pointer;
+        min-width: 100px;
         text-align: center;
       }
 
-      .module-card .left {
+      .module-card.locked {
+        opacity: 0.5;
+        cursor: not-allowed;
+        pointer-events: auto;
+      }
+
+      .top-title {
+        background-color: var(--kuning);
+        border-radius: 999px;
+        padding: 12px 36px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: var(--hitam);
+        text-align: center;
+      }
+
+      .module-grid {
+        background-color: var(--kuning);
+        border-radius: 40px;
+        padding: 32px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
         width: 100%;
-        max-width: 200px;
-        margin: 0 auto;
+      }
+
+      .module-card {
+        background-color: var(--putih);
+        border-radius: 24px;
+        display: flex;
+        padding: 8px;
+        align-items: center;
+        gap: 12px;
+        cursor: pointer;
+        transition: box-shadow 0.3s ease;
+      }
+
+      .module-card:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      }
+
+      .module-card .left {
+        flex: 0 0 150px;
+        aspect-ratio: 1 / 1;
+        border-radius: 16px;
+        overflow: hidden;
+      }
+
+      .module-card .left img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
       }
 
       .module-card .right {
-        padding-top: 8px;
+        flex: 1;
+        padding: 4px;
+        color: var(--hitam);
+        font-weight: bold;
+        font-size: 1rem;
       }
-    }
-  </style>
-</head>
-<body>
-  <div class="main-container">
-    <div class="top-header">
-      <button class="top-btn" onclick="window.location.href='/dashboard'">Back</button>
-      <div class="top-title">List Tantangan</div>
-      <button class="top-btn" onclick="window.location.href='/simulasi'">Next</button>
-    </div>
 
-    <div class="module-grid">
-  <div class="module-card" data-id="1">
-    <div class="left">
-      <img src="https://github.com/MuhammadAzmiAnshari/Apmul/blob/main/Sm1.png?raw=true" alt="Tantangan 1">
-    </div>
-    <div class="right">Uang Jajan Kok Cepet Habis?!</div>
-  </div>
+      @media (max-width: 768px) {
+        html,
+        body {
+          align-items: flex-start;
+        }
 
-  <div class="module-card" data-id="2">
-    <div class="left">
-      <img src="https://github.com/MuhammadAzmiAnshari/Apmul/blob/main/Sm2.png?raw=true" alt="Tantangan 2">
-    </div>
-    <div class="right">Tabungan itu Gaya Hidup Bukan Paksaan</div>
-  </div>
+        .main-container {
+          padding-top: 40px;
+        }
 
-  <div class="module-card" data-id="3">
-    <div class="left">
-      <img src="https://github.com/MuhammadAzmiAnshari/Apmul/blob/main/Sm3.png?raw=true" alt="Tantangan 3">
-    </div>
-    <div class="right">Budgeting Gak Ribet, Asal Tahu Triknya</div>
-  </div>
+        .top-header {
+          flex-direction: column;
+        }
 
-  <div class="module-card" data-id="4">
-    <div class="left">
-      <img src="https://github.com/MuhammadAzmiAnshari/Apmul/blob/main/Sm4.png?raw=true" alt="Tantangan 4">
-    </div>
-    <div class="right">Skala Prioritas - Mana yang Mau, Mana yang Butuh?</div>
-  </div>
+        .module-grid {
+          grid-template-columns: 1fr;
+        }
 
-  <div class="module-card" data-id="5">
-    <div class="left">
-      <img src="https://github.com/MuhammadAzmiAnshari/Apmul/blob/main/Sm5.png?raw=true" alt="Tantangan 5">
-    </div>
-    <div class="right">Dana Darurat</div>
-  </div>
+        .module-card {
+          flex-direction: column;
+          text-align: center;
+        }
 
-  <div class="module-card" data-id="6">
-    <div class="left">
-      <img src="https://github.com/MuhammadAzmiAnshari/Apmul/blob/main/Sm6.png?raw=true" alt="Tantangan 6">
-    </div>
-    <div class="right">Masa Depanmu Gak Cuma Minggu Ini Doang</div>
-  </div>
-</div>
+        .module-card .left {
+          width: 100%;
+          max-width: 200px;
+          margin: 0 auto;
+        }
 
-    <!-- <div class="module-grid">
+        .module-card .right {
+          padding-top: 8px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="main-container">
+      <div class="top-header">
+        <button class="top-btn" onclick="window.location.href='/dashboard'">
+          Back
+        </button>
+        <div class="top-title">List Tantangan</div>
+        <button class="top-btn" onclick="window.location.href='/simulasi'">
+          Next
+        </button>
+      </div>
+
+      <div class="module-grid">
+        <div class="module-card" data-id="1">
+          <div class="left">
+            <img
+              src="https://github.com/MuhammadAzmiAnshari/Apmul/blob/main/Sm1.png?raw=true"
+              alt="Tantangan 1"
+            />
+          </div>
+          <div class="right">Uang Jajan Kok Cepet Habis?!</div>
+        </div>
+
+        <div class="module-card" data-id="2">
+          <div class="left">
+            <img
+              src="https://github.com/MuhammadAzmiAnshari/Apmul/blob/main/Sm2.png?raw=true"
+              alt="Tantangan 2"
+            />
+          </div>
+          <div class="right">Tabungan itu Gaya Hidup Bukan Paksaan</div>
+        </div>
+
+        <div class="module-card" data-id="3">
+          <div class="left">
+            <img
+              src="https://github.com/MuhammadAzmiAnshari/Apmul/blob/main/Sm3.png?raw=true"
+              alt="Tantangan 3"
+            />
+          </div>
+          <div class="right">Budgeting Gak Ribet, Asal Tahu Triknya</div>
+        </div>
+
+        <div class="module-card" data-id="4">
+          <div class="left">
+            <img
+              src="https://github.com/MuhammadAzmiAnshari/Apmul/blob/main/Sm4.png?raw=true"
+              alt="Tantangan 4"
+            />
+          </div>
+          <div class="right">
+            Skala Prioritas - Mana yang Mau, Mana yang Butuh?
+          </div>
+        </div>
+
+        <div class="module-card" data-id="5">
+          <div class="left">
+            <img
+              src="https://github.com/MuhammadAzmiAnshari/Apmul/blob/main/Sm5.png?raw=true"
+              alt="Tantangan 5"
+            />
+          </div>
+          <div class="right">Dana Darurat</div>
+        </div>
+
+        <div class="module-card" data-id="6">
+          <div class="left">
+            <img
+              src="https://github.com/MuhammadAzmiAnshari/Apmul/blob/main/Sm6.png?raw=true"
+              alt="Tantangan 6"
+            />
+          </div>
+          <div class="right">Masa Depanmu Gak Cuma Minggu Ini Doang</div>
+        </div>
+      </div>
+
+      <!-- <div class="module-grid">
       <div class="module-card" onclick="window.location.href='/tantangan/1'">
         <div class="left">
           <img src="https://github.com/MuhammadAzmiAnshari/Apmul/blob/main/Sm1.png?raw=true" alt="Tantangan 1">
@@ -245,23 +277,43 @@
         <div class="right">Masa Depanmu Gak Cuma Minggu Ini Doang</div>
       </div>
     </div> -->
-  </div>
-  <script>
-    document.querySelectorAll('.module-card').forEach(card => {
-      card.addEventListener('click', async () => {
-        const id = card.dataset.id;
-        try {
-          const res = await fetch(`/tantangan/${id}/start`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' }
-          });
-          if (!res.ok) throw new Error();
-          window.location.href = `/tantangan/${id}`;
-        } catch {
-          alert('Gagal memulai tantangan. Silakan coba lagi.');
-        }
+    </div>
+    <script>
+      const challengeStatusMap = <%- JSON.stringify(challengeStatusMap) %>;
+
+document.querySelectorAll('.module-card').forEach(card => {
+  const id = parseInt(card.dataset.id);
+
+  // Tantangan pertama selalu terbuka, berikutnya hanya jika tantangan sebelumnya completed
+  let isUnlocked = false;
+  if (id === 1) {
+    isUnlocked = true;
+  } else {
+    isUnlocked = challengeStatusMap[id - 1] === 'completed';
+  }
+
+  if (!isUnlocked) {
+    card.classList.add('locked');
+  }
+
+  card.addEventListener('click', async () => {
+    if (!isUnlocked) {
+      alert('Tantangan ini masih terkunci. Selesaikan tantangan sebelumnya.');
+      return;
+    }
+
+    try {
+      const res = await fetch(`/tantangan/${id}/start`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
       });
-    });
-  </script>
-</body>
+      if (!res.ok) throw new Error();
+      window.location.href = `/tantangan/${id}`;
+    } catch {
+      alert('Gagal memulai tantangan. Silakan coba lagi.');
+    }
+  });
+});
+    </script>
+  </body>
 </html>

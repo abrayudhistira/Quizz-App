@@ -1,206 +1,358 @@
 <!DOCTYPE html>
 <html lang="id">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Edit Profil</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    body {
-      background: #6559ff;
-      min-height: 100vh;
-      font-family: 'Inter', Arial, sans-serif;
-    }
-    .edit-profile-card {
-      max-width: 900px;
-      margin: 48px auto;
-      border-radius: 40px;
-      overflow: hidden;
-      box-shadow: 0 8px 32px 0 rgba(44,44,90,0.12);
-      background: transparent;
-    }
-    .edit-profile-header {
-      position: relative;
-      height: 192px;
-      background: url('https://raw.githubusercontent.com/luthfibphoenix/apmul/main/Tabungan.png') center/cover no-repeat;
-      border-top-left-radius: 40px;
-      border-top-right-radius: 40px;
-    }
-    .edit-profile-back {
-      position: absolute;
-      top: 24px;
-      left: 24px;
-      background: #fff;
-      color: #2D2C56;
-      padding: 6px 22px;
-      border-radius: 9999px;
-      font-weight: 600;
-      font-size: 15px;
-      box-shadow: 0 2px 8px 0 rgba(44,44,90,0.08);
-      text-decoration: none;
-      transition: background 0.2s;
-      z-index: 30;
-      border: none;
-      outline: none;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .edit-profile-back:hover {
-      background: #f3f3f3;
-    }
-    .edit-profile-avatar-wrap {
-      position: absolute;
-      left: 48px;
-      bottom: -64px;
-      z-index: 20;
-      background: #fff;
-      border-radius: 9999px;
-      border: 4px solid #FFE149;
-      box-shadow: 0 4px 24px 0 rgba(44,44,90,0.08);
-      width: 128px;
-      height: 128px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .edit-profile-avatar-img {
-      width: 112px;
-      height: 112px;
-      object-fit: contain;
-      border-radius: 9999px;
-      background: #fff;
-    }
-    .edit-profile-form-section {
-      background: #FFE149;
-      border-bottom-left-radius: 40px;
-      border-bottom-right-radius: 40px;
-      padding: 96px 48px 48px 48px;
-      min-height: 400px;
-      position: relative;
-    }
-    .edit-profile-form-section h2 {
-      color: #2D2C56;
-      font-size: 2rem;
-      font-weight: bold;
-      text-align: left;
-      margin-bottom: 32px;
-      margin-left: 160px;
-    }
-    .form-group {
-      margin-bottom: 22px;
-      margin-left: 160px;
-      max-width: 400px;
-    }
-    label {
-      display: block;
-      margin-bottom: 7px;
-      font-weight: 600;
-      color: #2D2C56;
-    }
-    input[type="text"],
-    input[type="email"],
-    input[type="file"] {
-      width: 100%;
-      padding: 12px;
-      border-radius: 10px;
-      border: 1px solid #ccc;
-      font-size: 1rem;
-      background: #fff;
-      outline: none;
-      transition: border 0.2s;
-    }
-    input[type="text"]:focus,
-    input[type="email"]:focus {
-      border: 1.5px solid #6559ff;
-    }
-    .profile-preview {
-      display: block;
-      margin: 0 auto 12px auto;
-      border-radius: 50%;
-      max-width: 100px;
-      max-height: 100px;
-      object-fit: cover;
-      background: #fff;
-      border: 2px solid #FFE149;
-      box-shadow: 0 2px 8px 0 rgba(44,44,90,0.08);
-    }
-    button[type="submit"] {
-      display: block;
-      width: 100%;
-      background: #2D2C56;
-      color: white;
-      border: none;
-      padding: 14px;
-      border-radius: 9999px;
-      cursor: pointer;
-      font-size: 1.1rem;
-      font-weight: 600;
-      margin-top: 18px;
-      box-shadow: 0 2px 8px 0 rgba(44,44,90,0.08);
-      transition: background 0.2s;
-      margin-left: 160px;
-      max-width: 400px;
-    }
-    button[type="submit"]:hover {
-      background: #39387a;
-    }
-    @media (max-width: 900px) {
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Profil</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <style>
+      /* Variabel warna disesuaikan dengan referensi baru */
+      :root {
+        --ungu: #6559ff;
+        --kuning: #ffe149; /* Diperbarui dari referensi */
+        --navy: #2d2c56;
+        --putih: #ffffff;
+      }
+      body {
+        /* Latar belakang halaman diubah menjadi ungu */
+        background: var(--ungu);
+        min-height: 100vh;
+        font-family: "Inter", Arial, sans-serif;
+        color: var(--navy);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
       .edit-profile-card {
-        max-width: 98vw;
+        max-width: 900px;
+        width: 100%;
+        margin: 24px;
+        border-radius: 24px;
+        overflow: hidden;
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.15);
+        /* Background kartu menggunakan warna kuning yang sudah diperbarui */
+        background: var(--kuning);
       }
       .edit-profile-header {
-        height: 120px;
-        border-top-left-radius: 24px;
-        border-top-right-radius: 24px;
+        position: relative;
+        height: 220px;
+        background: url("<%= user.user_banner_url ? '/' + user.user_banner_url : 'https://raw.githubusercontent.com/luthfibphoenix/apmul/main/BD.png' %>")
+          center/cover no-repeat;
+        transition: background-image 0.3s ease;
       }
-      .edit-profile-avatar-wrap {
-        left: 50%;
-        transform: translateX(-50%);
-        bottom: -64px;
+      .edit-profile-back {
+        position: absolute;
+        top: 24px;
+        left: 24px;
+        background: rgba(255, 255, 255, 0.95);
+        color: var(--navy);
+        padding: 8px 24px;
+        border-radius: 9999px;
+        font-weight: 600;
+        text-decoration: none;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        transition: all 0.2s;
+        z-index: 30;
+        display: flex;
+        align-items: center;
+        gap: 8px;
       }
-      .edit-profile-form-section {
-        border-radius: 0 0 24px 24px;
-        padding: 96px 16px 32px 16px;
+      .edit-profile-back:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
       }
-      .edit-profile-form-section h2,
-      .form-group,
-      button[type="submit"] {
-        margin-left: 0;
-        max-width: 100%;
+      .upload-button {
+        position: absolute;
+        background: rgba(45, 44, 86, 0.7);
+        color: var(--putih);
+        padding: 8px 16px;
+        border-radius: 9999px;
+        font-weight: 600;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        border: 1px solid rgba(255, 255, 255, 0.5);
       }
-    }
-  </style>
-</head>
-<body>
-  <div class="edit-profile-card">
-    <!-- Header -->
-    <div class="edit-profile-header">
-      <a href="/profile" class="edit-profile-back">&larr; Dashboard</a>
-      <div class="edit-profile-avatar-wrap">
-        <img src="/<%= user.photo %>" alt="Foto Profil" class="edit-profile-avatar-img">
+      .upload-button:hover {
+        background: rgba(45, 44, 86, 0.9);
+      }
+      #changeBannerBtn {
+        top: 24px;
+        right: 24px;
+      }
+      .edit-profile-content {
+        padding: 24px 48px 48px;
+        position: relative;
+      }
+      .avatar-section {
+        position: absolute;
+        top: -80px;
+        left: 48px;
+        width: 160px;
+        height: 160px;
+        border-radius: 50%;
+        /* Border avatar diubah menjadi kuning, sesuai referensi */
+        border: 6px solid var(--kuning);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        z-index: 10;
+        background: var(
+          --putih
+        ); /* Menambahkan background putih di belakang gambar */
+      }
+      .avatar-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
+      }
+      .avatar-upload-overlay {
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.4);
+        color: var(--putih);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        font-size: 24px;
+        cursor: pointer;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+      .avatar-section:hover .avatar-upload-overlay {
+        opacity: 1;
+      }
+      .form-container {
+        display: flex;
+        gap: 32px;
+        padding-top: 80px; /* Space for avatar */
+      }
+      .form-column {
+        width: 100%;
+      }
+      .form-column.left {
+        width: 180px; /* Width of avatar + some padding */
+        flex-shrink: 0;
+      }
+      .form-column.right {
+        flex-grow: 1;
+      }
+      label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: var(--navy);
+      }
+      input[type="text"],
+      input[type="email"],
+      input[type="password"] {
+        width: 100%;
+        padding: 12px 16px;
+        border-radius: 10px;
+        border: 1px solid #c7c7c7;
+        font-size: 1rem;
+        background: var(--putih);
+        outline: none;
+        transition: all 0.2s;
+        color: var(--navy);
+      }
+      input[type="text"]:focus,
+      input[type="email"]:focus,
+      input[type="password"]:focus {
+        border-color: var(--ungu);
+        background: var(--putih);
+        box-shadow: 0 0 0 3px rgba(101, 89, 255, 0.3);
+      }
+      .submit-button {
+        display: inline-block;
+        width: auto;
+        background: var(--navy);
+        color: white;
+        border: none;
+        padding: 14px 48px;
+        border-radius: 9999px;
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: 600;
+        transition: all 0.3s;
+        margin-top: 16px;
+      }
+      .submit-button:hover {
+        background: #39387a; /* Warna hover yang lebih gelap */
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        body {
+          align-items: flex-start;
+          padding-top: 2rem;
+          padding-bottom: 2rem;
+        }
+        .edit-profile-content {
+          padding: 16px;
+        }
+        .avatar-section {
+          width: 120px;
+          height: 120px;
+          top: -60px;
+          left: 50%;
+          transform: translateX(-50%);
+          border-width: 4px;
+        }
+        .form-container {
+          flex-direction: column;
+          padding-top: 80px;
+          gap: 24px;
+        }
+        .form-column.left {
+          width: 100%;
+          text-align: center;
+        }
+        .edit-profile-header {
+          height: 150px;
+        }
+        .submit-button-container {
+          text-align: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="edit-profile-card">
+      <div class="edit-profile-header" id="bannerPreview">
+        <a href="/profile" class="edit-profile-back"
+          ><i class="fas fa-arrow-left"></i> Kembali</a
+        >
+        <button type="button" id="changeBannerBtn" class="upload-button">
+          <i class="fas fa-camera"></i> Ganti Banner
+        </button>
+      </div>
+
+      <div class="edit-profile-content">
+        <form
+          action="/profile/update"
+          method="POST"
+          enctype="multipart/form-data"
+        >
+          <input
+            type="file"
+            name="banner_url"
+            id="bannerUpload"
+            accept="image/*"
+            class="hidden"
+          />
+          <input
+            type="file"
+            name="photo"
+            id="avatarUpload"
+            accept="image/*"
+            class="hidden"
+          />
+
+          <div class="avatar-section" id="avatarContainer">
+            <img
+              src="<%= user.photo ? '/' + user.photo : 'https://raw.githubusercontent.com/luthfibphoenix/apmul/main/BD.png' %>"
+              alt="Foto Profil"
+              class="avatar-img"
+              id="avatarPreview"
+            />
+            <div class="avatar-upload-overlay">
+              <i class="fas fa-camera"></i>
+            </div>
+          </div>
+
+          <div class="form-container">
+            <div class="form-column left"></div>
+            <div class="form-column right">
+              <div class="mb-6">
+                <label for="username">Username</label>
+                <input
+                  type="text"
+                  id="username"
+                  name="username"
+                  value="<%= user.username %>"
+                  required
+                />
+              </div>
+              <div class="mb-6">
+                <label for="email">Email</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value="<%= user.email %>"
+                  required
+                />
+              </div>
+              <div class="mb-6">
+                <label for="password">Kata Sandi Baru</label>
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  placeholder="Kosongkan jika tidak ingin mengubah"
+                />
+              </div>
+              <div class="mb-6">
+                <label for="password_confirmation">Konfirmasi Kata Sandi</label>
+                <input
+                  type="password"
+                  id="password_confirmation"
+                  name="password_confirmation"
+                  placeholder="Konfirmasi kata sandi baru"
+                />
+              </div>
+              <div class="submit-button-container">
+                <button type="submit" class="submit-button">
+                  Simpan Perubahan
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
       </div>
     </div>
-    <!-- Form Section -->
-    <div class="edit-profile-form-section">
-      <h2>Edit Profil</h2>
-      <form action="/profile/update" method="POST" enctype="multipart/form-data">
-        <div class="form-group">
-          <label for="username">Username</label>
-          <input type="text" name="username" value="<%= user.username %>" required>
-        </div>
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input type="email" name="email" value="<%= user.email %>" required>
-        </div>
-        <div class="form-group">
-          <label for="photo">Foto Profil</label>
-          <img src="/<%= user.photo %>" alt="Foto Profil" class="profile-preview">
-          <input type="file" name="photo" accept="image/*">
-        </div>
-        <button type="submit">Simpan Perubahan</button>
-      </form>
-    </div>
-  </div>
-</body>
+
+    <script>
+      const bannerUpload = document.getElementById("bannerUpload");
+      const changeBannerBtn = document.getElementById("changeBannerBtn");
+      const bannerPreview = document.getElementById("bannerPreview");
+
+      const avatarUpload = document.getElementById("avatarUpload");
+      const avatarContainer = document.getElementById("avatarContainer");
+      const avatarPreview = document.getElementById("avatarPreview");
+
+      changeBannerBtn.addEventListener("click", () => {
+        bannerUpload.click();
+      });
+
+      bannerUpload.addEventListener("change", (event) => {
+        const file = event.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            bannerPreview.style.backgroundImage = `url('${e.target.result}')`;
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+
+      avatarContainer.addEventListener("click", () => {
+        avatarUpload.click();
+      });
+
+      avatarUpload.addEventListener("change", (event) => {
+        const file = event.target.files[0];
+        if (file) {
+          avatarPreview.src = URL.createObjectURL(file);
+        }
+      });
+    </script>
+  </body>
 </html>

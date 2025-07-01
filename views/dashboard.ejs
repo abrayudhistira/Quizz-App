@@ -1,285 +1,304 @@
 <!DOCTYPE html>
 <html lang="id">
-
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dashboard</title>
-  <link rel="stylesheet" href="/css/globals.css" />
-  <link rel="stylesheet"
-    href="https://cdn-uicons.flaticon.com/3.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css" />
-  <style>
-    :root {
-      --putih: #fff;
-      --kuning: #ffe44d;
-      --ungu: #6559ff;
-      --hitam: #0f0f0f;
-      --navy: #1c1b4d;
-      --abu: #aaa;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      font-family: 'Arial', sans-serif;
-      background-color: var(--putih);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-    }
-
-    .dashboard-wrapper {
-      width: 100%;
-      max-width: 1400px;
-      padding: 40px;
-    }
-
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 32px;
-    }
-
-    .header h1 {
-      font-size: 2.5rem;
-      color: var(--hitam);
-      margin: 0;
-    }
-
-    .user-info {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      color: var(--navy);
-      font-weight: 400;
-      font-size: 1.2rem;
-    }
-
-    .user-info .icon-group {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .user-info img {
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      object-fit: cover;
-    }
-
-    .logout-button {
-      background: none;
-      border: none;
-      font-size: 1.6rem;
-      cursor: pointer;
-      color: var(--navy);
-    }
-
-    .logout-button:hover {
-      color: #dc3545;
-    }
-
-    .main-container {
-      background-color: var(--ungu);
-      border-radius: 40px;
-      overflow: hidden;
-      position: relative;
-      z-index: 1;
-    }
-
-    .section-atas {
-      padding: 40px;
-      position: relative;
-      z-index: 2;
-    }
-
-    .navigation {
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
-    }
-
-    .nav-item {
-      flex: 1;
-      background-color: var(--putih);
-      border-radius: 24px;
-      margin: 0 12px;
-      padding: 20px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 600;
-      font-size: 1.2rem;
-      gap: 12px;
-    }
-
-    .nav-item i {
-      font-size: 1.8rem;
-      color: var(--navy);
-    }
-
-    .progress-section {
-      background-color: var(--kuning);
-      padding: 32px 40px;
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-      position: relative;
-      z-index: 10;
-      border-radius: 40px;
-    }
-
-    .progress-row {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-    }
-
-    .module-label {
-      background-color: var(--putih);
-      border-radius: 16px;
-      padding: 12px 20px;
-      width: 100%;
-      max-width: 340px;
-      font-weight: 400;
-      text-align: center;
-    }
-
-    .progress-bar-container {
-      flex: 1;
-      background-color: #fff;
-      border-radius: 20px;
-      height: 16px;
-      overflow: hidden;
-    }
-
-    .progress-bar-fill {
-      background-color: #2b274e;
-      height: 100%;
-      transition: width 0.3s ease;
-    }
-
-    .progress-percent {
-      font-weight: bold;
-      width: 60px;
-      text-align: right;
-    }
-
-    @media (max-width: 768px) {
-      .progress-row {
-        flex-direction: column;
-        align-items: flex-start;
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="/css/globals.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn-uicons.flaticon.com/3.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css"
+    />
+    <style>
+      :root {
+        --putih: #fff;
+        --kuning: #ffe44d;
+        --ungu: #6559ff;
+        --hitam: #0f0f0f;
+        --navy: #1c1b4d;
+        --abu: #aaa;
       }
 
-      .navigation {
-        flex-direction: column;
-        gap: 20px;
+      * {
+        box-sizing: border-box;
       }
 
-      .nav-item {
+      body {
+        margin: 0;
+        font-family: "Arial", sans-serif;
+        background-color: var(--putih);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+      }
+
+      .dashboard-wrapper {
+        width: 100%;
+        max-width: 1400px;
+        padding: 40px;
+      }
+
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 32px;
+      }
+
+      .header h1 {
+        font-size: 2.5rem;
+        color: var(--hitam);
         margin: 0;
       }
 
+      .user-info {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        color: var(--navy);
+        font-weight: 400;
+        font-size: 1.2rem;
+      }
+
+      .user-info .icon-group {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .user-info img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+
+      .logout-button {
+        background: none;
+        border: none;
+        font-size: 1.6rem;
+        cursor: pointer;
+        color: var(--navy);
+      }
+
+      .logout-button:hover {
+        color: #dc3545;
+      }
+
+      .main-container {
+        background-color: var(--ungu);
+        border-radius: 40px;
+        overflow: hidden;
+        position: relative;
+        z-index: 1;
+      }
+
+      .section-atas {
+        padding: 40px;
+        position: relative;
+        z-index: 2;
+      }
+
+      .navigation {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+      }
+
+      .nav-item {
+        flex: 1;
+        background-color: var(--putih);
+        border-radius: 24px;
+        margin: 0 12px;
+        padding: 20px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        font-size: 1.2rem;
+        gap: 12px;
+      }
+
+      .nav-item i {
+        font-size: 1.8rem;
+        color: var(--navy);
+      }
+
+      .progress-section {
+        background-color: var(--kuning);
+        padding: 32px 40px;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        position: relative;
+        z-index: 10;
+        border-radius: 40px;
+      }
+
+      .progress-row {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+      }
+
       .module-label {
+        background-color: var(--putih);
+        border-radius: 16px;
+        padding: 12px 20px;
         width: 100%;
+        max-width: 340px;
+        font-weight: 400;
+        text-align: center;
+      }
+
+      .progress-bar-container {
+        flex: 1;
+        background-color: #fff;
+        border-radius: 20px;
+        height: 16px;
+        overflow: hidden;
+      }
+
+      .progress-bar-fill {
+        background-color: #2b274e;
+        height: 100%;
+        transition: width 0.3s ease;
       }
 
       .progress-percent {
-        align-self: flex-end;
+        font-weight: bold;
+        width: 60px;
+        text-align: right;
       }
-    }
-  </style>
-</head>
 
-<body>
-  <div class="dashboard-wrapper">
-    <!-- Header -->
-    <div class="header">
-      <h1>Welcome, <%= user.username %>!</h1>
-      <div class="user-info">
-        <div class="icon-group">
-          <i class="fi fi-rr-diamond"></i> <span>2000</span>
+      @media (max-width: 768px) {
+        .progress-row {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .navigation {
+          flex-direction: column;
+          gap: 20px;
+        }
+
+        .nav-item {
+          margin: 0;
+        }
+
+        .module-label {
+          width: 100%;
+        }
+
+        .progress-percent {
+          align-self: flex-end;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="dashboard-wrapper">
+      <!-- Header -->
+      <div class="header">
+        <h1>Welcome, <%= user.username %>!</h1>
+        <div class="user-info">
+          <div class="icon-group">
+            <i class="fi fi-rr-diamond"></i> <span><%= user.total_point %></span>
+          </div>
+          <div class="icon-group">
+            <i class="fi fi-rr-settings"></i>
+            <span><%= badgeTitle || '-' %></span>
+          </div>
+          <img
+            src="/<%= user.photo %>"
+            alt="User Photo"
+            id="profile-photo"
+            style="cursor: pointer"
+          />
+          <form action="/logout" method="POST">
+            <button class="logout-button" type="submit">
+              <i class="fi fi-rr-exit"></i>
+            </button>
+          </form>
         </div>
-        <div class="icon-group">
-          <i class="fi fi-rr-settings"></i> <span>The Iron Man</span>
-        </div>
-        <img src="/<%= user.photo %>" alt="User Photo" id="profile-photo" style="cursor:pointer;" />
-        <form action="/logout" method="POST">
-          <button class="logout-button" type="submit"><i class="fi fi-rr-exit"></i></button>
-        </form>
       </div>
-    </div>
 
-    <!-- Main Container -->
-    <div class="main-container">
-      <!-- Section 1: Navigation -->
-      <div class="section-atas">
-        <div class="navigation">
-          <div class="nav-item"><i class="fi fi-rr-book"></i><span>Modul</span></div>
-          <div class="nav-item"><i class="fi fi-rr-question-square"></i><span>Quiz</span></div>
-          <div class="nav-item"><i class="fi fi-rr-tasks"></i><span>Tantangan</span></div>
-          <div class="nav-item"><i class="fi fi-rr-user-gear"></i><span>Simulasi</span></div>
-        </div>
-      </div>
-
-      <!-- Section 2: Progress -->
-      <div class="progress-section">
-        <% modules.forEach(mod=> {
-          const status = statusMap[mod.id] || 'not_started';
-          const map = {
-          not_started: { pct: '0%', w: '0%' },
-          in_progress: { pct: '50%', w: '50%' },
-          completed: { pct: '100%', w: '100%' }
-          };
-          const { pct, w } = map[status];
-          %>
-          <div class="progress-row">
-            <div class="module-label">
-              <%= mod.title %>
+      <!-- Main Container -->
+      <div class="main-container">
+        <!-- Section 1: Navigation -->
+        <div class="section-atas">
+          <div class="navigation">
+            <div class="nav-item">
+              <i class="fi fi-rr-book"></i><span>Modul</span>
             </div>
-            <div class="progress-bar-container">
-              <div class="progress-bar-fill" style="width: <%= w %>;"></div>
+            <div class="nav-item">
+              <i class="fi fi-rr-question-square"></i><span>Quiz</span>
             </div>
-            <div class="progress-percent">
-              <%= pct %>
+            <div class="nav-item">
+              <i class="fi fi-rr-tasks"></i><span>Tantangan</span>
+            </div>
+            <div class="nav-item">
+              <i class="fi fi-rr-user-gear"></i><span>Simulasi</span>
             </div>
           </div>
-          <% }) %>
+        </div>
 
+        <!-- Section 2: Progress -->
+        <div class="progress-section">
+          <% modules.forEach(function(mod) { %>
+            <div class="progress-row">
+              <div class="module-label"><%= mod.title %></div>
+              <div class="progress-bar-container">
+                <div
+                  class="progress-bar-fill"
+                  style="width: <%= progressMap[mod.id]?.percent || '0%' %>"
+                  title="Modul: <%= progressMap[mod.id]?.modDone ? 'Selesai' : 'Belum' %> | 
+                  Quiz: <%= progressMap[mod.id]?.quizDone ? 'Selesai' : 'Belum' %> |
+                  Tantangan: <%= progressMap[mod.id]?.chalDone ? 'Selesai' : 'Belum' %>"
+                ></div>
+              </div>
+              <div class="progress-percent">
+                <%= progressMap[mod.id].percent %>
+              </div>
+            </div>
+          <% }); %>
+        </div>
       </div>
     </div>
-  </div>
 
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const navItems = document.querySelectorAll(".nav-item");
-      const profilePhoto = document.getElementById("profile-photo");
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const navItems = document.querySelectorAll(".nav-item");
+        const profilePhoto = document.getElementById("profile-photo");
 
-      navItems.forEach((item) => {
-        item.addEventListener("click", () => {
-          const label = item.innerText.trim().toLowerCase();
-          switch (label) {
-            case "modul": window.location.href = "/list-module"; break;
-            case "quiz": window.location.href = "/list-quiz"; break;
-            case "tantangan": window.location.href = "/list-tantangan"; break;
-            case "simulasi": window.location.href = "/simulasi"; break;
-          }
+        navItems.forEach((item) => {
+          item.addEventListener("click", () => {
+            const label = item.innerText.trim().toLowerCase();
+            switch (label) {
+              case "modul":
+                window.location.href = "/list-module";
+                break;
+              case "quiz":
+                window.location.href = "/list-quiz";
+                break;
+              case "tantangan":
+                window.location.href = "/list-tantangan";
+                break;
+              case "simulasi":
+                window.location.href = "/simulasi";
+                break;
+            }
+          });
         });
+
+        if (profilePhoto) {
+          profilePhoto.addEventListener("click", function () {
+            window.location.href = "/profile";
+          });
+        }
       });
-
-      if (profilePhoto) {
-        profilePhoto.addEventListener("click", function () {
-          window.location.href = "/profile";
-        });
-      }
-    });
-  </script>
-</body>
-
+    </script>
+  </body>
 </html>

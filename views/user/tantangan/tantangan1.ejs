@@ -1,425 +1,641 @@
 <!DOCTYPE html>
 <html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>🕵️ Detektif Pengeluaran</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        :root {
-            --putih: #ffffff;
-            --kuning: #ffe44d;
-            --ungu: #6559ff;
-            --navy: #2D2C56ff;
-            --hitam: #0f0f0f;
+      :root {
+        --putih: #ffffff;
+        --kuning: #ffe44d;
+        --ungu: #6559ff;
+        --navy: #2d2c56ff;
+        --hitam: #0f0f0f;
+      }
+      body {
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+        background: var(--ungu);
+        min-height: 100vh;
+        color: var(--hitam);
+      }
+      .maincontainer {
+        background: var(--kuning);
+      }
+      .progress-bar {
+        background: #ffffff;
+        height: 12px;
+        border-radius: 9999px;
+        overflow: hidden;
+      }
+      .progress-fill {
+        height: 100%;
+        background: var(--kuning);
+        border-radius: 9999px;
+        transition: width 0.3s ease;
+        width: 0%;
+      }
+      .stats-card {
+        background: var(--putih);
+        color: var(--navy);
+      }
+      .form-section {
+        background: var(--putih);
+      }
+      .list-section {
+        background: var(--putih); /* Changed to white */
+        color: var(--navy); /* Changed to navy */
+      }
+      .analysis-section {
+        background: var(--putih);
+      }
+      /* Expense Item within the list section */
+      .expense-item {
+        background: var(--navy);
+        color: var(--putih);
+      }
+      .expense-item .category {
+        background: var(--kuning);
+        color: var(--navy);
+      }
+      .expense-item .amount {
+        color: var(--kuning);
+      }
+      .expense-item .desc {
+        color: var(--putih);
+      }
+      .achievement {
+        background: var(--kuning);
+      }
+      .modal-bg {
+        background: rgba(0, 0, 0, 0.5);
+      }
+      .modal {
+        animation: slideIn 0.5s ease;
+      }
+      @keyframes slideIn {
+        from {
+          transform: translateY(-20px);
+          opacity: 0;
         }
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--ungu);
-            min-height: 100vh;
-            color: var(--hitam);
+        to {
+          transform: translateY(0);
+          opacity: 1;
         }
-        .maincontainer {
-            background: var(--kuning);
-        }
-        .progress-bar {
-            background: #ffffff;
-            height: 12px;
-            border-radius: 9999px;
-            overflow: hidden;
-        }
-        .progress-fill {
-            height: 100%;
-            background: var(--kuning);
-            border-radius: 9999px;
-            transition: width 0.3s ease;
-            width: 0%;
-        }
-        .stats-card {
-            background: var(--putih);
-            color: var(--navy);
-        }
-        .form-section {
-            background: var(--putih);
-        }
-        .list-section {
-            background: var(--putih); /* Changed to white */
-            color: var(--navy); /* Changed to navy */
-        }
-        .analysis-section {
-            background: var(--putih);
-        }
-        /* Expense Item within the list section */
-        .expense-item {
-            background: var(--navy);
-            color: var(--putih);
-        }
-        .expense-item .category {
-            background: var(--kuning);
-            color: var(--navy);
-        }
-        .expense-item .amount {
-            color: var(--kuning);
-        }
-        .expense-item .desc {
-            color: var(--putih);
-        }
-        .achievement {
-            background: var(--kuning);
-        }
-        .modal-bg {
-            background: rgba(0,0,0,0.5);
-        }
-        .modal {
-            animation: slideIn 0.5s ease;
-        }
-        @keyframes slideIn {
-            from { transform: translateY(-20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-        *:focus {
-            outline: none !important;
-            box-shadow: none !important;
-        }
+      }
+      *:focus {
+        outline: none !important;
+        box-shadow: none !important;
+      }
     </style>
-</head>
-<body>
-    <div class="top-container max-w-screen-xl mx-auto px-4 md:px-20 flex items-center justify-between mb-10 mt-14">
-        <div class="flex-1 text-left"></div>
-        <div class="flex-1 flex justify-center px-4 middle-container text-[var(--navy)]">
-            <div class="w-full text-center">
-                <h1 class="text-xl md:text-2xl bg-[var(--kuning)] text-[var(--navy)] font-bold rounded-full px-8 py-3 shadow inline-block border-2">
-                    Tantangan 1: Detektif Pengeluaran
-                </h1>
-            </div>
+  </head>
+  <body>
+    <div
+      class="top-container max-w-screen-xl mx-auto px-4 md:px-20 flex items-center justify-between mb-10 mt-14"
+    >
+      <div class="flex-1 text-left"></div>
+      <div
+        class="flex-1 flex justify-center px-4 middle-container text-[var(--navy)]"
+      >
+        <div class="w-full text-center">
+          <h1
+            class="text-xl md:text-2xl bg-[var(--kuning)] text-[var(--navy)] font-bold rounded-full px-8 py-3 shadow inline-block border-2"
+          >
+            Tantangan 1: Detektif Pengeluaran
+          </h1>
         </div>
-        <div class="flex-1 text-right">
-            <button id="next-challenge" onclick="window.location.href='http://localhost:3000/tantangan2'" class="bg-[var(--kuning)] text-[var(--navy)] font-bold py-2 px-6 rounded-full border-2  transition hover:bg-[var(--navy)] hover:text-[var(--kuning)]">
-                Tantangan Selanjutnya &rarr;
-            </button>
-        </div>
+      </div>
+      <div class="flex-1 text-right">
+        <button
+          id="next-challenge"
+          onclick="window.location.href='http://localhost:3000/tantangan/2'"
+          class="bg-[var(--kuning)] text-[var(--navy)] font-bold py-2 px-6 rounded-full border-2 transition hover:bg-[var(--navy)] hover:text-[var(--kuning)]"
+        >
+          Tantangan Selanjutnya &rarr;
+        </button>
+      </div>
     </div>
 
     <div class="w-full flex justify-center">
-        <div class="h-1 bg-[var(--kuning)] rounded-full mt-2 mb-8" style="width: 100%; max-width: 1090px;"></div>
+      <div
+        class="h-1 bg-[var(--kuning)] rounded-full mt-2 mb-8"
+        style="width: 100%; max-width: 1090px"
+      ></div>
     </div>
 
-    <div class="maincontainer max-w-screen-xl mx-auto px-4 py-8 rounded-3xl shadow-lg">
-        <div class="rounded-3xl shadow-lg bg-[var(--navy)] text-[var(--kuning)] px-8 py-8 mb-8 relative overflow-hidden border-2 border-[var(--kuning)]">
-            <div class="absolute left-6 top-6 text-6xl opacity-20 select-none pointer-events-none">🔍💰</div>
-            <h2 class="text-3xl md:text-4xl font-bold mb-2 inline-block bg-[var(--kuning)] text-[var(--navy)] px-6 py-2 rounded-full shadow border-2">
-                🕵️ Detektif Pengeluaran
-            </h2>
-            <p class="text-xl mt-4 mb-4 text-center text-[var(--putih)]">
-                Jadi detektif untuk uang jajanmu sendiri! Lacak semua pengeluaran selama 3 hari dan temukan di mana uangmu paling banyak "kabur". Siap-siap kaget dengan hasilnya!
+    <div
+      class="maincontainer max-w-screen-xl mx-auto px-4 py-8 rounded-3xl shadow-lg"
+    >
+      <div
+        class="rounded-3xl shadow-lg bg-[var(--navy)] text-[var(--kuning)] px-8 py-8 mb-8 relative overflow-hidden border-2 border-[var(--kuning)]"
+      >
+        <div
+          class="absolute left-6 top-6 text-6xl opacity-20 select-none pointer-events-none"
+        >
+          🔍💰
+        </div>
+        <h2
+          class="text-3xl md:text-4xl font-bold mb-2 inline-block bg-[var(--kuning)] text-[var(--navy)] px-6 py-2 rounded-full shadow border-2"
+        >
+          🕵️ Detektif Pengeluaran
+        </h2>
+        <p class="text-xl mt-4 mb-4 text-center text-[var(--putih)]">
+          Jadi detektif untuk uang jajanmu sendiri! Lacak semua pengeluaran
+          selama 3 hari dan temukan di mana uangmu paling banyak "kabur".
+          Siap-siap kaget dengan hasilnya!
+        </p>
+        <ul
+          class="bg-[var(--putih)] rounded-xl px-6 py-4 mb-4 text-base mx-auto text-[var(--navy)]"
+        >
+          <li>
+            <strong>📅 Tugas:</strong> Catat setiap pengeluaran selama
+            <b>3 hari berturut-turut</b> di tracker, minimal
+            <b>5 transaksi per hari</b>.
+          </li>
+          <li>
+            <strong>🔍 Analisis:</strong> Setelah itu, analisis kategori
+            pengeluaran terbesar kamu.
+          </li>
+          <li>
+            <strong>✅ Selesai jika:</strong> Berhasil mencatat minimal
+            <b>15 transaksi dalam 3 hari</b>, mengisi semua field wajib (<i
+              >tanggal, jumlah, kategori, keterangan</i
+            >), dan menyelesaikan analisis pengeluaran.
+          </li>
+          <li>
+            <strong>❌ Tidak selesai jika:</strong> Tidak mencatat selama 3 hari
+            penuh, total transaksi kurang dari 15, atau tidak menyelesaikan
+            analisis.
+          </li>
+          <li>
+            <strong>🎖️ Hadiah:</strong> Badge <b>"Money Detective"</b> +
+            <b>100 poin</b>
+          </li>
+        </ul>
+        <div class="progress-bar mb-2">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <p id="progressText" class="text-sm text-[var(--kuning)] font-semibold">
+          0/15 transaksi tercatat
+        </p>
+      </div>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+        <div
+          class="stats-card rounded-2xl shadow p-6 flex flex-col items-center"
+        >
+          <div class="text-3xl mb-2">📊</div>
+          <div class="text-2xl font-bold" id="totalTransactions">0</div>
+          <div class="text-gray-500">Total Transaksi</div>
+        </div>
+        <div
+          class="stats-card rounded-2xl shadow p-6 flex flex-col items-center"
+        >
+          <div class="text-3xl mb-2">💸</div>
+          <div class="text-2xl font-bold" id="totalSpent">Rp 0</div>
+          <div class="text-gray-500">Total Pengeluaran</div>
+        </div>
+        <div
+          class="stats-card rounded-2xl shadow p-6 flex flex-col items-center"
+        >
+          <div class="text-3xl mb-2">📅</div>
+          <div class="text-2xl font-bold" id="daysTracked">0</div>
+          <div class="text-gray-500">Hari Dilacak</div>
+        </div>
+        <div
+          class="stats-card rounded-2xl shadow p-6 flex flex-col items-center"
+        >
+          <div class="text-3xl mb-2">🎯</div>
+          <div class="text-2xl font-bold" id="avgPerDay">Rp 0</div>
+          <div class="text-gray-500">Rata-rata/Hari</div>
+        </div>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-8 mb-8">
+        <div class="form-section rounded-2xl shadow p-8">
+          <h2
+            class="text-xl font-bold mb-6 flex items-center gap-2 text-[var(--navy)]"
+          >
+            📝 Catat Pengeluaran
+          </h2>
+          <form id="expenseForm">
+            <div class="mb-4 p-4 rounded-xl bg-[var(--navy)]">
+              <label
+                for="date"
+                class="block font-semibold mb-1 text-[var(--putih)]"
+                >Tanggal *</label
+              >
+              <input
+                type="date"
+                id="date"
+                required
+                class="w-full rounded-xlpx-4 py-2 bg-[var(--navy)] text-[var(--putih)]"
+              />
+            </div>
+
+            <div class="mb-4 p-4 rounded-xl bg-[var(--navy)]">
+              <label
+                for="amount"
+                class="block font-semibold mb-1 text-[var(--putih)]"
+                >Jumlah (Rp) *</label
+              >
+              <input
+                type="number"
+                id="amount"
+                min="0"
+                step="500"
+                placeholder="10000"
+                required
+                class="w-full rounded-xl px-4 py-2 bg-[var(--navy)] text-[var(--putih)]"
+              />
+            </div>
+
+            <div class="mb-4 p-4 rounded-xl bg-[var(--navy)]">
+              <label
+                for="category"
+                class="block font-semibold mb-1 text-[var(--putih)]"
+                >Kategori *</label
+              >
+              <select
+                id="category"
+                required
+                class="w-full rounded-xl px-4 py-2 bg-[var(--navy)] text-[var(--putih)]"
+              >
+                <option value="">Pilih kategori...</option>
+                <option value="Makanan & Minuman">🍔 Makanan & Minuman</option>
+                <option value="Transportasi">🚗 Transportasi</option>
+                <option value="Hiburan">🎮 Hiburan</option>
+                <option value="Belanja">🛒 Belanja</option>
+                <option value="Pendidikan">📚 Pendidikan</option>
+                <option value="Kesehatan">⚕️ Kesehatan</option>
+                <option value="Lainnya">📦 Lainnya</option>
+              </select>
+            </div>
+
+            <div class="mb-6 p-4 rounded-xl bg-[var(--navy)]">
+              <label
+                for="description"
+                class="block font-semibold mb-1 text-[var(--putih)]"
+                >Keterangan *</label
+              >
+              <textarea
+                id="description"
+                rows="2"
+                placeholder="Beli nasi gudeg di kantin..."
+                required
+                class="w-full rounded-xl px-4 py-2 bg-[var(--navy)] text-[var(--putih)]"
+              ></textarea>
+            </div>
+
+            <button
+              type="submit"
+              class="w-full bg-[var(--kuning)] text-[var(--navy)] font-bold py-3 rounded-xl shadow hover:bg-yellow-300 transition"
+            >
+              ➕ Tambah Pengeluaran
+            </button>
+          </form>
+          <button
+            id="finishBtn"
+            class="w-full mt-6 bg-[var(--navy)] text-white font-bold py-3 rounded-xl shadow hover:bg-[var(--navy)] transition hidden"
+          >
+            Selesai
+          </button>
+        </div>
+        <div class="list-section rounded-2xl shadow p-8">
+          <h2 class="text-xl font-bold mb-6 text-[var(--navy)]">
+            📋 Daftar Pengeluaran
+          </h2>
+          <div id="expensesList">
+            <p class="text-center mt-12 text-[var(--navy)]">
+              Belum ada pengeluaran tercatat.<br />
+              Mulai catat pengeluaranmu! 🔍
             </p>
-     <ul class="bg-[var(--putih)] rounded-xl px-6 py-4 mb-4 text-base  mx-auto text-[var(--navy)]">
-
-                <li><strong>📅 Tugas:</strong> Catat setiap pengeluaran selama <b>3 hari berturut-turut</b> di tracker, minimal <b>5 transaksi per hari</b>.</li>
-                <li><strong>🔍 Analisis:</strong> Setelah itu, analisis kategori pengeluaran terbesar kamu.</li>
-                <li><strong>✅ Selesai jika:</strong> Berhasil mencatat minimal <b>15 transaksi dalam 3 hari</b>, mengisi semua field wajib (<i>tanggal, jumlah, kategori, keterangan</i>), dan menyelesaikan analisis pengeluaran.</li>
-                <li><strong>❌ Tidak selesai jika:</strong> Tidak mencatat selama 3 hari penuh, total transaksi kurang dari 15, atau tidak menyelesaikan analisis.</li>
-                <li><strong>🎖️ Hadiah:</strong> Badge <b>"Money Detective"</b> + <b>100 poin</b></li>
-            </ul>
-            <div class="progress-bar mb-2">
-                <div class="progress-fill" id="progressFill"></div>
-            </div>
-            <p id="progressText" class="text-sm  text-[var(--kuning)] font-semibold">0/15 transaksi tercatat</p>
+          </div>
         </div>
+      </div>
 
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-            <div class="stats-card rounded-2xl shadow p-6 flex flex-col items-center">
-                <div class="text-3xl mb-2">📊</div>
-                <div class="text-2xl font-bold" id="totalTransactions">0</div>
-                <div class="text-gray-500">Total Transaksi</div>
-            </div>
-            <div class="stats-card rounded-2xl shadow p-6 flex flex-col items-center">
-                <div class="text-3xl mb-2">💸</div>
-                <div class="text-2xl font-bold" id="totalSpent">Rp 0</div>
-                <div class="text-gray-500">Total Pengeluaran</div>
-            </div>
-            <div class="stats-card rounded-2xl shadow p-6 flex flex-col items-center">
-                <div class="text-3xl mb-2">📅</div>
-                <div class="text-2xl font-bold" id="daysTracked">0</div>
-                <div class="text-gray-500">Hari Dilacak</div>
-            </div>
-            <div class="stats-card rounded-2xl shadow p-6 flex flex-col items-center">
-                <div class="text-3xl mb-2">🎯</div>
-                <div class="text-2xl font-bold" id="avgPerDay">Rp 0</div>
-                <div class="text-gray-500">Rata-rata/Hari</div>
-            </div>
+      <div class="analysis-section rounded-2xl shadow p-8 mb-8">
+        <h2 class="text-xl font-bold mb-4 text-[var(--navy)]">
+          🔍 Analisis Detektif
+        </h2>
+        <div id="analysisContent">
+          <p class="text-center text-gray-400">
+            Catat minimal 15 transaksi dalam 3 hari untuk melihat analisis
+            lengkap! 📊
+          </p>
         </div>
-
-        <div class="grid md:grid-cols-2 gap-8 mb-8">
-            <div class="form-section rounded-2xl shadow p-8">
-                <h2 class="text-xl font-bold mb-6 flex items-center gap-2 text-[var(--navy)]">📝 Catat Pengeluaran</h2>
-                <form id="expenseForm">
-                    <div class="mb-4 p-4 rounded-xl bg-[var(--navy)]">
-                        <label for="date" class="block font-semibold mb-1 text-[var(--putih)]">Tanggal *</label>
-                        <input type="date" id="date" required class="w-full rounded-xlpx-4 py-2 bg-[var(--navy)] text-[var(--putih)]" />
-                    </div>
-
-                    <div class="mb-4 p-4 rounded-xl bg-[var(--navy)]">
-                        <label for="amount" class="block font-semibold mb-1 text-[var(--putih)]">Jumlah (Rp) *</label>
-                        <input type="number" id="amount" min="0" step="500" placeholder="10000" required class="w-full rounded-xl px-4 py-2 bg-[var(--navy)] text-[var(--putih)]" />
-                    </div>
-
-                    <div class="mb-4 p-4 rounded-xl bg-[var(--navy)]">
-                        <label for="category" class="block font-semibold mb-1 text-[var(--putih)]">Kategori *</label>
-                        <select id="category" required class="w-full rounded-xl px-4 py-2 bg-[var(--navy)] text-[var(--putih)]">
-                            <option value="">Pilih kategori...</option>
-                            <option value="Makanan & Minuman">🍔 Makanan & Minuman</option>
-                            <option value="Transportasi">🚗 Transportasi</option>
-                            <option value="Hiburan">🎮 Hiburan</option>
-                            <option value="Belanja">🛒 Belanja</option>
-                            <option value="Pendidikan">📚 Pendidikan</option>
-                            <option value="Kesehatan">⚕️ Kesehatan</option>
-                            <option value="Lainnya">📦 Lainnya</option>
-                        </select>
-                    </div>
-
-                    <div class="mb-6 p-4 rounded-xl bg-[var(--navy)]">
-                        <label for="description" class="block font-semibold mb-1 text-[var(--putih)]">Keterangan *</label>
-                        <textarea id="description" rows="2" placeholder="Beli nasi gudeg di kantin..." required class="w-full rounded-xl px-4 py-2 bg-[var(--navy)] text-[var(--putih)]"></textarea>
-                    </div>
-
-                    <button type="submit" class="w-full bg-[var(--kuning)] text-[var(--navy)] font-bold py-3 rounded-xl shadow hover:bg-yellow-300 transition">➕ Tambah Pengeluaran</button>
-                </form>
-                <button id="finishBtn" class="w-full mt-6 bg-[var(--navy)] text-white font-bold py-3 rounded-xl shadow hover:bg-[var(--navy)] transition hidden">
-                    Selesai
-                </button>
-            </div>
-            <div class="list-section rounded-2xl shadow p-8"> <h2 class="text-xl font-bold mb-6 text-[var(--navy)]">📋 Daftar Pengeluaran</h2> <div id="expensesList">
-                    <p class="text-center mt-12 text-[var(--navy)]"> Belum ada pengeluaran tercatat.<br>
-                        Mulai catat pengeluaranmu! 🔍
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <div class="analysis-section rounded-2xl shadow p-8 mb-8">
-            <h2 class="text-xl font-bold mb-4 text-[var(--navy)]">🔍 Analisis Detektif</h2>
-            <div id="analysisContent">
-                <p class="text-center text-gray-400">
-                    Catat minimal 15 transaksi dalam 3 hari untuk melihat analisis lengkap! 📊
-                </p>
-            </div>
-        </div>
+      </div>
     </div>
 
-    <div id="badgeModal" class="fixed inset-0 z-50 flex items-center justify-center hidden modal-bg">
-        <div class="bg-white rounded-3xl shadow-lg p-10 max-w-sm w-full text-center modal relative">
-            <button onclick="closeModal()" class="absolute top-3 right-3 text-gray-400 hover:text-gray-700 text-2xl font-bold">&times;</button>
-            <div class="flex flex-col items-center">
-                <img src="https://github.com/luthfibphoenix/apmul/blob/main/B1M1.png?raw=true" alt="Money Detective Badge" class="w-24 h-24 mb-4">
-                <h2 class="text-2xl font-bold mb-2 text-[var(--navy)]">Badge Didapatkan!</h2>
-                <div class="text-lg font-semibold mb-2 text-[var(--navy)]">Money Detective</div>
-                <div class="mb-4 text-[var(--navy)]">Kamu berhasil menyelesaikan tantangan dengan mencatat minimal 15 transaksi dalam 3 hari!</div>
-                <div class="text-xl font-bold text-yellow-500 mb-2">+100 Poin</div>
-                <button onclick="closeModal()" class="mt-2 bg-[var(--kuning)] text-[var(--navy)] font-bold py-2 px-6 rounded-full border-2 border-[var(--navy)] hover:bg-yellow-300 transition">Tutup</button>
-            </div>
+    <div
+      id="badgeModal"
+      class="fixed inset-0 z-50 flex items-center justify-center hidden modal-bg"
+    >
+      <div
+        class="bg-white rounded-3xl shadow-lg p-10 max-w-sm w-full text-center modal relative"
+      >
+        <button
+          onclick="closeModal()"
+          class="absolute top-3 right-3 text-gray-400 hover:text-gray-700 text-2xl font-bold"
+        >
+          &times;
+        </button>
+        <div class="flex flex-col items-center">
+          <img
+            src="https://github.com/luthfibphoenix/apmul/blob/main/B1M1.png?raw=true"
+            alt="Money Detective Badge"
+            class="w-24 h-24 mb-4"
+          />
+          <h2 class="text-2xl font-bold mb-2 text-[var(--navy)]">
+            Badge Didapatkan!
+          </h2>
+          <div class="text-lg font-semibold mb-2 text-[var(--navy)]">
+            Money Detective
+          </div>
+          <div class="mb-4 text-[var(--navy)]">
+            Kamu berhasil menyelesaikan tantangan dengan mencatat minimal 15
+            transaksi dalam 3 hari!
+          </div>
+          <div class="text-xl font-bold text-yellow-500 mb-2">+100 Poin</div>
+          <button
+            onclick="closeModal()"
+            class="mt-2 bg-[var(--kuning)] text-[var(--navy)] font-bold py-2 px-6 rounded-full border-2 border-[var(--navy)] hover:bg-yellow-300 transition"
+          >
+            Tutup
+          </button>
         </div>
+      </div>
     </div>
 
     <script>
-        let expenses = [];
+      let expenses = [];
 
-        // Set tanggal hari ini sebagai default
-        document.getElementById('date').valueAsDate = new Date();
+      // Set tanggal hari ini sebagai default
+      document.getElementById("date").valueAsDate = new Date();
 
-        // Form submission
-        document.getElementById('expenseForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const date = document.getElementById('date').value;
-            const amount = parseInt(document.getElementById('amount').value);
-            const category = document.getElementById('category').value;
-            const description = document.getElementById('description').value;
+      // Form submission
+      document
+        .getElementById("expenseForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          const date = document.getElementById("date").value;
+          const amount = parseInt(document.getElementById("amount").value);
+          const category = document.getElementById("category").value;
+          const description = document.getElementById("description").value;
 
-            if (!date || !amount || !category || !description) {
-                alert('Semua field wajib diisi! 📝');
-                return;
-            }
+          if (!date || !amount || !category || !description) {
+            alert("Semua field wajib diisi! 📝");
+            return;
+          }
 
-            const expense = {
-                id: Date.now(),
-                date: date,
-                amount: amount,
-                category: category,
-                description: description
-            };
+          const expense = {
+            id: Date.now(),
+            date: date,
+            amount: amount,
+            category: category,
+            description: description,
+          };
 
-            expenses.push(expense);
-            updateDisplay();
-            this.reset();
-            document.getElementById('date').valueAsDate = new Date();
+          expenses.push(expense);
+          updateDisplay();
+          this.reset();
+          document.getElementById("date").valueAsDate = new Date();
         });
 
-        function updateDisplay() {
-            updateStats();
-            updateExpensesList();
-            updateProgress();
-            updateAnalysis();
-            checkFinishButton();
-        }
+      function updateDisplay() {
+        updateStats();
+        updateExpensesList();
+        updateProgress();
+        updateAnalysis();
+        checkFinishButton();
+      }
 
-        function updateStats() {
-            const totalTransactions = expenses.length;
-            const totalSpent = expenses.reduce((sum, expense) => sum + expense.amount, 0);
-            const uniqueDates = [...new Set(expenses.map(expense => expense.date))].length;
-            const avgPerDay = uniqueDates > 0 ? Math.round(totalSpent / uniqueDates) : 0;
+      function updateStats() {
+        const totalTransactions = expenses.length;
+        const totalSpent = expenses.reduce(
+          (sum, expense) => sum + expense.amount,
+          0
+        );
+        const uniqueDates = [
+          ...new Set(expenses.map((expense) => expense.date)),
+        ].length;
+        const avgPerDay =
+          uniqueDates > 0 ? Math.round(totalSpent / uniqueDates) : 0;
 
-            document.getElementById('totalTransactions').textContent = totalTransactions;
-            document.getElementById('totalSpent').textContent = `Rp ${totalSpent.toLocaleString('id-ID')}`;
-            document.getElementById('daysTracked').textContent = uniqueDates;
-            document.getElementById('avgPerDay').textContent = `Rp ${avgPerDay.toLocaleString('id-ID')}`;
-        }
+        document.getElementById("totalTransactions").textContent =
+          totalTransactions;
+        document.getElementById(
+          "totalSpent"
+        ).textContent = `Rp ${totalSpent.toLocaleString("id-ID")}`;
+        document.getElementById("daysTracked").textContent = uniqueDates;
+        document.getElementById(
+          "avgPerDay"
+        ).textContent = `Rp ${avgPerDay.toLocaleString("id-ID")}`;
+      }
 
-        function updateExpensesList() {
-            const expensesList = document.getElementById('expensesList');
-            if (expenses.length === 0) {
-                expensesList.innerHTML = `
+      function updateExpensesList() {
+        const expensesList = document.getElementById("expensesList");
+        if (expenses.length === 0) {
+          expensesList.innerHTML = `
                     <p class="text-center mt-12 text-[var(--navy)]">
                         Belum ada pengeluaran tercatat.<br>
                         Mulai catat pengeluaranmu! 🔍
                     </p>
                 `;
-                return;
-            }
-            const sortedExpenses = expenses.sort((a, b) => new Date(b.date) - new Date(a.date));
-            expensesList.innerHTML = sortedExpenses.map(expense => `
+          return;
+        }
+        const sortedExpenses = expenses.sort(
+          (a, b) => new Date(b.date) - new Date(a.date)
+        );
+        expensesList.innerHTML = sortedExpenses
+          .map(
+            (expense) => `
                 <div class="expense-item flex items-center justify-between rounded-xl px-4 py-3 mb-3 shadow-sm">
                     <div class="flex-1">
                         <div>
-                            <span class="category inline-block text-xs px-3 py-1 rounded-full mr-2">${expense.category}</span>
-                            <span class="amount font-bold">Rp ${expense.amount.toLocaleString('id-ID')}</span>
+                            <span class="category inline-block text-xs px-3 py-1 rounded-full mr-2">${
+                              expense.category
+                            }</span>
+                            <span class="amount font-bold">Rp ${expense.amount.toLocaleString(
+                              "id-ID"
+                            )}</span>
                         </div>
                         <div class="desc text-xs mt-1">
-                            📅 ${new Date(expense.date).toLocaleDateString('id-ID')} - ${expense.description}
+                            📅 ${new Date(expense.date).toLocaleDateString(
+                              "id-ID"
+                            )} - ${expense.description}
                         </div>
                     </div>
-                    <button class="ml-4 bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-full text-xs" onclick="deleteExpense(${expense.id})">🗑️</button>
+                    <button class="ml-4 bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-full text-xs" onclick="deleteExpense(${
+                      expense.id
+                    })">🗑️</button>
                 </div>
-            `).join('');
-        }
+            `
+          )
+          .join("");
+      }
 
-        function deleteExpense(id) {
-            expenses = expenses.filter(expense => expense.id !== id);
-            updateDisplay();
-        }
+      function deleteExpense(id) {
+        expenses = expenses.filter((expense) => expense.id !== id);
+        updateDisplay();
+      }
 
-        function updateProgress() {
-            const progress = Math.min((expenses.length / 15) * 100, 100);
-            document.getElementById('progressFill').style.width = `${progress}%`;
-            document.getElementById('progressText').textContent = `${expenses.length}/15 transaksi tercatat`;
-        }
+      function updateProgress() {
+        const progress = Math.min((expenses.length / 15) * 100, 100);
+        document.getElementById("progressFill").style.width = `${progress}%`;
+        document.getElementById(
+          "progressText"
+        ).textContent = `${expenses.length}/15 transaksi tercatat`;
+      }
 
-        function updateAnalysis() {
-            const analysisContent = document.getElementById('analysisContent');
-            if (expenses.length < 15) {
-                analysisContent.innerHTML = `
+      function updateAnalysis() {
+        const analysisContent = document.getElementById("analysisContent");
+        if (expenses.length < 15) {
+          analysisContent.innerHTML = `
                     <p class="text-center text-gray-400">
                         Catat minimal 15 transaksi dalam 3 hari untuk melihat analisis lengkap! 📊<br>
                         <small>Progress: ${expenses.length}/15 transaksi</small>
                     </p>
                 `;
-                return;
-            }
-            // Analisis kategori
-            const categoryTotals = {};
-            expenses.forEach(expense => {
-                categoryTotals[expense.category] = (categoryTotals[expense.category] || 0) + expense.amount;
-            });
-            const totalSpent = expenses.reduce((sum, expense) => sum + expense.amount, 0);
-            const sortedCategories = Object.entries(categoryTotals)
-                .sort((a, b) => b[1] - a[1]);
-            const colors = ['#e74c3c', '#3498db', '#2ecc71', '#f39c12', '#9b59b6', '#1abc9c', '#34495e'];
-            let analysisHTML = `
+          return;
+        }
+        // Analisis kategori
+        const categoryTotals = {};
+        expenses.forEach((expense) => {
+          categoryTotals[expense.category] =
+            (categoryTotals[expense.category] || 0) + expense.amount;
+        });
+        const totalSpent = expenses.reduce(
+          (sum, expense) => sum + expense.amount,
+          0
+        );
+        const sortedCategories = Object.entries(categoryTotals).sort(
+          (a, b) => b[1] - a[1]
+        );
+        const colors = [
+          "#e74c3c",
+          "#3498db",
+          "#2ecc71",
+          "#f39c12",
+          "#9b59b6",
+          "#1abc9c",
+          "#34495e",
+        ];
+        let analysisHTML = `
                 <h3 class="font-bold text-lg mb-2">🔍 Hasil Investigasi Detektif</h3>
-                <p class="mb-4"><strong>Tersangka Utama (Kategori Terboros):</strong> ${sortedCategories[0][0]} - Rp ${sortedCategories[0][1].toLocaleString('id-ID')} (${Math.round(sortedCategories[0][1]/totalSpent*100)}%)</p>
+                <p class="mb-4"><strong>Tersangka Utama (Kategori Terboros):</strong> ${
+                  sortedCategories[0][0]
+                } - Rp ${sortedCategories[0][1].toLocaleString(
+          "id-ID"
+        )} (${Math.round((sortedCategories[0][1] / totalSpent) * 100)}%)</p>
                 <div class="grid md:grid-cols-3 gap-4 mb-4">
             `;
-            sortedCategories.forEach(([category, amount], index) => {
-                const percentage = Math.round((amount / totalSpent) * 100);
-                analysisHTML += `
+        sortedCategories.forEach(([category, amount], index) => {
+          const percentage = Math.round((amount / totalSpent) * 100);
+          analysisHTML += `
                     <div class="bg-[var(--navy)]/10 rounded-xl p-4 text-center">
                         <h4 class="font-semibold mb-2">${category}</h4>
                         <div class="w-full h-4 bg-gray-200 rounded-full mb-2">
-                            <div style="width: ${percentage}%; background: ${colors[index % colors.length]};" class="h-4 rounded-full transition-all"></div>
+                            <div style="width: ${percentage}%; background: ${
+            colors[index % colors.length]
+          };" class="h-4 rounded-full transition-all"></div>
                         </div>
-                        <p class="font-bold">Rp ${amount.toLocaleString('id-ID')} <span class="text-xs text-gray-500">(${percentage}%)</span></p>
+                        <p class="font-bold">Rp ${amount.toLocaleString(
+                          "id-ID"
+                        )} <span class="text-xs text-gray-500">(${percentage}%)</span></p>
                     </div>
                 `;
-            });
-            analysisHTML += '</div>';
-            // Tips berdasarkan kategori terbesar
-            const topCategory = sortedCategories[0][0];
-            let tip = '';
-            switch(topCategory) {
-                case 'Makanan & Minuman':
-                    tip = '🍔 Tip: Coba bawa bekal dari rumah atau cari warung dengan harga lebih ekonomis!';
-                    break;
-                case 'Transportasi':
-                    tip = '🚗 Tip: Pertimbangkan naik angkutan umum atau jalan kaki untuk jarak dekat!';
-                    break;
-                case 'Hiburan':
-                    tip = '🎮 Tip: Cari hiburan gratis seperti main di taman atau nonton film gratis!';
-                    break;
-                case 'Belanja':
-                    tip = '🛒 Tip: Buat daftar belanja dan tahan godaan untuk beli yang tidak perlu!';
-                    break;
-                default:
-                    tip = '💡 Tip: Pertimbangkan apakah pengeluaran ini benar-benar diperlukan sebelum beli!';
-            }
-            analysisHTML += `
+        });
+        analysisHTML += "</div>";
+        // Tips berdasarkan kategori terbesar
+        const topCategory = sortedCategories[0][0];
+        let tip = "";
+        switch (topCategory) {
+          case "Makanan & Minuman":
+            tip =
+              "🍔 Tip: Coba bawa bekal dari rumah atau cari warung dengan harga lebih ekonomis!";
+            break;
+          case "Transportasi":
+            tip =
+              "🚗 Tip: Pertimbangkan naik angkutan umum atau jalan kaki untuk jarak dekat!";
+            break;
+          case "Hiburan":
+            tip =
+              "🎮 Tip: Cari hiburan gratis seperti main di taman atau nonton film gratis!";
+            break;
+          case "Belanja":
+            tip =
+              "🛒 Tip: Buat daftar belanja dan tahan godaan untuk beli yang tidak perlu!";
+            break;
+          default:
+            tip =
+              "💡 Tip: Pertimbangkan apakah pengeluaran ini benar-benar diperlukan sebelum beli!";
+        }
+        analysisHTML += `
                 <div class="bg-yellow-100 border-l-4 border-yellow-400 rounded-xl p-4 mt-4">
                     <strong>💡 Rekomendasi Detektif:</strong><br>
                     ${tip}
                 </div>
             `;
-            analysisContent.innerHTML = analysisHTML;
-        }
+        analysisContent.innerHTML = analysisHTML;
+      }
 
-        function checkFinishButton() {
-            const uniqueDates = [...new Set(expenses.map(expense => expense.date))].length;
-            const finishBtn = document.getElementById('finishBtn');
-            if (expenses.length >= 15 && uniqueDates >= 3) {
-                finishBtn.classList.remove('hidden');
-            } else {
-                finishBtn.classList.add('hidden');
-            }
+      function checkFinishButton() {
+        const uniqueDates = [
+          ...new Set(expenses.map((expense) => expense.date)),
+        ].length;
+        const finishBtn = document.getElementById("finishBtn");
+        if (expenses.length >= 15 && uniqueDates >= 3) {
+          finishBtn.classList.remove("hidden");
+        } else {
+          finishBtn.classList.add("hidden");
         }
+      }
 
-        // Modal logic
-        function showModal() {
-            document.getElementById('badgeModal').classList.remove('hidden');
-        }
-        function closeModal() {
-            document.getElementById('badgeModal').classList.add('hidden');
-        }
+      // Modal logic
+      function showModal() {
+        document.getElementById("badgeModal").classList.remove("hidden");
+      }
+      function closeModal() {
+        document.getElementById("badgeModal").classList.add("hidden");
+      }
 
-        // Event tombol selesai
-        // document.getElementById('finishBtn').addEventListener('click', function() {
-        //     showModal();
-        // });
-        document.getElementById('finishBtn').addEventListener('click', async function() {
-        try {
-            const res = await fetch('/tantangan/1/finish', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' }
+      // Event tombol selesai
+      // document.getElementById('finishBtn').addEventListener('click', function() {
+      //     showModal();
+      // });
+      document
+        .getElementById("finishBtn")
+        .addEventListener("click", async function () {
+          try {
+            const res = await fetch("/tantangan/1/finish", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
             });
             const data = await res.json();
             if (data.success) {
-                showModal();
+              showModal();
             } else {
-                alert('Gagal menyimpan progres tantangan!');
+              alert("Gagal menyimpan progres tantangan!");
             }
-        } catch (err) {
-            alert('Terjadi kesalahan koneksi!');
-        }
-    });
+          } catch (err) {
+            alert("Terjadi kesalahan koneksi!");
+          }
+        });
 
-        // Inisialisasi
-        updateDisplay();
+      const tantanganStatus = "<%= status %>";
+
+      // Sembunyikan tombol selesai jika sudah completed
+      window.addEventListener("DOMContentLoaded", () => {
+        if (tantanganStatus === "completed") {
+          document.getElementById("finishBtn").classList.add("hidden");
+          // Optional: tampilkan badge/modal otomatis
+          showModal();
+        }
+      });
+
+      // Inisialisasi
+      updateDisplay();
     </script>
-</body>
+  </body>
 </html>
